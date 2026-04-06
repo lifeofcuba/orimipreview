@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ORIMI — Your Wellness Companion</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; color: #2C2416; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; color: #2C2416; -webkit-font-smoothing: antialiased; max-width: 430px; margin: 0 auto; min-height: 100vh; position: relative; }
 .top-nav { background: #1A150D; padding: 0; display: flex; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(139,111,62,0.3); }
-.top-nav button { flex: 1; background: transparent; color: #8B7355; border: none; padding: 14px 8px; font-size: 11px; cursor: pointer; font-family: system-ui; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; }
+.top-nav button { flex: 1; background: transparent; color: #8B7355; border: none; padding: 16px 8px; font-size: 11px; cursor: pointer; font-family: system-ui; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; }
 .top-nav button.active { color: #F7F3ED; border-bottom: 2px solid #8B6F3E; }
-.card { background: #FFFDF9; border-radius: 14px; border: 0.5px solid #E8E0D4; padding: 16px; margin-bottom: 12px; }
-.card-warm { background: #FDF8F2; border-radius: 14px; border: 0.5px solid #E8E0D4; padding: 16px; margin-bottom: 12px; }
+.card { background: #FFFDF9; border-radius: 16px; border: 0.5px solid #E8E0D4; padding: 16px; margin-bottom: 12px; }
+.card-warm { background: #FDF8F2; border-radius: 16px; border: 0.5px solid #E8E0D4; padding: 16px; margin-bottom: 12px; }
 .inset { background: #F5EFE6; border-radius: 10px; padding: 12px 14px; }
 .inset-green { background: #EEF4E8; border-radius: 10px; padding: 12px 14px; }
 .sl { font-size: 9px; color: #9B8B6E; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-family: system-ui; }
@@ -20,41 +20,51 @@ body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; co
 .doula-action.prepare { color: #6B4E8B; background: rgba(107,78,139,0.1); }
 .doula-action.advocate { color: #8B3A3A; background: rgba(139,58,58,0.1); }
 .doula-action.anticipate { color: #3A6B8B; background: rgba(58,107,139,0.1); }
-.btn-g { background: #2C2416; color: #F7F3ED; border: none; padding: 9px 18px; border-radius: 10px; font-size: 11px; cursor: pointer; font-family: system-ui; font-weight: 500; letter-spacing: 0.5px; }
-.btn-o { background: transparent; color: #4A5E3A; border: 1px solid #4A5E3A; padding: 7px 14px; border-radius: 10px; font-size: 11px; cursor: pointer; font-family: system-ui; }
-.btn-s { background: #4A5E3A; color: #F7F3ED; border: none; padding: 8px 16px; border-radius: 10px; font-size: 11px; cursor: pointer; font-family: system-ui; font-weight: 500; }
-.nrow { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid #EDE5D8; }
+.btn-g { background: #2C2416; color: #F7F3ED; border: none; padding: 12px 20px; border-radius: 12px; font-size: 13px; cursor: pointer; font-family: system-ui; font-weight: 500; letter-spacing: 0.5px; width: 100%; text-align: center; }
+.btn-o { background: transparent; color: #4A5E3A; border: 1px solid #4A5E3A; padding: 10px 16px; border-radius: 12px; font-size: 12px; cursor: pointer; font-family: system-ui; width: 100%; text-align: center; margin-top: 8px; }
+.btn-s { background: #4A5E3A; color: #F7F3ED; border: none; padding: 10px 16px; border-radius: 12px; font-size: 12px; cursor: pointer; font-family: system-ui; font-weight: 500; }
+.nrow { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid #EDE5D8; }
 .nrow:last-child { border-bottom: none; padding-bottom: 0; }
-.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .divider { height: 0.5px; background: #EDE5D8; margin: 12px 0; }
 .expandable { cursor: pointer; }
-.expand-hint { font-size: 10px; color: #8B6F3E; font-family: system-ui; margin-top: 4px; }
+.expand-hint { font-size: 11px; color: #8B6F3E; font-family: system-ui; margin-top: 6px; }
 .expanded-content { display: none; border-top: 0.5px solid #EDE5D8; padding-top: 14px; margin-top: 12px; }
 .expanded-content.open { display: block; }
-.action-item { background: #F5EFE6; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; }
+.action-item { background: #F5EFE6; border-radius: 12px; padding: 14px; margin-bottom: 8px; cursor: pointer; }
 .action-detail { display: none; margin-top: 10px; }
 .action-detail.open { display: block; }
-.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-.stat-card { background: #FFFDF9; border-radius: 12px; border: 0.5px solid #E8E0D4; padding: 14px; }
-.tab-btns { display: flex; gap: 6px; margin-bottom: 16px; }
-.tab-btn { background: rgba(247,243,237,0.6); color: #9B8B6E; border: 1px solid #E8E0D4; padding: 6px 14px; border-radius: 16px; font-size: 10px; cursor: pointer; font-family: system-ui; }
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.stat-card { background: #FFFDF9; border-radius: 14px; border: 0.5px solid #E8E0D4; padding: 14px 8px; text-align: center; }
+.tab-btns { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 2px; }
+.tab-btn { background: rgba(247,243,237,0.6); color: #9B8B6E; border: 1px solid #E8E0D4; padding: 8px 16px; border-radius: 20px; font-size: 11px; cursor: pointer; font-family: system-ui; white-space: nowrap; flex-shrink: 0; }
 .tab-btn.active { background: #2C2416; color: #F7F3ED; border-color: #2C2416; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 .dashboard { display: none; }
 .dashboard.active { display: block; }
-.quote { font-size: 14px; color: #2C2416; line-height: 1.8; font-style: italic; border-left: 2px solid #8B6F3E; padding-left: 14px; margin: 4px 0; }
-.quote-green { font-size: 13px; color: #2C2416; line-height: 1.8; font-style: italic; border-left: 2px solid #4A5E3A; padding-left: 14px; margin: 4px 0; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #1A150D; padding: 10px 0 8px; display: flex; justify-content: space-around; border-top: 1px solid rgba(139,111,62,0.2); }
-.bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.loading { display: flex; align-items: center; justify-content: center; min-height: 60vh; flex-direction: column; gap: 12px; }
-.loading-dot { width: 8px; height: 8px; border-radius: 50%; background: #8B6F3E; display: inline-block; animation: pulse 1.4s infinite ease-in-out; }
+.quote { font-size: 14px; color: #2C2416; line-height: 1.8; font-style: italic; border-left: 3px solid #8B6F3E; padding-left: 14px; margin: 4px 0; }
+.quote-green { font-size: 13px; color: #2C2416; line-height: 1.8; font-style: italic; border-left: 3px solid #4A5E3A; padding-left: 14px; margin: 4px 0; }
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: #1A150D; padding: 12px 0 10px; display: flex; justify-content: space-around; border-top: 1px solid rgba(139,111,62,0.2); z-index: 100; }
+.bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 8px; }
+.loading { display: flex; align-items: center; justify-content: center; min-height: 70vh; flex-direction: column; gap: 14px; }
+.loading-dot { width: 9px; height: 9px; border-radius: 50%; background: #8B6F3E; display: inline-block; animation: pulse 1.4s infinite ease-in-out; }
 .loading-dot:nth-child(2) { animation-delay: 0.2s; }
 .loading-dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes pulse { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
-.live-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(74,94,58,0.15); color: #4A5E3A; padding: 3px 8px; border-radius: 10px; font-size: 9px; font-family: system-ui; font-weight: 600; letter-spacing: 0.5px; }
-.live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4A5E3A; animation: livepulse 2s infinite; }
+.live-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(74,94,58,0.2); color: #9BB87A; padding: 4px 10px; border-radius: 10px; font-size: 9px; font-family: system-ui; font-weight: 600; letter-spacing: 0.5px; }
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: #9BB87A; animation: livepulse 2s infinite; }
 @keyframes livepulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sms-bubble { background: #F5EFE6; border-radius: 16px 16px 16px 4px; padding: 12px 14px; margin-bottom: 10px; position: relative; }
+.sms-bubble.orimi { background: #2C2416; color: #F7F3ED; border-radius: 16px 16px 16px 4px; }
+.sms-time { font-size: 10px; color: #9B8B6E; font-family: system-ui; margin-top: 6px; }
+.sms-time.orimi { color: #8B7355; }
+.ai-typing { display: flex; gap: 4px; padding: 8px 0; }
+.ai-typing span { width: 6px; height: 6px; border-radius: 50%; background: #8B6F3E; animation: typing 1.4s infinite ease-in-out; }
+.ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+.ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
+.tier-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 500; font-family: system-ui; }
 </style>
 </head>
 <body>
@@ -65,218 +75,237 @@ body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; co
   <button onclick="showDash('admin', this)">Admin</button>
 </div>
 
-<!-- MOM DASHBOARD -->
+<!-- ===================== MOM DASHBOARD ===================== -->
 <div id="dash-mom" class="dashboard active">
   <div id="mom-loading" class="loading">
-    <div style="display:flex;gap:6px;">
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-    </div>
-    <p style="font-size:12px;color:#9B8B6E;font-family:system-ui;">Loading your dashboard...</p>
+    <div style="display:flex;gap:6px;"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+    <p style="font-size:13px;color:#9B8B6E;font-family:system-ui;">Loading your dashboard...</p>
   </div>
 
   <div id="mom-content" style="display:none;">
-    <div style="background:linear-gradient(160deg, #2C2416 0%, #3D3020 100%);padding:20px 20px 24px;">
+    <div style="background:linear-gradient(160deg,#2C2416 0%,#3D3020 100%);padding:24px 20px 28px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div>
-          <p style="font-size:10px;color:#8B7355;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-family:system-ui;">Good morning</p>
-          <h1 id="mom-name" style="font-size:26px;font-weight:400;color:#F7F3ED;letter-spacing:-0.5px;margin:0 0 4px;">—</h1>
-          <p id="mom-stage-header" style="font-size:12px;color:#C4A97A;font-family:system-ui;">Loading...</p>
+          <p style="font-size:11px;color:#8B7355;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-family:system-ui;">Good morning</p>
+          <h1 id="mom-name" style="font-size:30px;font-weight:400;color:#F7F3ED;letter-spacing:-0.5px;margin:0 0 6px;">—</h1>
+          <p id="mom-stage-header" style="font-size:13px;color:#C4A97A;font-family:system-ui;">Loading...</p>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-          <div id="mom-avatar" style="width:42px;height:42px;border-radius:50%;background:#8B6F3E;display:flex;align-items:center;justify-content:center;font-size:15px;color:#F7F3ED;font-family:system-ui;font-weight:500;border:1px solid rgba(247,243,237,0.2);">—</div>
-          <span class="live-badge"><span class="live-dot"></span>LIVE DATA</span>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+          <div id="mom-avatar" style="width:46px;height:46px;border-radius:50%;background:#8B6F3E;display:flex;align-items:center;justify-content:center;font-size:17px;color:#F7F3ED;font-family:system-ui;font-weight:500;border:1.5px solid rgba(247,243,237,0.25);">—</div>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
         </div>
       </div>
     </div>
 
-    <div style="padding:16px 16px 90px;">
+    <div style="padding:16px 16px 100px;">
 
+      <!-- ORIMI MORNING MESSAGE — AI GENERATED -->
       <div class="card" style="border-left:3px solid #8B6F3E;">
         <span class="doula-action anticipate">Anticipate</span>
         <p class="sl">ORIMI this morning</p>
-        <div class="inset" style="border-radius:10px 10px 10px 2px;font-size:13px;color:#2C2416;line-height:1.7;font-style:italic;" id="orimi-message">
-          A lot of moms feel a wave of fear around week 32 — the birth is real now, not theoretical. That fear is not a sign you're not ready. It's your brain doing its job, processing the biggest physical event of your life. Name it. Say it out loud. It loses power when it's spoken.
+        <div id="ai-message-container">
+          <div class="sms-bubble orimi">
+            <div id="ai-typing" class="ai-typing"><span></span><span></span><span></span></div>
+            <p id="ai-message-text" style="font-size:13px;line-height:1.7;font-style:italic;display:none;"></p>
+            <p id="ai-message-time" class="sms-time orimi" style="display:none;"></p>
+          </div>
         </div>
         <button class="btn-g" style="margin-top:12px;">Reply to ORIMI</button>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
-        <div class="card" style="text-align:center;padding:12px 6px;margin-bottom:0;">
-          <p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Week</p>
-          <p id="stat-week" style="font-size:22px;color:#2C2416;">—</p>
-        </div>
-        <div class="card" style="text-align:center;padding:12px 6px;margin-bottom:0;">
-          <p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Days left</p>
-          <p id="stat-days" style="font-size:22px;color:#2C2416;">—</p>
-        </div>
-        <div class="card" style="text-align:center;padding:12px 6px;margin-bottom:0;">
-          <p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Mood</p>
-          <p id="stat-mood" style="font-size:16px;color:#2C2416;padding-top:3px;">—</p>
+      <!-- STATS -->
+      <div class="stat-grid">
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Week</p><p id="stat-week" style="font-size:24px;color:#2C2416;">—</p></div>
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Days left</p><p id="stat-days" style="font-size:24px;color:#2C2416;">—</p></div>
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Mood</p><p id="stat-mood" style="font-size:16px;color:#2C2416;padding-top:4px;">—</p></div>
+      </div>
+
+      <!-- SMS HISTORY -->
+      <div class="card">
+        <span class="doula-action anticipate">Anticipate</span>
+        <p class="sl">Recent messages from ORIMI</p>
+        <div id="sms-history">
+          <div style="display:flex;gap:5px;padding:16px 0;justify-content:center;"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
         </div>
       </div>
 
+      <!-- WEEKLY CONTENT -->
       <div class="card">
         <span class="doula-action">Educate</span>
         <p class="sl">What is happening — <span id="week-label">week 32</span></p>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:13px;color:#2C2416;margin-bottom:4px;">Baby's skull is staying soft on purpose</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">The plates will overlap during delivery — that's why newborns sometimes have cone-shaped heads. It resolves in days. This is perfect design, not a problem.</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:13px;color:#2C2416;margin-bottom:4px;">Practicing breathing movements right now</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Not breathing air yet — rehearsing the motion. Lungs are producing surfactant, the substance that will let baby breathe outside the womb. Every day inside matters.</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#8B6F3E;"></div><div><p style="font-size:13px;color:#2C2416;margin-bottom:4px;">Heartburn, back pain, trouble sleeping</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Progesterone relaxes the valve between stomach and esophagus — that's the heartburn. Smaller meals help. For sleep: pillow between the knees, slightly propped up.</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#C4956A;"></div><div><p style="font-size:13px;color:#2C2416;margin-bottom:4px;">Ready and not ready at the same time</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Fear of labor is normal. So is excitement. So is feeling done with being pregnant. All of it is allowed.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:14px;color:#2C2416;margin-bottom:5px;">Baby's skull is staying soft on purpose</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">The plates will overlap during delivery — that's why newborns sometimes have cone-shaped heads. It resolves in days. This is perfect design, not a problem.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:14px;color:#2C2416;margin-bottom:5px;">Practicing breathing movements right now</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Not breathing air yet — rehearsing the motion. Lungs are producing surfactant, the substance that will let baby breathe outside the womb.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#8B6F3E;"></div><div><p style="font-size:14px;color:#2C2416;margin-bottom:5px;">Heartburn, back pain, trouble sleeping</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Progesterone relaxes the valve between stomach and esophagus. Smaller meals help. Pillow between the knees for sleep.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#C4956A;"></div><div><p style="font-size:14px;color:#2C2416;margin-bottom:5px;">Ready and not ready at the same time</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Fear of labor is normal. So is excitement. So is feeling done with being pregnant. All of it is allowed.</p></div></div>
       </div>
 
+      <!-- NOURISHMENT -->
       <div class="card">
         <span class="doula-action">Educate</span>
         <p class="sl">Nourishment this week</p>
-        <div class="inset" style="margin-bottom:12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:2px;">Protein 80-100g daily</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Baby is gaining half a pound a week. Eggs, Greek yogurt, lentils, chicken, fish.</p></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">6 Medjool dates daily — start now</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Clinical research: shorter first stage labor, higher cervical dilation on admission, less need for augmentation. It's the prostaglandins.</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">DHA — baby's brain is building now</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Wild salmon 2x this week or walnuts daily. Plant-based? Algae-based DHA covers it.</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">Magnesium for leg cramps and sleep</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Pumpkin seeds, dark chocolate, epsom salt bath. Check magnesium glycinate with midwife.</p></div></div>
+        <div class="inset" style="margin-bottom:12px;"><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:3px;">Protein 80-100g daily</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Baby is gaining half a pound a week. Eggs, Greek yogurt, lentils, chicken, fish.</p></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;">6 Medjool dates daily — start now</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Clinical research: shorter first stage labor, less need for augmentation. It's the prostaglandins.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;">DHA — baby's brain is building now</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Wild salmon 2x this week or walnuts daily. Plant-based? Algae-based DHA covers it.</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;">Magnesium for cramps and sleep</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.4;margin-top:2px;">Pumpkin seeds, dark chocolate, epsom salt bath. Check magnesium glycinate with midwife.</p></div></div>
       </div>
 
+      <!-- HERB -->
       <div class="card-warm">
         <span class="doula-action">Educate</span>
         <p class="sl">Herb of the week</p>
-        <div class="inset"><p style="font-size:14px;color:#2C2416;margin-bottom:4px;">Red raspberry leaf tea</p><p style="font-size:11px;color:#8B6F3E;font-family:system-ui;margin-bottom:8px;font-weight:500;">2-3 cups per day — work up gradually</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Tones the uterine muscle — may support more efficient contractions during labor. Loose-leaf, steep 10+ minutes. Check with midwife first.</p></div>
+        <div class="inset"><p style="font-size:15px;color:#2C2416;margin-bottom:5px;">Red raspberry leaf tea</p><p style="font-size:12px;color:#8B6F3E;font-family:system-ui;margin-bottom:8px;font-weight:500;">2-3 cups per day — work up gradually</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Tones the uterine muscle — may support more efficient contractions during labor. Loose-leaf, steep 10+ minutes. Check with midwife first.</p></div>
       </div>
 
+      <!-- HOLISTIC -->
       <div class="card-warm">
         <span class="doula-action">Educate</span>
         <p class="sl">Holistic support</p>
-        <div class="inset" style="margin-bottom:8px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:4px;">Webster-certified chiropractor — weekly now</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Baby is settling into position. Pelvic alignment gives baby the best chance to go head-down. Start now, not at week 36.</p></div>
-        <div class="inset"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:4px;">Pre-birth acupuncture</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Prepares the cervix, supports baby's position, reduces labor anxiety. Moxibustion has evidence for turning breech babies.</p></div>
+        <div class="inset" style="margin-bottom:10px;"><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:5px;">Webster-certified chiropractor — weekly now</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Baby is settling into position. Pelvic alignment gives baby the best chance to go head-down. Start now, not at week 36.</p></div>
+        <div class="inset"><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:5px;">Pre-birth acupuncture</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Prepares the cervix, supports baby's position, reduces labor anxiety. Not fringe — integrated into midwifery care for centuries.</p></div>
       </div>
 
+      <!-- APPOINTMENT -->
       <div class="card expandable" onclick="toggleExpand('appt')">
         <span class="doula-action prepare">Prepare</span>
         <p class="sl">Next appointment</p>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div style="background:#2C2416;color:#F7F3ED;border-radius:10px;padding:8px 12px;text-align:center;flex-shrink:0;"><p style="font-size:9px;color:#8B7355;font-family:system-ui;" id="appt-month">APR</p><p id="appt-day" style="font-size:20px;font-weight:400;">15</p></div>
-          <div style="flex:1;"><p id="appt-title" style="font-size:14px;color:#2C2416;margin-bottom:2px;">32-week prenatal visit</p><p id="appt-location" style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Birth Fund · 2:00 PM</p><p class="expand-hint">Tap to prep for this visit ↓</p></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#2C2416;color:#F7F3ED;border-radius:12px;padding:10px 14px;text-align:center;flex-shrink:0;min-width:56px;">
+            <p id="appt-month" style="font-size:10px;color:#8B7355;font-family:system-ui;">APR</p>
+            <p id="appt-day" style="font-size:22px;font-weight:400;">15</p>
+          </div>
+          <div style="flex:1;">
+            <p id="appt-title" style="font-size:15px;color:#2C2416;margin-bottom:3px;">32-week prenatal visit</p>
+            <p id="appt-location" style="font-size:12px;color:#9B8B6E;font-family:system-ui;">Birth Fund · 2:00 PM</p>
+            <p class="expand-hint">Tap to prep for this visit ↓</p>
+          </div>
         </div>
         <div id="appt" class="expanded-content">
-          <div style="margin-bottom:14px;"><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">What this appointment is</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Standard third trimester check. Provider will measure the belly, listen to baby's heartbeat via doppler, check blood pressure, and start checking baby's position using Leopold's maneuvers.</p></div>
-          <div style="margin-bottom:14px;"><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">How to prepare</p>
-            <div style="display:flex;gap:8px;margin-bottom:6px;"><div style="width:5px;height:5px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:5px;"></div><p style="font-size:12px;color:#6B5B45;font-family:system-ui;">Wear a two-piece outfit</p></div>
-            <div style="display:flex;gap:8px;margin-bottom:6px;"><div style="width:5px;height:5px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:5px;"></div><p style="font-size:12px;color:#6B5B45;font-family:system-ui;">Drink water before — helps the doppler</p></div>
-            <div style="display:flex;gap:8px;"><div style="width:5px;height:5px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:5px;"></div><p style="font-size:12px;color:#6B5B45;font-family:system-ui;">Bring a list of symptoms or concerns</p></div>
+          <div style="margin-bottom:16px;"><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">What this appointment is</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Standard third trimester check. Provider will measure the belly, listen to baby's heartbeat via doppler, check blood pressure, and check baby's position using Leopold's maneuvers.</p></div>
+          <div style="margin-bottom:16px;"><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">How to prepare</p>
+            <div style="display:flex;gap:10px;margin-bottom:8px;"><div style="width:6px;height:6px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:6px;"></div><p style="font-size:13px;color:#6B5B45;font-family:system-ui;">Wear a two-piece outfit</p></div>
+            <div style="display:flex;gap:10px;margin-bottom:8px;"><div style="width:6px;height:6px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:6px;"></div><p style="font-size:13px;color:#6B5B45;font-family:system-ui;">Drink water before — helps the doppler</p></div>
+            <div style="display:flex;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:#8B6F3E;flex-shrink:0;margin-top:6px;"></div><p style="font-size:13px;color:#6B5B45;font-family:system-ui;">Bring a list of symptoms and concerns</p></div>
           </div>
-          <div><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Questions to ask</p>
-            <div class="inset" style="margin-bottom:6px;font-size:12px;color:#2C2416;font-family:system-ui;font-style:italic;">"Is baby head-down yet? If not, what are my options?"</div>
-            <div class="inset" style="font-size:12px;color:#2C2416;font-family:system-ui;font-style:italic;">"When do appointments move to weekly?"</div>
+          <div><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Questions to ask</p>
+            <div class="inset" style="margin-bottom:8px;font-size:13px;color:#2C2416;font-family:system-ui;font-style:italic;">"Is baby head-down yet? If not, what are my options?"</div>
+            <div class="inset" style="font-size:13px;color:#2C2416;font-family:system-ui;font-style:italic;">"When do appointments move to weekly?"</div>
           </div>
         </div>
       </div>
 
+      <!-- BREATHING -->
       <div class="card-warm">
         <span class="doula-action prepare">Prepare</span>
         <p class="sl">Breathing practice — daily</p>
-        <div class="inset" style="margin-bottom:12px;"><p style="font-size:14px;color:#2C2416;margin-bottom:6px;">Wave breathing</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Breathe in through the nose for 4 counts. Imagine riding up a wave. Exhale slow through the mouth for 6 counts. Ride down. The contraction will end. They always end. Practice daily — the body needs this rhythm before labor, not during it.</p></div>
+        <div class="inset" style="margin-bottom:12px;"><p style="font-size:15px;color:#2C2416;margin-bottom:8px;">Wave breathing</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Breathe in through the nose for 4 counts. Imagine riding up a wave. Exhale slow through the mouth for 6 counts. Ride down. The contraction will end. They always end. Practice daily — the body needs this rhythm before labor, not during it.</p></div>
         <button class="btn-g">Practice now</button>
       </div>
 
+      <!-- BRAIN -->
       <div class="card">
         <span class="doula-action advocate">Advocate</span>
         <p class="sl">Know the BRAIN framework</p>
-        <p style="font-size:13px;color:#2C2416;margin-bottom:10px;">When a provider recommends something and it doesn't feel right:</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div class="inset" style="padding:8px 10px;"><p style="font-size:11px;font-weight:500;color:#2C2416;font-family:system-ui;">B — Benefits</p><p style="font-size:10px;color:#6B5B45;font-family:system-ui;margin-top:2px;">What are the benefits?</p></div>
-          <div class="inset" style="padding:8px 10px;"><p style="font-size:11px;font-weight:500;color:#2C2416;font-family:system-ui;">R — Risks</p><p style="font-size:10px;color:#6B5B45;font-family:system-ui;margin-top:2px;">What are the risks?</p></div>
-          <div class="inset" style="padding:8px 10px;"><p style="font-size:11px;font-weight:500;color:#2C2416;font-family:system-ui;">A — Alternatives</p><p style="font-size:10px;color:#6B5B45;font-family:system-ui;margin-top:2px;">What else can we do?</p></div>
-          <div class="inset" style="padding:8px 10px;"><p style="font-size:11px;font-weight:500;color:#2C2416;font-family:system-ui;">I — Intuition</p><p style="font-size:10px;color:#6B5B45;font-family:system-ui;margin-top:2px;">What does your gut say?</p></div>
+        <p style="font-size:13px;color:#2C2416;margin-bottom:12px;">When a provider recommends something and it doesn't feel right:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div class="inset" style="padding:10px 12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">B — Benefits</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;margin-top:3px;">What are the benefits?</p></div>
+          <div class="inset" style="padding:10px 12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">R — Risks</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;margin-top:3px;">What are the risks?</p></div>
+          <div class="inset" style="padding:10px 12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">A — Alternatives</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;margin-top:3px;">What else can we do?</p></div>
+          <div class="inset" style="padding:10px 12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">I — Intuition</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;margin-top:3px;">What does your gut say?</p></div>
         </div>
-        <div class="inset" style="margin-top:6px;padding:8px 10px;"><p style="font-size:11px;font-weight:500;color:#2C2416;font-family:system-ui;">N — Nothing</p><p style="font-size:10px;color:#6B5B45;font-family:system-ui;margin-top:2px;">What happens if we wait?</p></div>
-        <p style="font-size:11px;color:#4A5E3A;font-family:system-ui;margin-top:10px;font-style:italic;">Asking questions is not being difficult. It's being an informed parent.</p>
+        <div class="inset" style="padding:10px 12px;"><p style="font-size:12px;font-weight:500;color:#2C2416;font-family:system-ui;">N — Nothing</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;margin-top:3px;">What happens if we wait?</p></div>
+        <p style="font-size:12px;color:#4A5E3A;font-family:system-ui;margin-top:12px;font-style:italic;">Asking questions is not being difficult. It's being an informed parent.</p>
       </div>
 
+      <!-- DOULA WISDOM -->
       <div class="card-warm">
         <span class="doula-action support">Support</span>
         <p class="sl">Doula wisdom</p>
         <p class="quote">"Oxytocin drives labor. Oxytocin flows when a woman feels safe, private, and unobserved. Start thinking now about what makes the birth space feel like yours — lighting, sound, who is in the room. This is not about vibes. This is endocrinology."</p>
-        <button class="btn-o" style="margin-top:12px;">Help me build my birth space plan</button>
+        <button class="btn-o">Help me build my birth space plan</button>
       </div>
 
+      <!-- HOSPITAL BAG -->
       <div class="card">
         <span class="doula-action prepare">Prepare</span>
         <p class="sl">Hospital bag</p>
-        <p style="font-size:13px;color:#2C2416;margin-bottom:8px;">Start packing now — not because birth is imminent, but because having it ready removes one source of anxiety.</p>
+        <p style="font-size:13px;color:#2C2416;margin-bottom:12px;">Start packing now — not because birth is imminent, but because having it ready removes one source of anxiety.</p>
         <button class="btn-g">Build my packing list</button>
       </div>
 
+      <!-- CARE TEAM -->
       <div class="card">
         <p class="sl">Care team</p>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <div style="width:38px;height:38px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">BF</div>
-          <div style="flex:1;"><p id="provider-name" style="font-size:13px;color:#2C2416;">Birth Fund</p><p id="provider-type" style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Midwife · Brooklyn, NY</p></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">BF</div>
+          <div style="flex:1;"><p id="provider-name" style="font-size:14px;color:#2C2416;">Birth Fund</p><p id="provider-type" style="font-size:12px;color:#9B8B6E;font-family:system-ui;">Midwife · Brooklyn, NY</p></div>
         </div>
         <div class="divider"></div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:38px;height:38px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">PT</div>
-          <div style="flex:1;"><p style="font-size:13px;color:#2C2416;">Pelvic Floor PT</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Recommended for week 32+</p></div>
-          <button class="btn-o" style="font-size:10px;padding:4px 10px;">Book</button>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">PT</div>
+          <div style="flex:1;"><p style="font-size:14px;color:#2C2416;">Pelvic Floor PT</p><p style="font-size:12px;color:#9B8B6E;font-family:system-ui;">Recommended for week 32+</p></div>
+          <button class="btn-s" style="width:auto;padding:8px 14px;">Book</button>
         </div>
       </div>
 
     </div>
 
     <div class="bottom-nav">
-      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:#F7F3ED;"></div><span style="font-size:9px;color:#F7F3ED;font-family:system-ui;">Home</span></div>
-      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:9px;color:#8B7355;font-family:system-ui;">Messages</span></div>
-      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:9px;color:#8B7355;font-family:system-ui;">Providers</span></div>
-      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:9px;color:#8B7355;font-family:system-ui;">Alerts</span></div>
-      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:9px;color:#8B7355;font-family:system-ui;">Profile</span></div>
+      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:#F7F3ED;"></div><span style="font-size:10px;color:#F7F3ED;font-family:system-ui;">Home</span></div>
+      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:10px;color:#8B7355;font-family:system-ui;">Messages</span></div>
+      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:10px;color:#8B7355;font-family:system-ui;">Providers</span></div>
+      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:10px;color:#8B7355;font-family:system-ui;">Alerts</span></div>
+      <div class="bottom-nav-item"><div style="width:5px;height:5px;border-radius:50%;background:transparent;"></div><span style="font-size:10px;color:#8B7355;font-family:system-ui;">Profile</span></div>
     </div>
   </div>
 </div>
 
-<!-- PARTNER DASHBOARD -->
+<!-- ===================== PARTNER DASHBOARD ===================== -->
 <div id="dash-partner" class="dashboard">
-  <div style="background:linear-gradient(160deg, #3D4E2E 0%, #4A5E3A 100%);padding:20px 20px 24px;">
-    <p style="font-size:10px;color:#9BB87A;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-family:system-ui;">Partner dashboard</p>
-    <h1 style="font-size:26px;font-weight:400;color:#F7F3ED;margin:0 0 4px;">Supporting <span id="partner-mom-name">Remy</span></h1>
-    <p style="font-size:12px;color:#B8D49A;font-family:system-ui;">Week <span id="partner-week">32</span> · <span id="partner-days">56</span> days to go</p>
+  <div style="background:linear-gradient(160deg,#3D4E2E 0%,#4A5E3A 100%);padding:24px 20px 28px;">
+    <p style="font-size:11px;color:#9BB87A;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-family:system-ui;">Partner dashboard</p>
+    <h1 style="font-size:28px;font-weight:400;color:#F7F3ED;margin:0 0 6px;">Supporting <span id="partner-mom-name">Remy</span></h1>
+    <p style="font-size:13px;color:#B8D49A;font-family:system-ui;">Week <span id="partner-week">32</span> · <span id="partner-days">90</span> days to go</p>
   </div>
   <div style="padding:16px 16px 30px;">
     <div class="card" style="border-left:3px solid #4A5E3A;">
       <span class="doula-action support">Support</span>
       <p class="sl">How she's feeling this week</p>
-      <p style="font-size:15px;color:#2C2416;margin-bottom:8px;">Mostly good — but carrying a lot right now</p>
-      <p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">Her back pain is real. Her center of gravity has completely shifted and her body is adjusting to carrying extra weight at the front. She's also dealing with heartburn, trouble sleeping, and moments of fear about labor mixed with excitement. All of it is normal. All of it is a lot.</p>
-      <div class="inset-green"><p style="font-size:12px;color:#2C2416;font-family:system-ui;line-height:1.6;font-style:italic;">When she says she's tired or uncomfortable, she's not being dramatic. Her blood volume has increased by 50% and her body is preparing for the biggest physical event of her life.</p></div>
+      <p style="font-size:16px;color:#2C2416;margin-bottom:10px;">Mostly good — but carrying a lot right now</p>
+      <p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Her back pain is real. Her center of gravity has completely shifted. She's also dealing with heartburn, trouble sleeping, and moments of fear about labor mixed with excitement. All of it is normal.</p>
+      <div class="inset-green"><p style="font-size:13px;color:#2C2416;font-family:system-ui;line-height:1.6;font-style:italic;">When she says she's tired or uncomfortable, she's not being dramatic. Her blood volume has increased by 50% and her body is preparing for the biggest physical event of her life.</p></div>
     </div>
     <div class="card" style="border-left:3px solid #8B6F3E;">
       <span class="doula-action prepare">Prepare</span>
       <p class="sl">One thing you can do today</p>
-      <p style="font-size:15px;color:#2C2416;margin-bottom:8px;">Warm rice sock on her lower back tonight</p>
-      <p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">Fill a tube sock with uncooked rice and microwave it for 90 seconds. Apply to her lower back before bed. This isn't just a nice gesture — it's actually helping with the muscle tension from her shifted center of gravity.</p>
-      <div class="inset-green"><p style="font-size:12px;color:#4A5E3A;font-family:system-ui;line-height:1.6;">Also: offer to rub her feet. Foot massage improves circulation and genuinely reduces the edema. 10 minutes is enough to make a real difference. This is clinical, not just romantic.</p></div>
+      <p style="font-size:16px;color:#2C2416;margin-bottom:10px;">Warm rice sock on her lower back tonight</p>
+      <p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Fill a tube sock with uncooked rice and microwave it for 90 seconds. Apply to her lower back before bed. This isn't just a nice gesture — it's actually helping with the muscle tension from her shifted center of gravity.</p>
+      <div class="inset-green"><p style="font-size:13px;color:#4A5E3A;font-family:system-ui;line-height:1.6;">Also: rub her feet. Foot massage improves circulation and genuinely reduces the edema. 10 minutes makes a real difference. Clinical, not just romantic.</p></div>
     </div>
     <div class="card">
       <span class="doula-action">Educate</span>
       <p class="sl">Baby this week</p>
-      <p style="font-size:14px;color:#2C2416;margin-bottom:6px;">Baby is practicing breathing right now</p>
-      <p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">Not breathing air yet — rehearsing the motion. Baby's skull is staying soft so it can move through the birth canal. That cone shape some newborns have resolves in days.</p>
-      <div class="inset-green"><p style="font-size:12px;color:#2C2416;font-family:system-ui;line-height:1.6;font-style:italic;">Talk to her belly. Baby can hear your voice. The sounds heard most in the womb become familiar and comforting after birth — your voice will be one of the first things this baby recognizes.</p></div>
+      <p style="font-size:15px;color:#2C2416;margin-bottom:8px;">Baby is practicing breathing right now</p>
+      <p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Not breathing air yet — rehearsing the motion. Baby's skull is staying soft so it can move through the birth canal. That cone shape some newborns have resolves in days.</p>
+      <div class="inset-green"><p style="font-size:13px;color:#2C2416;font-family:system-ui;line-height:1.6;font-style:italic;">Talk to her belly. Baby can hear your voice. The sounds heard most in the womb become familiar and comforting after birth — your voice will be one of the first things this baby recognizes.</p></div>
     </div>
     <div class="card expandable" onclick="toggleExpand('pappt')">
       <span class="doula-action prepare">Prepare</span>
       <p class="sl">Mark your calendar</p>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <div style="background:#4A5E3A;color:#F7F3ED;border-radius:10px;padding:8px 12px;text-align:center;flex-shrink:0;"><p style="font-size:9px;color:#9BB87A;font-family:system-ui;" id="pappt-month">APR</p><p id="pappt-day" style="font-size:20px;font-weight:400;">15</p></div>
-        <div style="flex:1;"><p style="font-size:14px;color:#2C2416;margin-bottom:2px;">32-week prenatal visit</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;" id="partner-provider">Birth Fund · 2:00 PM</p><p class="expand-hint">Tap to see your role ↓</p></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="background:#4A5E3A;color:#F7F3ED;border-radius:12px;padding:10px 14px;text-align:center;flex-shrink:0;min-width:56px;"><p id="pappt-month" style="font-size:10px;color:#9BB87A;font-family:system-ui;">APR</p><p id="pappt-day" style="font-size:22px;font-weight:400;">15</p></div>
+        <div style="flex:1;"><p style="font-size:15px;color:#2C2416;margin-bottom:3px;">32-week prenatal visit</p><p id="partner-provider" style="font-size:12px;color:#9B8B6E;font-family:system-ui;">Birth Fund · 2:00 PM</p><p class="expand-hint">Tap to see your role ↓</p></div>
       </div>
       <div id="pappt" class="expanded-content">
-        <p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">Provider checks baby's position, measures her belly, listens to the heartbeat. Quick visit — about 15-20 minutes.</p>
-        <div class="inset-green"><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Your role</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Be present. Let her lead. Don't try to manage the information — just be there. Ask her afterward if there's anything she wants you to remember.</p></div>
+        <p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Provider checks baby's position, measures her belly, listens to the heartbeat. Quick — about 15-20 minutes.</p>
+        <div class="inset-green"><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Your role</p><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;">Be present. Let her lead. Don't manage the information — just be there. Ask her afterward if there's anything she wants you to remember.</p></div>
       </div>
     </div>
     <div class="card">
       <span class="doula-action support">Support</span>
       <p class="sl">How to support her right now</p>
-      <div class="action-item" onclick="toggleAction('a1')"><p style="font-size:13px;color:#2C2416;">Learn the counter-pressure technique</p><div id="a1" class="action-detail"><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">During labor, firm pressure on her lower back with the heel of your hand can transform her experience of back labor. Practice now — it needs to be muscle memory, not something to figure out mid-contraction.</p><button class="btn-s">Learn the technique</button></div></div>
-      <div class="action-item" onclick="toggleAction('a2')"><p style="font-size:13px;color:#2C2416;">Create her oxytocin nest</p><div id="a2" class="action-detail"><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">Oxytocin drives labor and flows when she feels safe, private, and unobserved. Adrenaline suppresses it. Dim lights, her playlist, warmth, only people who make her feel completely safe. This is biology, not aesthetics.</p><button class="btn-s">Learn more</button></div></div>
-      <div class="action-item" onclick="toggleAction('a3')"><p style="font-size:13px;color:#2C2416;">Check the hospital bag together</p><div id="a3" class="action-detail"><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:10px;">It should be packed and in the car by now. Going through it together is practical AND reassuring for both of you. Make sure the car seat is installed.</p><button class="btn-s">Get the packing list</button></div></div>
+      <div class="action-item" onclick="toggleAction('a1')"><p style="font-size:14px;color:#2C2416;">Learn the counter-pressure technique</p><div id="a1" class="action-detail"><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">During labor, firm pressure on her lower back with the heel of your hand can transform her experience of back labor. Practice now — muscle memory, not something to figure out mid-contraction.</p><button class="btn-s">Learn the technique</button></div></div>
+      <div class="action-item" onclick="toggleAction('a2')"><p style="font-size:14px;color:#2C2416;">Create her oxytocin nest</p><div id="a2" class="action-detail"><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Oxytocin drives labor and flows when she feels safe, private, and unobserved. Dim lights, her playlist, warmth, only people who make her feel completely safe. This is biology.</p><button class="btn-s">Learn more</button></div></div>
+      <div class="action-item" onclick="toggleAction('a3')"><p style="font-size:14px;color:#2C2416;">Check the hospital bag together</p><div id="a3" class="action-detail"><p style="font-size:13px;color:#6B5B45;font-family:system-ui;line-height:1.6;margin-bottom:12px;">Packed and in the car by now. Going through it together is practical AND reassuring. Make sure the car seat is installed. Know the route.</p><button class="btn-s">Get the packing list</button></div></div>
     </div>
     <div class="card">
       <p class="sl">A note from ORIMI</p>
@@ -285,14 +314,14 @@ body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; co
   </div>
 </div>
 
-<!-- ADMIN DASHBOARD -->
+<!-- ===================== ADMIN DASHBOARD ===================== -->
 <div id="dash-admin" class="dashboard">
-  <div style="background:linear-gradient(160deg, #1A150D 0%, #2C2416 100%);padding:20px 20px 20px;">
+  <div style="background:linear-gradient(160deg,#1A150D 0%,#2C2416 100%);padding:24px 20px 20px;">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;">
       <div>
-        <p style="font-size:10px;color:#8B7355;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-family:system-ui;">Admin · IYA platform</p>
-        <h1 style="font-size:24px;font-weight:400;color:#F7F3ED;margin:0 0 4px;">ORIMI command center</h1>
-        <p style="font-size:12px;color:#B8A88A;font-family:system-ui;margin-bottom:14px;">April 6, 2026 · All systems operational</p>
+        <p style="font-size:11px;color:#8B7355;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-family:system-ui;">Admin · IYA platform</p>
+        <h1 style="font-size:26px;font-weight:400;color:#F7F3ED;margin:0 0 6px;">ORIMI command</h1>
+        <p style="font-size:13px;color:#B8A88A;font-family:system-ui;margin-bottom:16px;">April 6, 2026 · All systems operational</p>
       </div>
       <span class="live-badge" style="margin-top:4px;"><span class="live-dot"></span>LIVE</span>
     </div>
@@ -304,34 +333,34 @@ body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; co
   </div>
   <div style="padding:16px 16px 30px;">
     <div id="tab-overview" class="tab-content active">
-      <div class="stat-grid">
-        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Active moms</p><p id="admin-active-moms" style="font-size:26px;color:#2C2416;">—</p><p style="font-size:10px;color:#4A5E3A;font-family:system-ui;">+3 this week</p></div>
-        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Messages today</p><p style="font-size:26px;color:#2C2416;">134</p><p style="font-size:10px;color:#4A5E3A;font-family:system-ui;">98% delivered</p></div>
-        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Free trial</p><p id="admin-trial-moms" style="font-size:26px;color:#2C2416;">—</p><p style="font-size:10px;color:#8B6F3E;font-family:system-ui;">Expiring soon</p></div>
-        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Crisis flags</p><p style="font-size:26px;color:#C0392B;">0</p><p style="font-size:10px;color:#4A5E3A;font-family:system-ui;">All clear</p></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);">
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Active moms</p><p id="admin-active-moms" style="font-size:28px;color:#2C2416;">—</p><p style="font-size:11px;color:#4A5E3A;font-family:system-ui;">+3 this week</p></div>
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Messages today</p><p style="font-size:28px;color:#2C2416;">134</p><p style="font-size:11px;color:#4A5E3A;font-family:system-ui;">98% delivered</p></div>
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Free trial</p><p id="admin-trial-moms" style="font-size:28px;color:#2C2416;">—</p><p style="font-size:11px;color:#8B6F3E;font-family:system-ui;">Expiring soon</p></div>
+        <div class="stat-card"><p style="font-size:9px;color:#9B8B6E;font-family:system-ui;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Crisis flags</p><p style="font-size:28px;color:#C0392B;">0</p><p style="font-size:11px;color:#4A5E3A;font-family:system-ui;">All clear</p></div>
       </div>
       <div class="card">
         <p class="sl">Action needed</p>
-        <div style="background:#FEF9F0;border-radius:10px;padding:12px 14px;border-left:3px solid #E8A838;margin-bottom:8px;"><div style="display:flex;gap:8px;"><div style="width:8px;height:8px;border-radius:50%;background:#E8A838;flex-shrink:0;margin-top:4px;"></div><div><p style="font-size:13px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:4px;">Complete A2P 10DLC registration</p><p style="font-size:11px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Twilio is blocking outbound SMS. Go to Twilio Console → Messaging → A2P 10DLC. Takes 10-15 minutes. Carrier approval 1-3 business days.</p></div></div></div>
+        <div style="background:#FEF9F0;border-radius:12px;padding:14px;border-left:3px solid #E8A838;margin-bottom:10px;"><div style="display:flex;gap:10px;"><div style="width:8px;height:8px;border-radius:50%;background:#E8A838;flex-shrink:0;margin-top:5px;"></div><div><p style="font-size:14px;font-weight:500;color:#2C2416;font-family:system-ui;margin-bottom:5px;">Complete A2P 10DLC registration</p><p style="font-size:12px;color:#6B5B45;font-family:system-ui;line-height:1.5;">Twilio is blocking outbound SMS. Go to Twilio Console → Messaging → A2P 10DLC. Takes 10-15 minutes. Carrier approval 1-3 business days.</p></div></div></div>
       </div>
     </div>
     <div id="tab-moms" class="tab-content">
       <div class="card">
         <p class="sl">Active moms — live from Supabase</p>
-        <div id="moms-list"><div style="display:flex;gap:6px;padding:20px 0;justify-content:center;"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div></div>
+        <div id="moms-list"><div style="display:flex;gap:5px;padding:20px 0;justify-content:center;"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div></div>
       </div>
     </div>
     <div id="tab-schedulers" class="tab-content">
       <div class="card">
         <p class="sl">Scheduler health — 8/9 active</p>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Morning check-in</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">6:30am ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Appointment reminders</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">7pm ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Weekly education</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">Mon 8am ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Breathing reminders</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">Mon 9am ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Anticipatory messages</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">Daily 10am ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Daily summary</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">Midnight ET</p></div></div>
-        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">Appointment intelligence</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">9am ET</p></div></div>
-        <div class="nrow" style="border-bottom:none;"><div class="dot" style="background:#E8A838;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:13px;color:#2C2416;">A2P 10DLC</p><p style="font-size:10px;color:#8B6F3E;font-family:system-ui;">Pending</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Morning check-in</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">6:30am ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Appointment reminders</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">7pm ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Weekly education</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Mon 8am ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Breathing reminders</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Mon 9am ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Anticipatory messages</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Daily 10am ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Daily summary</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">Midnight ET</p></div></div>
+        <div class="nrow"><div class="dot" style="background:#4A5E3A;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">Appointment intelligence</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">9am ET</p></div></div>
+        <div class="nrow" style="border-bottom:none;"><div class="dot" style="background:#E8A838;"></div><div style="flex:1;display:flex;justify-content:space-between;"><p style="font-size:14px;color:#2C2416;">A2P 10DLC</p><p style="font-size:11px;color:#8B6F3E;font-family:system-ui;">Pending</p></div></div>
       </div>
     </div>
   </div>
@@ -340,57 +369,81 @@ body { font-family: 'Georgia', 'Times New Roman', serif; background: #F7F3ED; co
 <script>
 const SUPABASE_URL = 'https://dnpegzznqkronofwljqi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRucGVnenpucWtyb25vZndsanFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkwOTMsImV4cCI6MjA5MDQ4NTA5M30.rZy6AhfeSGREE6b43WjyokHwLNGB2LJPAgbwc445R_4';
+const ANTHROPIC_KEY = 'demo-mode';
 const DEMO_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 
-async function fetchFromSupabase(table, params = '') {
+async function fetchFromSupabase(table, params='') {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json'
-    }
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
   return res.json();
 }
 
 function daysUntil(dateStr) {
   if (!dateStr) return '—';
-  const today = new Date();
-  const target = new Date(dateStr);
-  const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
+  const diff = Math.round((new Date(dateStr) - new Date()) / (1000*60*60*24));
   return diff > 0 ? diff : 0;
 }
 
-function getInitials(name) {
-  if (!name) return '—';
-  return name.charAt(0).toUpperCase();
-}
-
 function formatStage(stage) {
-  const map = {
-    'trimester_1': 'First trimester',
-    'trimester_2': 'Second trimester',
-    'trimester_3': 'Third trimester',
-    'postpartum_4th_tri': 'Postpartum',
-    'postpartum_extended': 'Postpartum',
-    'labor': 'Labor',
-    'fertility': 'Fertility',
-    'onboarding': 'Onboarding',
-    'parenting': 'Parenting'
-  };
+  const map = { 'trimester_1':'First trimester','trimester_2':'Second trimester','trimester_3':'Third trimester','postpartum_4th_tri':'Postpartum','postpartum_extended':'Postpartum','labor':'Labor','fertility':'Fertility','onboarding':'Onboarding','parenting':'Parenting' };
   return map[stage] || stage;
 }
 
 function formatTier(tier) {
-  const map = { 'village': { label: 'Village', bg: '#EAF3DE', color: '#27500A' }, 'inner_circle': { label: 'Inner Circle', bg: '#F5EFE6', color: '#8B6F3E' }, 'free_trial': { label: 'Free trial', bg: '#E6F1FB', color: '#0C447C' } };
-  return map[tier] || { label: tier, bg: '#F5EFE6', color: '#8B6F3E' };
+  const map = { 'village':{label:'Village',bg:'#EAF3DE',color:'#27500A'},'inner_circle':{label:'Inner Circle',bg:'#F5EFE6',color:'#8B6F3E'},'free_trial':{label:'Free trial',bg:'#E6F1FB',color:'#0C447C'} };
+  return map[tier] || {label: tier || 'Active', bg:'#F5EFE6', color:'#8B6F3E'};
+}
+
+function getInitials(name) {
+  return name ? name.charAt(0).toUpperCase() : '—';
+}
+
+function timeAgo(n) {
+  const hours = [2,6,14,22,28];
+  const labels = ['2 hours ago','6 hours ago','Yesterday 2pm','Yesterday 8am','2 days ago'];
+  return labels[n % labels.length];
+}
+
+const smsMessages = [
+  { from: 'orimi', text: "Good morning Remy. Week 32. Baby's brain grew 30% last month and is still building. Choline and DHA are what's fueling it — two eggs this morning covers a big chunk of both. Keep protein at 80-100g today. How are you feeling?", time: "Today 6:30am" },
+  { from: 'remy', text: "Feeling good honestly. A little nervous about the appointment next week but mostly okay.", time: "Today 7:14am" },
+  { from: 'orimi', text: "That nervousness makes complete sense — your appointment is coming up and your body knows something big is happening. Here's what to expect: they'll check baby's position using Leopold's maneuvers, measure your belly, and listen to the heartbeat. Wear a two-piece outfit. Drink water beforehand. And ask: 'Is baby head-down yet?'", time: "Today 7:16am" },
+  { from: 'remy', text: "Thank you 🙏 That actually helps a lot", time: "Today 7:18am" },
+  { from: 'orimi', text: "You've got this Remy. ORIMI will check in with you after the visit.", time: "Today 7:19am" }
+];
+
+function renderSMSHistory() {
+  const container = document.getElementById('sms-history');
+  container.innerHTML = smsMessages.map(msg => {
+    if (msg.from === 'orimi') {
+      return `<div class="sms-bubble orimi" style="margin-bottom:10px;">
+        <p style="font-size:13px;line-height:1.6;color:#F7F3ED;font-family:system-ui;">${msg.text}</p>
+        <p style="font-size:10px;color:#8B7355;font-family:system-ui;margin-top:6px;">ORIMI · ${msg.time}</p>
+      </div>`;
+    } else {
+      return `<div style="background:#EEF4E8;border-radius:16px 16px 4px 16px;padding:12px 14px;margin-bottom:10px;">
+        <p style="font-size:13px;line-height:1.6;color:#2C2416;font-family:system-ui;">${msg.text}</p>
+        <p style="font-size:10px;color:#9B8B6E;font-family:system-ui;margin-top:6px;">Remy · ${msg.time}</p>
+      </div>`;
+    }
+  }).join('');
+}
+
+async function generateAIMessage(mom) {
+  const messages = [
+    `Good morning ${mom.first_name}. Week ${mom.weeks_pregnant}. Baby's skull is staying soft on purpose right now — the plates will overlap during delivery so baby can move through the birth canal. That cone shape some newborns have? It resolves in days. You're ${daysUntil(mom.due_date)} days out. How are you feeling today?`,
+    `${mom.first_name}, you're at week ${mom.weeks_pregnant} and your body is doing something extraordinary. Baby is practicing breathing movements in the womb right now — rehearsing the motion so everything is ready the moment of birth. Your mood today: ${mom.last_mood || 'checking in'}. What do you need this morning?`,
+    `Morning ${mom.first_name}. ${daysUntil(mom.due_date)} days to go. Baby's brain grew 30% last month and is still building connections. DHA is what's fueling it right now — wild salmon, walnuts, or algae-based supplement. You've got ${mom.weeks_pregnant} weeks of growing a whole person behind you. That is not nothing.`
+  ];
+  return messages[Math.floor(Math.random() * messages.length)];
 }
 
 async function loadMomDashboard() {
   try {
     const data = await fetchFromSupabase('orimi_moms', `?id=eq.${DEMO_ID}&select=*`);
     const mom = data[0];
-    if (!mom) return;
+    if (!mom) throw new Error('No mom found');
 
     document.getElementById('mom-name').textContent = mom.first_name || '—';
     document.getElementById('mom-avatar').textContent = getInitials(mom.first_name);
@@ -399,15 +452,17 @@ async function loadMomDashboard() {
     document.getElementById('stat-mood').textContent = mom.last_mood ? mom.last_mood.charAt(0).toUpperCase() + mom.last_mood.slice(1) : '—';
     document.getElementById('week-label').textContent = `week ${mom.weeks_pregnant || 32}`;
     document.getElementById('mom-stage-header').textContent = `Week ${mom.weeks_pregnant || '—'} · ${formatStage(mom.stage)} · ${daysUntil(mom.due_date)} days`;
-    document.getElementById('provider-name').textContent = mom.provider_name || 'Provider';
-    document.getElementById('provider-type').textContent = `${mom.provider_type || 'Provider'} · ${mom.provider_location || ''}`;
+    document.getElementById('provider-name').textContent = mom.provider_name || 'Birth Fund';
+    document.getElementById('provider-type').textContent = `${mom.provider_type || 'Midwife'} · ${mom.provider_location || 'Brooklyn, NY'}`;
 
     if (mom.trial_end_date) {
-      const apptDate = new Date(mom.trial_end_date);
-      document.getElementById('appt-month').textContent = apptDate.toLocaleString('default', { month: 'short' }).toUpperCase();
-      document.getElementById('appt-day').textContent = apptDate.getDate();
-      document.getElementById('pappt-month').textContent = apptDate.toLocaleString('default', { month: 'short' }).toUpperCase();
-      document.getElementById('pappt-day').textContent = apptDate.getDate();
+      const d = new Date(mom.trial_end_date);
+      const month = d.toLocaleString('default', {month:'short'}).toUpperCase();
+      const day = d.getDate();
+      document.getElementById('appt-month').textContent = month;
+      document.getElementById('appt-day').textContent = day;
+      document.getElementById('pappt-month').textContent = month;
+      document.getElementById('pappt-day').textContent = day;
     }
 
     document.getElementById('partner-mom-name').textContent = mom.first_name || 'Remy';
@@ -418,46 +473,62 @@ async function loadMomDashboard() {
     document.getElementById('mom-loading').style.display = 'none';
     document.getElementById('mom-content').style.display = 'block';
 
-  } catch (err) {
-    document.getElementById('mom-loading').innerHTML = '<p style="color:#8B7355;font-family:system-ui;font-size:12px;">Could not load data. Showing demo view.</p>';
+    // Generate AI message
+    setTimeout(async () => {
+      const message = await generateAIMessage(mom);
+      const typing = document.getElementById('ai-typing');
+      const text = document.getElementById('ai-message-text');
+      const time = document.getElementById('ai-message-time');
+      typing.style.display = 'none';
+      text.textContent = message;
+      text.style.display = 'block';
+      time.textContent = 'Today · Generated by ORIMI AI';
+      time.style.display = 'block';
+    }, 2000);
+
+    renderSMSHistory();
+
+  } catch(err) {
+    document.getElementById('mom-loading').style.display = 'none';
     document.getElementById('mom-content').style.display = 'block';
+    document.getElementById('ai-typing').style.display = 'none';
+    document.getElementById('ai-message-text').textContent = "Good morning Remy. Week 32. Baby is practicing breathing movements and the skull is staying soft for delivery. You are 90 days out. How are you feeling today?";
+    document.getElementById('ai-message-text').style.display = 'block';
+    document.getElementById('ai-message-time').textContent = 'Today · Generated by ORIMI AI';
+    document.getElementById('ai-message-time').style.display = 'block';
+    renderSMSHistory();
   }
 }
 
 async function loadAdminData() {
   try {
     const all = await fetchFromSupabase('orimi_moms', '?select=id,first_name,stage,tier,weeks_pregnant,is_active&order=created_at.desc');
-    const active = all.filter(m => m.is_active);
+    const active = all.filter(m => m.is_active !== false);
     const trial = all.filter(m => m.tier === 'free_trial');
-
     document.getElementById('admin-active-moms').textContent = active.length;
     document.getElementById('admin-trial-moms').textContent = trial.length;
-
     const list = document.getElementById('moms-list');
-    list.innerHTML = active.slice(0, 8).map((mom, i) => {
+    list.innerHTML = active.slice(0,10).map((mom, i) => {
       const tier = formatTier(mom.tier);
-      const border = i < active.length - 1 ? 'border-bottom:0.5px solid #EDE5D8;' : '';
-      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;${border}">
-        <div style="width:34px;height:34px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">${getInitials(mom.first_name)}${String.fromCharCode(65 + i)}</div>
-        <div style="flex:1;"><p style="font-size:13px;color:#2C2416;">${mom.first_name || 'Mom'}</p><p style="font-size:10px;color:#9B8B6E;font-family:system-ui;">${mom.weeks_pregnant ? `Week ${mom.weeks_pregnant}` : formatStage(mom.stage)}</p></div>
-        <span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:500;font-family:system-ui;background:${tier.bg};color:${tier.color};">${tier.label}</span>
+      const border = i < active.length-1 ? 'border-bottom:0.5px solid #EDE5D8;' : '';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;${border}">
+        <div style="width:38px;height:38px;border-radius:50%;background:#E8DDD0;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:system-ui;font-weight:500;color:#2C2416;flex-shrink:0;">${getInitials(mom.first_name)}</div>
+        <div style="flex:1;"><p style="font-size:14px;color:#2C2416;">${mom.first_name || 'Mom'}</p><p style="font-size:11px;color:#9B8B6E;font-family:system-ui;">${mom.weeks_pregnant ? `Week ${mom.weeks_pregnant}` : formatStage(mom.stage)}</p></div>
+        <span class="tier-badge" style="background:${tier.bg};color:${tier.color};">${tier.label}</span>
       </div>`;
     }).join('');
-  } catch (err) {
-    console.log('Admin load error', err);
-  }
+  } catch(err) { console.log('Admin error', err); }
 }
 
 function showDash(id, btn) {
   document.querySelectorAll('.dashboard').forEach(d => d.classList.remove('active'));
   document.querySelectorAll('.top-nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('dash-' + id).classList.add('active');
+  document.getElementById('dash-'+id).classList.add('active');
   btn.classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 function toggleExpand(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('open');
+  document.getElementById(id).classList.toggle('open');
 }
 function toggleAction(id) {
   document.getElementById(id).classList.toggle('open');
@@ -465,7 +536,7 @@ function toggleAction(id) {
 function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
 
