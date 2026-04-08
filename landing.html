@@ -292,21 +292,85 @@ footer { background: var(--brown); padding: 56px 48px 40px; }
 
 /* MOBILE */
 @media (max-width: 900px) {
-  nav, nav.scrolled { padding: 16px 24px; }
-  section { padding: 80px 24px; }
-  .hero { padding: 100px 24px 70px; }
-  .hero-form { flex-direction: column; }
-  .hero-form button { width: 100%; }
-  .prob-grid { grid-template-columns: 1fr; gap: 50px; }
-  .act-grid { grid-template-columns: 1fr 1fr; }
-  .how-grid { grid-template-columns: 1fr; }
-  .demo-grid { grid-template-columns: 1fr; gap: 50px; }
-  .phone { max-width: 300px; width: 100%; }
-  .ft-top { flex-direction: column; gap: 28px; }
-  .ft-bottom { flex-direction: column; gap: 12px; text-align: center; }
-  .ft-mission { text-align: center; }
   body { cursor: auto; }
   .cursor, .cursor-ring { display: none; }
+
+  /* NAV */
+  nav, nav.scrolled { padding: 16px 20px; }
+  .nav-logo { font-size: 18px; letter-spacing: 3px; }
+  .nav-btn { padding: 9px 18px; font-size: 11px; }
+
+  /* SECTIONS */
+  section { padding: 64px 20px; }
+
+  /* HERO */
+  .hero { padding: 96px 20px 60px; text-align: center; }
+  .hero h1 { font-size: clamp(46px, 11vw, 72px); letter-spacing: -1.5px; }
+  .hero-sub { font-size: 15px; margin-bottom: 10px; }
+  .hero-sub2 { font-size: 13px; margin-bottom: 32px; }
+  .hero-form { flex-direction: column; gap: 10px; max-width: 100%; }
+  .hero-form input { width: 100%; padding: 15px 20px; font-size: 15px; }
+  .btn-gold { width: 100%; padding: 15px 20px; font-size: 14px; }
+  .hero-proof { font-size: 11px; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .hero-badge { font-size: 10px; padding: 7px 16px; }
+
+  /* PROBLEM */
+  .prob-grid { grid-template-columns: 1fr; gap: 40px; }
+  .ttl { font-size: clamp(32px, 8vw, 48px); }
+  .sub { font-size: 15px; max-width: 100%; }
+  .stat-row { padding: 22px 0; gap: 16px; }
+  .stat-n { font-size: 48px; min-width: 80px; }
+  .stat-t { font-size: 13px; }
+
+  /* ACTIONS */
+  .act-grid { grid-template-columns: 1fr; gap: 1px; }
+  .act-card { padding: 28px 22px; }
+  .act-n { font-size: 40px; margin-bottom: 12px; }
+  .act-title { font-size: 19px; }
+  .act-desc { font-size: 13px; }
+
+  /* HOW */
+  .how-grid { grid-template-columns: 1fr; gap: 1px; }
+  .how-step { padding: 36px 26px; }
+  .how-title { font-size: 24px; }
+  .how-desc { font-size: 13px; }
+  .how-bg-n { font-size: 80px; }
+
+  /* SMS DEMO */
+  .demo-grid { grid-template-columns: 1fr; gap: 44px; text-align: center; }
+  .sub { max-width: 100%; }
+  .phone-wrap { justify-content: center; }
+  .phone { width: 100%; max-width: 320px; margin: 0 auto; }
+
+  /* WAITLIST */
+  .wl-title { font-size: clamp(36px, 9vw, 56px); }
+  .wl-sub { font-size: 15px; margin-bottom: 32px; }
+  .wl-input { padding: 15px 18px; font-size: 15px; border-radius: 12px; }
+  .wl-btn { padding: 16px; font-size: 15px; border-radius: 12px; }
+  .wl-note { font-size: 11px; }
+
+  /* THANK YOU */
+  #ty-inner { padding: 0 4px; }
+  .ty-title { font-size: clamp(38px, 9vw, 56px); }
+  .ty-msg { font-size: 15px; }
+  .ty-steps { padding: 22px 18px; }
+  .ty-step-content p:first-child { font-size: 13px; }
+  .ty-step-content p:last-child { font-size: 11px; }
+
+  /* FOOTER */
+  footer { padding: 48px 20px 32px; }
+  .ft-top { flex-direction: column; gap: 24px; padding-bottom: 28px; margin-bottom: 20px; }
+  .ft-links { flex-wrap: wrap; gap: 16px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .ft-mission { text-align: center; max-width: 100%; }
+  .ft-logo { font-size: 20px; }
+}
+
+/* Extra small phones */
+@media (max-width: 400px) {
+  .hero h1 { font-size: 42px; }
+  .act-grid { grid-template-columns: 1fr; }
+  .hero-badge { font-size: 9px; padding: 6px 14px; }
 }
 </style>
 </head>
