@@ -8,20 +8,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0A0806;
-  --bg2: #110E09;
-  --bg3: #1A150D;
-  --gold: #C4923A;
-  --gold2: #E8B86D;
-  --gold3: #8B6030;
-  --cream: #F2EDE4;
-  --cream2: #D4C9B5;
-  --green: #3D6B3A;
-  --green2: #5A9E56;
-  --text: #F2EDE4;
-  --muted: rgba(242,237,228,0.45);
-  --border: rgba(196,146,58,0.15);
-  --glow: rgba(196,146,58,0.08);
+  --bg: #FAF6F0;
+  --bg2: #F2EBE0;
+  --bg3: #EAE0D2;
+  --brown: #2C2416;
+  --brown2: #4A3728;
+  --gold: #9B6E2A;
+  --gold2: #C4923A;
+  --gold3: #E8B86D;
+  --gold-light: #FDF3E3;
+  --green: #3A5C32;
+  --green2: #5A8A4E;
+  --green-light: #EDF5EA;
+  --text: #2C2416;
+  --muted: rgba(44,36,22,0.52);
+  --border: rgba(155,110,42,0.18);
+  --border2: rgba(44,36,22,0.08);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -33,36 +35,15 @@ body {
   cursor: none;
 }
 
-/* CUSTOM CURSOR */
-.cursor {
-  width: 8px; height: 8px;
-  background: var(--gold);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.1s ease;
-  mix-blend-mode: screen;
-}
-.cursor-ring {
-  width: 36px; height: 36px;
-  border: 1px solid rgba(196,146,58,0.4);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
-  transition: all 0.12s ease;
-}
+/* CURSOR */
+.cursor { width: 8px; height: 8px; background: var(--gold2); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s; }
+.cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(155,110,42,0.35); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.12s ease; }
 
 /* GRAIN */
 body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9997;
-  opacity: 0.6;
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9997; opacity: 0.5;
 }
 
 /* NAV */
@@ -70,566 +51,260 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
   padding: 24px 48px;
   display: flex; justify-content: space-between; align-items: center;
-  background: linear-gradient(to bottom, rgba(10,8,6,0.9) 0%, transparent 100%);
-  backdrop-filter: blur(0px);
   transition: all 0.4s;
 }
 nav.scrolled {
-  background: rgba(10,8,6,0.92);
+  background: rgba(250,246,240,0.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  padding: 18px 48px;
+  padding: 16px 48px;
+  box-shadow: 0 4px 30px rgba(44,36,22,0.05);
 }
 .nav-logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 400;
-  letter-spacing: 4px; text-transform: uppercase;
-  color: var(--cream);
-  background: linear-gradient(135deg, var(--cream) 0%, var(--gold2) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 22px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--brown);
 }
 .nav-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--cream2);
-  padding: 10px 24px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
+  background: var(--brown); color: var(--bg);
+  border: none; padding: 11px 26px; border-radius: 100px;
+  font-size: 12px; font-family: 'DM Sans', sans-serif;
+  font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
 }
-.nav-btn:hover {
-  border-color: var(--gold);
-  color: var(--gold2);
-  box-shadow: 0 0 20px rgba(196,146,58,0.15);
-}
+.nav-btn:hover { background: var(--gold); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(155,110,42,0.25); }
 
 /* HERO */
 .hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 120px 48px 80px;
-  position: relative; text-align: center; overflow: hidden;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 120px 48px 80px; position: relative; text-align: center; overflow: hidden;
 }
-
-/* ORBS */
-.orb {
-  position: absolute; border-radius: 50%;
-  filter: blur(80px); pointer-events: none;
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 30%, rgba(196,146,58,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 15% 80%, rgba(90,138,78,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 70%, rgba(196,146,58,0.07) 0%, transparent 60%);
 }
-.orb1 {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(196,146,58,0.12) 0%, transparent 70%);
-  top: -100px; left: 50%; transform: translateX(-50%);
-  animation: orbFloat 8s ease-in-out infinite;
-}
-.orb2 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(61,107,58,0.08) 0%, transparent 70%);
-  bottom: 0; left: -100px;
-  animation: orbFloat 10s ease-in-out infinite reverse;
-}
-.orb3 {
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(196,146,58,0.07) 0%, transparent 70%);
-  bottom: 100px; right: -50px;
-  animation: orbFloat 12s ease-in-out infinite 2s;
-}
-@keyframes orbFloat {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-30px) scale(1.05); }
-}
-
-/* GRID LINES */
-.grid-lines {
-  position: absolute; inset: 0; pointer-events: none;
+.hero-grid {
+  position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(196,146,58,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196,146,58,0.03) 1px, transparent 1px);
-  background-size: 80px 80px;
+    linear-gradient(rgba(155,110,42,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155,110,42,0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
 }
-
-.hero-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
-
-.hero-eyebrow {
+.hero-inner { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; }
+.hero-badge {
   display: inline-flex; align-items: center; gap: 10px;
-  border: 1px solid rgba(196,146,58,0.25);
-  background: rgba(196,146,58,0.06);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155,110,42,0.22);
+  background: rgba(155,110,42,0.07);
   padding: 8px 20px; border-radius: 100px;
-  font-size: 11px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--gold2);
-  margin-bottom: 40px;
-  animation: fadeUp 1s ease both;
+  font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 40px;
+  animation: fadeUp 0.9s ease both;
 }
-.eyebrow-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--green2);
-  box-shadow: 0 0 8px var(--green2);
-  animation: dotPulse 2s ease infinite;
-}
-@keyframes dotPulse { 0%,100%{opacity:1;box-shadow:0 0 8px var(--green2)} 50%{opacity:0.4;box-shadow:0 0 4px var(--green2)} }
-
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green2); box-shadow: 0 0 8px var(--green2); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .hero h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(56px, 9vw, 110px);
-  font-weight: 300; line-height: 1.0;
-  letter-spacing: -2px; margin-bottom: 28px;
-  animation: fadeUp 1s 0.1s ease both;
+  font-size: clamp(58px, 9vw, 108px); font-weight: 300;
+  line-height: 1.0; letter-spacing: -2px; color: var(--brown);
+  margin-bottom: 28px; animation: fadeUp 0.9s 0.1s ease both;
 }
-.hero h1 span {
-  display: block;
-  background: linear-gradient(135deg, var(--cream) 30%, var(--gold2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.hero h1 em {
-  font-style: italic;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-
+.hero h1 em { font-style: italic; color: var(--gold2); }
 .hero-sub {
-  font-size: clamp(15px, 1.8vw, 19px);
-  color: var(--muted); line-height: 1.8;
-  max-width: 560px; margin: 0 auto 16px;
-  font-weight: 300;
-  animation: fadeUp 1s 0.2s ease both;
+  font-size: clamp(15px, 1.8vw, 19px); color: var(--muted);
+  line-height: 1.8; max-width: 560px; margin: 0 auto 14px;
+  font-weight: 300; animation: fadeUp 0.9s 0.2s ease both;
 }
 .hero-sub2 {
-  font-size: 14px;
-  color: rgba(242,237,228,0.35);
-  font-style: italic; line-height: 1.7;
-  max-width: 480px; margin: 0 auto 44px;
-  font-weight: 300;
-  animation: fadeUp 1s 0.25s ease both;
+  font-size: 14px; color: rgba(44,36,22,0.38); font-style: italic;
+  line-height: 1.7; max-width: 460px; margin: 0 auto 44px;
+  font-weight: 300; animation: fadeUp 0.9s 0.25s ease both;
 }
-
 .hero-form {
-  display: flex; gap: 10px;
-  max-width: 460px; margin: 0 auto 28px;
-  animation: fadeUp 1s 0.3s ease both;
+  display: flex; gap: 10px; max-width: 460px; margin: 0 auto 28px;
+  animation: fadeUp 0.9s 0.3s ease both;
 }
 .hero-form input {
   flex: 1; padding: 16px 22px;
-  background: rgba(242,237,228,0.05);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 14px; font-family: 'DM Sans', sans-serif;
-  color: var(--text); outline: none;
-  transition: all 0.3s; backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.7); border: 1px solid var(--border2);
+  border-radius: 100px; font-size: 14px; font-family: 'DM Sans', sans-serif;
+  color: var(--text); outline: none; transition: all 0.3s;
+  box-shadow: 0 2px 12px rgba(44,36,22,0.06);
 }
-.hero-form input:focus {
-  border-color: rgba(196,146,58,0.4);
-  background: rgba(242,237,228,0.08);
-  box-shadow: 0 0 0 1px rgba(196,146,58,0.15), 0 0 30px rgba(196,146,58,0.05);
-}
-.hero-form input::placeholder { color: rgba(242,237,228,0.25); }
+.hero-form input:focus { border-color: rgba(155,110,42,0.4); box-shadow: 0 0 0 3px rgba(155,110,42,0.08); }
+.hero-form input::placeholder { color: rgba(44,36,22,0.3); }
 .btn-gold {
-  padding: 16px 28px;
-  background: linear-gradient(135deg, var(--gold3) 0%, var(--gold) 50%, var(--gold2) 100%);
-  color: var(--bg); border: none; border-radius: 100px;
-  font-size: 13px; font-family: 'DM Sans', sans-serif;
-  font-weight: 500; letter-spacing: 0.5px;
-  cursor: pointer; white-space: nowrap;
-  transition: all 0.3s; position: relative; overflow: hidden;
+  padding: 16px 28px; background: var(--brown); color: var(--bg);
+  border: none; border-radius: 100px; font-size: 13px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.5px;
+  cursor: pointer; white-space: nowrap; transition: all 0.3s; position: relative; overflow: hidden;
 }
-.btn-gold::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-  transform: translateX(-100%);
-  transition: transform 0.5s;
-}
+.btn-gold::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.08), transparent); transform: translateX(-100%); transition: transform 0.5s; }
 .btn-gold:hover::before { transform: translateX(100%); }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,146,58,0.35); }
-
+.btn-gold:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,110,42,0.3); }
 .hero-proof {
   display: flex; align-items: center; justify-content: center; gap: 12px;
-  font-size: 12px; color: rgba(242,237,228,0.35);
-  animation: fadeUp 1s 0.4s ease both;
-  letter-spacing: 0.5px;
+  font-size: 12px; color: rgba(44,36,22,0.38); letter-spacing: 0.3px;
+  animation: fadeUp 0.9s 0.4s ease both;
 }
-.proof-avatars { display: flex; }
-.proof-avatar {
+.proof-avs { display: flex; }
+.proof-av {
   width: 26px; height: 26px; border-radius: 50%;
-  border: 1.5px solid var(--bg); margin-left: -7px;
+  border: 2px solid var(--bg); margin-left: -7px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 500;
+  font-size: 9px; font-weight: 600; color: white;
 }
-.proof-avatar:first-child { margin-left: 0; background: linear-gradient(135deg, #8B3A3A, #C4923A); color: var(--cream); }
-.proof-avatar:nth-child(2) { background: linear-gradient(135deg, #3D6B3A, #5A9E56); color: var(--cream); }
-.proof-avatar:nth-child(3) { background: linear-gradient(135deg, #3A6B8B, #8B6030); color: var(--cream); }
-.proof-avatar:nth-child(4) { background: linear-gradient(135deg, #6B3A8B, #C4923A); color: var(--cream); }
-
-/* SECTION BASE */
-section { padding: 120px 48px; }
-.section-wrap { max-width: 1200px; margin: 0 auto; }
-.label {
-  font-size: 10px; font-weight: 500; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 20px; display: block;
-}
-.title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(38px, 5vw, 68px);
-  font-weight: 300; line-height: 1.08;
-  letter-spacing: -1px; margin-bottom: 24px;
-}
-.title em { font-style: italic; color: var(--gold2); }
-.subtitle {
-  font-size: 17px; color: var(--muted);
-  line-height: 1.8; font-weight: 300; max-width: 560px;
-}
+.proof-av:first-child { margin-left:0; background: linear-gradient(135deg, #8B3A3A, #C4923A); }
+.proof-av:nth-child(2) { background: linear-gradient(135deg, #3D6B3A, #5A9E56); }
+.proof-av:nth-child(3) { background: linear-gradient(135deg, #3A6B8B, #8B6030); }
+.proof-av:nth-child(4) { background: linear-gradient(135deg, #6B3A8B, #C4923A); }
 
 /* DIVIDER */
-.divider {
-  height: 1px; max-width: 1200px; margin: 0 auto;
-  background: linear-gradient(to right, transparent, var(--border), transparent);
-}
+.divider { height: 1px; max-width: 1200px; margin: 0 auto; background: linear-gradient(to right, transparent, var(--border), transparent); }
+
+/* SECTIONS */
+section { padding: 120px 48px; }
+.wrap { max-width: 1200px; margin: 0 auto; }
+.lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; display: block; }
+.ttl { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5vw, 66px); font-weight: 300; line-height: 1.08; letter-spacing: -1px; color: var(--brown); margin-bottom: 22px; }
+.ttl em { font-style: italic; color: var(--gold2); }
+.sub { font-size: 17px; color: var(--muted); line-height: 1.8; font-weight: 300; max-width: 540px; }
 
 /* PROBLEM */
-.problem { background: var(--bg2); position: relative; overflow: hidden; }
-.problem-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center; margin-top: 0;
-}
-.problem-stats { display: flex; flex-direction: column; gap: 2px; }
-.stat-item {
-  padding: 28px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: baseline; gap: 24px;
-  transition: all 0.3s;
-}
-.stat-item:first-child { border-top: 1px solid var(--border); }
-.stat-item:hover { padding-left: 12px; }
-.stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 56px; font-weight: 300;
-  color: var(--gold2); line-height: 1; flex-shrink: 0;
-  min-width: 100px;
-}
-.stat-text { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 300; }
+.problem { background: var(--bg2); }
+.prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.stat-row { padding: 28px 0; border-bottom: 1px solid var(--border2); display: flex; gap: 24px; align-items: baseline; transition: all 0.3s; }
+.stat-row:first-child { border-top: 1px solid var(--border2); }
+.stat-row:hover { padding-left: 10px; }
+.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 60px; font-weight: 300; color: var(--gold2); line-height: 1; flex-shrink: 0; min-width: 100px; }
+.stat-t { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 300; }
 
 /* ACTIONS */
-.actions { background: var(--bg); position: relative; }
-.actions-header { max-width: 600px; margin-bottom: 70px; }
-.actions-grid {
+.actions { background: var(--bg); }
+.act-grid {
   display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
-  background: var(--border); border: 1px solid var(--border);
-  border-radius: 24px; overflow: hidden;
+  background: var(--border2); border: 1px solid var(--border2);
+  border-radius: 24px; overflow: hidden; margin-top: 64px;
 }
-.action-card {
-  background: var(--bg2); padding: 36px 26px;
-  transition: all 0.4s; position: relative; overflow: hidden;
+.act-card {
+  background: white; padding: 34px 24px; transition: all 0.35s; position: relative; overflow: hidden;
 }
-.action-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-  transform: scaleX(0); transition: transform 0.4s;
-}
-.action-card:hover { background: var(--bg3); }
-.action-card:hover::before { transform: scaleX(1); }
-.action-glow {
-  position: absolute; width: 150px; height: 150px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,146,58,0.08) 0%, transparent 70%);
-  top: -40px; right: -40px; pointer-events: none;
-  opacity: 0; transition: opacity 0.4s;
-}
-.action-card:hover .action-glow { opacity: 1; }
-.action-n {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 52px; font-weight: 300;
-  color: rgba(196,146,58,0.12); line-height: 1; margin-bottom: 20px;
-}
-.action-tag {
-  font-size: 9px; font-weight: 600; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 12px; display: block;
-}
-.action-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px; font-weight: 400;
-  color: var(--cream); margin-bottom: 12px; line-height: 1.2;
-}
-.action-desc {
-  font-size: 12px; color: var(--muted); line-height: 1.7; font-weight: 300;
-}
+.act-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--gold), var(--gold3)); transform: scaleX(0); transition: transform 0.35s; transform-origin: left; }
+.act-card:hover { background: var(--gold-light); }
+.act-card:hover::after { transform: scaleX(1); }
+.act-n { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; color: rgba(155,110,42,0.1); line-height: 1; margin-bottom: 18px; }
+.act-tag { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+.act-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--brown); margin-bottom: 10px; line-height: 1.2; }
+.act-desc { font-size: 12px; color: var(--muted); line-height: 1.7; font-weight: 300; }
 
 /* HOW */
 .how { background: var(--bg2); }
-.how-steps {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); border-radius: 24px;
-  overflow: hidden; margin-top: 70px;
+.how-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border2); border: 1px solid var(--border2);
+  border-radius: 24px; overflow: hidden; margin-top: 64px;
 }
-.how-step {
-  background: var(--bg); padding: 48px 36px;
-  position: relative; overflow: hidden; transition: background 0.3s;
-}
-.how-step:hover { background: var(--bg3); }
-.how-step-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 100px; font-weight: 300;
-  color: rgba(196,146,58,0.06); line-height: 1;
-  position: absolute; top: 20px; right: 24px;
-}
-.how-step-icon {
-  width: 44px; height: 44px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--glow);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; margin-bottom: 24px;
-}
-.how-step-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px; font-weight: 400; color: var(--cream);
-  margin-bottom: 14px; line-height: 1.2;
-}
-.how-step-desc {
-  font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300;
-}
+.how-step { background: var(--bg); padding: 48px 36px; position: relative; overflow: hidden; transition: background 0.3s; }
+.how-step:hover { background: white; }
+.how-bg-n { font-family: 'Cormorant Garamond', serif; font-size: 110px; font-weight: 300; color: rgba(155,110,42,0.06); line-height: 1; position: absolute; top: 16px; right: 20px; }
+.how-icon { width: 46px; height: 46px; border-radius: 14px; border: 1px solid var(--border); background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 24px; }
+.how-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--brown); margin-bottom: 14px; }
+.how-desc { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; }
 
 /* SMS DEMO */
 .demo { background: var(--bg); }
-.demo-inner {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 100px; align-items: center;
-}
-.phone-wrap {
-  position: relative; display: flex; justify-content: center;
-}
-.phone-glow {
-  position: absolute; width: 300px; height: 300px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,146,58,0.12) 0%, transparent 70%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  pointer-events: none; filter: blur(20px);
-}
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+.phone-wrap { position: relative; display: flex; justify-content: center; }
+.phone-shadow { position: absolute; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(155,110,42,0.12) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); filter: blur(30px); }
 .phone {
   width: 280px; position: relative; z-index: 1;
-  background: var(--bg3);
-  border: 1px solid rgba(196,146,58,0.2);
-  border-radius: 40px; padding: 24px 18px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(196,146,58,0.1);
+  background: white; border: 1px solid var(--border2); border-radius: 40px;
+  padding: 22px 16px; box-shadow: 0 30px 80px rgba(44,36,22,0.12), 0 0 0 1px rgba(155,110,42,0.08);
 }
-.phone-notch {
-  width: 80px; height: 6px; background: var(--bg2);
-  border-radius: 100px; margin: 0 auto 20px;
-}
-.phone-header {
-  text-align: center; padding-bottom: 16px;
-  border-bottom: 1px solid var(--border); margin-bottom: 16px;
-}
-.phone-header p { font-size: 10px; color: var(--muted); margin-bottom: 3px; font-family: 'DM Sans', sans-serif; }
-.phone-header h4 { font-size: 13px; color: var(--cream); font-family: 'DM Sans', sans-serif; font-weight: 400; }
-.pmsg { margin-bottom: 10px; }
-.pmsg-o {
-  background: linear-gradient(135deg, rgba(196,146,58,0.15), rgba(196,146,58,0.08));
-  border: 1px solid rgba(196,146,58,0.12);
-  border-radius: 14px 14px 14px 3px;
-  padding: 10px 12px; font-size: 11px; color: var(--cream2);
-  line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300;
-}
-.pmsg-m {
-  background: rgba(242,237,228,0.07); border: 1px solid rgba(242,237,228,0.08);
-  border-radius: 14px 14px 3px 14px;
-  padding: 10px 12px; font-size: 11px; color: rgba(242,237,228,0.65);
-  line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300;
-  margin-left: 24px;
-}
-.pmsg-time { font-size: 9px; color: rgba(242,237,228,0.2); margin-top: 4px; padding: 0 4px; font-family: 'DM Sans', sans-serif; }
+.phone-notch { width: 80px; height: 5px; background: var(--bg3); border-radius: 100px; margin: 0 auto 18px; }
+.phone-hdr { text-align: center; padding-bottom: 14px; border-bottom: 1px solid var(--border2); margin-bottom: 14px; }
+.phone-hdr p { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+.phone-hdr h4 { font-size: 13px; color: var(--brown); font-weight: 500; }
+.pm { margin-bottom: 8px; }
+.pm-o { background: var(--gold-light); border: 1px solid rgba(155,110,42,0.12); border-radius: 14px 14px 14px 3px; padding: 9px 11px; font-size: 11px; color: var(--brown2); line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.pm-m { background: var(--bg2); border-radius: 14px 14px 3px 14px; padding: 9px 11px; font-size: 11px; color: var(--muted); line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-left: 24px; }
+.pm-t { font-size: 9px; color: rgba(44,36,22,0.25); margin-top: 3px; padding: 0 3px; }
 
 /* WAITLIST */
-.waitlist {
-  background: var(--bg2); position: relative; overflow: hidden; text-align: center;
-}
-.waitlist-orb {
-  position: absolute; width: 700px; height: 700px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,146,58,0.07) 0%, transparent 65%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  pointer-events: none; filter: blur(40px);
-}
-.waitlist-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
-.waitlist-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(42px, 6vw, 72px);
-  font-weight: 300; line-height: 1.08;
-  letter-spacing: -1px; color: var(--cream); margin-bottom: 20px;
-}
-.waitlist-title em { font-style: italic; color: var(--gold2); }
-.waitlist-sub {
-  font-size: 16px; color: var(--muted); line-height: 1.8;
-  font-weight: 300; margin-bottom: 48px;
-}
+.waitlist { background: var(--brown); position: relative; overflow: hidden; text-align: center; }
+.wl-orb1 { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(196,146,58,0.1) 0%, transparent 65%); top: 50%; left: 50%; transform: translate(-50%,-50%); filter: blur(50px); pointer-events: none; }
+.wl-orb2 { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(90,138,78,0.08) 0%, transparent 65%); bottom: -100px; left: -50px; filter: blur(40px); pointer-events: none; }
+.wl-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+.wl-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 6vw, 72px); font-weight: 300; line-height: 1.08; letter-spacing: -1px; color: #F7F3ED; margin-bottom: 20px; }
+.wl-title em { font-style: italic; color: var(--gold3); }
+.wl-sub { font-size: 16px; color: rgba(247,243,237,0.55); line-height: 1.8; font-weight: 300; margin-bottom: 44px; }
+.wl-lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold3); margin-bottom: 18px; display: block; }
 .wl-form { display: flex; flex-direction: column; gap: 12px; }
-.wl-input {
-  width: 100%; padding: 16px 22px;
-  background: rgba(242,237,228,0.04); border: 1px solid var(--border);
-  border-radius: 14px; font-size: 15px; font-family: 'DM Sans', sans-serif;
-  color: var(--text); outline: none; transition: all 0.3s;
-}
-.wl-input:focus {
-  border-color: rgba(196,146,58,0.35);
-  background: rgba(242,237,228,0.07);
-  box-shadow: 0 0 0 1px rgba(196,146,58,0.12), 0 0 30px rgba(196,146,58,0.04);
-}
-.wl-input::placeholder { color: rgba(242,237,228,0.2); }
-.wl-btn {
-  width: 100%; padding: 18px;
-  background: linear-gradient(135deg, var(--gold3), var(--gold), var(--gold2));
-  color: var(--bg); border: none; border-radius: 14px;
-  font-size: 15px; font-family: 'DM Sans', sans-serif;
-  font-weight: 500; cursor: pointer; letter-spacing: 0.5px;
-  transition: all 0.3s; position: relative; overflow: hidden;
-}
-.wl-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-  transform: translateX(-100%); transition: transform 0.6s;
-}
+.wl-input { width: 100%; padding: 16px 22px; background: rgba(247,243,237,0.07); border: 1px solid rgba(247,243,237,0.12); border-radius: 14px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: #F7F3ED; outline: none; transition: all 0.3s; }
+.wl-input:focus { border-color: rgba(196,146,58,0.45); background: rgba(247,243,237,0.1); box-shadow: 0 0 0 3px rgba(196,146,58,0.08); }
+.wl-input::placeholder { color: rgba(247,243,237,0.22); }
+.wl-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold3)); color: var(--brown); border: none; border-radius: 14px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; letter-spacing: 0.3px; transition: all 0.3s; position: relative; overflow: hidden; }
+.wl-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.12), transparent); transform: translateX(-100%); transition: transform 0.6s; }
 .wl-btn:hover::before { transform: translateX(100%); }
-.wl-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(196,146,58,0.3); }
-.wl-note {
-  font-size: 12px; color: rgba(242,237,228,0.25);
-  margin-top: 20px; font-style: italic; line-height: 1.7; font-weight: 300;
-}
+.wl-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(196,146,58,0.35); }
+.wl-note { font-size: 12px; color: rgba(247,243,237,0.22); margin-top: 22px; font-style: italic; line-height: 1.7; font-weight: 300; }
 
 /* THANK YOU */
-#ty-overlay {
-  display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(10,8,6,0.97); backdrop-filter: blur(20px);
-  align-items: center; justify-content: center;
-  text-align: center; padding: 40px 20px;
-}
-#ty-inner {
-  max-width: 540px; margin: 0 auto;
-  opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1);
-}
-.ty-ring {
-  width: 110px; height: 110px; margin: 0 auto 44px; position: relative;
-}
+#ty-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(250,246,240,0.97); backdrop-filter: blur(20px); align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+#ty-inner { max-width: 540px; margin: 0 auto; opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
+.ty-ring { width: 110px; height: 110px; margin: 0 auto 40px; position: relative; }
 .ty-ring svg { width: 110px; height: 110px; transform: rotate(-90deg); }
-.ty-ring-emoji {
-  position: absolute; inset: 0; display: flex;
-  align-items: center; justify-content: center; font-size: 36px;
-}
-.ty-label {
-  font-size: 10px; color: var(--gold); letter-spacing: 3px;
-  text-transform: uppercase; font-weight: 500;
-  margin-bottom: 20px; display: block;
-}
-.ty-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(44px, 7vw, 72px);
-  font-weight: 300; color: var(--cream); line-height: 1.05;
-  letter-spacing: -1px; margin-bottom: 24px;
-}
+.ty-emoji { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+.ty-lbl { font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 18px; display: block; }
+.ty-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 7vw, 70px); font-weight: 300; color: var(--brown); line-height: 1.05; letter-spacing: -1px; margin-bottom: 20px; }
 .ty-title em { font-style: italic; color: var(--gold2); }
-.ty-msg {
-  font-size: 16px; color: var(--muted); line-height: 1.8;
-  font-weight: 300; margin-bottom: 44px;
-}
-.ty-steps {
-  background: rgba(242,237,228,0.04); border: 1px solid var(--border);
-  border-radius: 20px; padding: 28px; margin-bottom: 36px; text-align: left;
-}
-.ty-step {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 12px 0; border-bottom: 1px solid var(--border);
-}
+.ty-msg { font-size: 16px; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 40px; }
+.ty-steps { background: white; border: 1px solid var(--border2); border-radius: 20px; padding: 28px; margin-bottom: 32px; text-align: left; box-shadow: 0 4px 24px rgba(44,36,22,0.06); }
+.ty-step { display: flex; gap: 16px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border2); }
 .ty-step:last-child { border-bottom: none; padding-bottom: 0; }
-.ty-step-n {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(196,146,58,0.12); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--gold2); font-weight: 500;
-  flex-shrink: 0; font-family: 'DM Sans', sans-serif;
-}
-.ty-step-content p:first-child { font-size: 13px; color: var(--cream); margin-bottom: 3px; }
-.ty-step-content p:last-child { font-size: 11px; color: var(--muted); font-weight: 300; line-height: 1.5; }
-.ty-share-btn {
-  background: transparent; border: 1px solid var(--border);
-  color: var(--gold2); padding: 12px 28px; border-radius: 100px;
-  font-size: 12px; font-family: 'DM Sans', sans-serif;
-  letter-spacing: 1px; text-transform: uppercase;
-  cursor: pointer; transition: all 0.3s; margin-bottom: 36px;
-}
-.ty-share-btn:hover { border-color: var(--gold); box-shadow: 0 0 20px rgba(196,146,58,0.15); }
-.ty-founder {
-  font-size: 12px; color: rgba(242,237,228,0.2);
-  font-style: italic; line-height: 1.7; font-weight: 300;
-}
+.ty-step-n { width: 28px; height: 28px; border-radius: 50%; background: var(--gold-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--gold); font-weight: 600; flex-shrink: 0; }
+.ty-step-content p:first-child { font-size: 13px; color: var(--brown); margin-bottom: 3px; font-weight: 500; }
+.ty-step-content p:last-child { font-size: 12px; color: var(--muted); font-weight: 300; line-height: 1.5; }
+.ty-share { background: transparent; border: 1.5px solid var(--border); color: var(--gold); padding: 12px 28px; border-radius: 100px; font-size: 12px; font-family: 'DM Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-bottom: 32px; }
+.ty-share:hover { border-color: var(--gold2); background: var(--gold-light); box-shadow: 0 4px 20px rgba(155,110,42,0.15); }
+.ty-founder { font-size: 12px; color: rgba(44,36,22,0.3); font-style: italic; line-height: 1.7; font-weight: 300; }
 
 /* FOOTER */
-footer {
-  background: var(--bg); padding: 56px 48px 40px;
-  border-top: 1px solid var(--border);
-}
-.footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding-bottom: 40px; border-bottom: 1px solid var(--border); margin-bottom: 28px;
-}
-.footer-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-weight: 400; letter-spacing: 4px;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--cream) 0%, var(--gold2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-.footer-tag { font-size: 12px; color: var(--muted); font-style: italic; font-weight: 300; }
-.footer-links { display: flex; gap: 28px; align-items: center; }
-.footer-links a {
-  font-size: 12px; color: rgba(242,237,228,0.3);
-  text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s;
-}
-.footer-links a:hover { color: var(--gold2); }
-.footer-bottom {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-copy { font-size: 11px; color: rgba(242,237,228,0.2); }
-.footer-mission { font-size: 11px; color: rgba(242,237,228,0.2); font-style: italic; max-width: 320px; text-align: right; line-height: 1.6; }
+footer { background: var(--brown); padding: 56px 48px 40px; }
+.ft-top { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 40px; border-bottom: 1px solid rgba(247,243,237,0.08); margin-bottom: 28px; }
+.ft-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: #F7F3ED; margin-bottom: 6px; }
+.ft-tag { font-size: 12px; color: rgba(247,243,237,0.35); font-style: italic; font-weight: 300; }
+.ft-links { display: flex; gap: 28px; }
+.ft-links a { font-size: 12px; color: rgba(247,243,237,0.3); text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s; }
+.ft-links a:hover { color: var(--gold3); }
+.ft-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.ft-copy { font-size: 11px; color: rgba(247,243,237,0.2); }
+.ft-mission { font-size: 11px; color: rgba(247,243,237,0.2); font-style: italic; max-width: 320px; text-align: right; line-height: 1.6; }
 
 /* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes emojiPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.5) rotate(10deg); }
-  70% { transform: scale(0.9) rotate(-5deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-.fade-up {
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.fade-up.visible { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes emojiPop { 0%{transform:scale(1)} 40%{transform:scale(1.5) rotate(10deg)} 70%{transform:scale(0.9)} 100%{transform:scale(1)} }
+.fu { opacity:0; transform:translateY(28px); transition: opacity 0.85s ease, transform 0.85s ease; }
+.fu.visible { opacity:1; transform:translateY(0); }
 
 /* MOBILE */
 @media (max-width: 900px) {
-  nav { padding: 18px 24px; }
-  nav.scrolled { padding: 14px 24px; }
+  nav, nav.scrolled { padding: 16px 24px; }
   section { padding: 80px 24px; }
   .hero { padding: 100px 24px 70px; }
   .hero-form { flex-direction: column; }
   .hero-form button { width: 100%; }
-  .problem-grid { grid-template-columns: 1fr; gap: 50px; }
-  .actions-grid { grid-template-columns: 1fr 1fr; }
-  .how-steps { grid-template-columns: 1fr; }
-  .demo-inner { grid-template-columns: 1fr; gap: 50px; }
+  .prob-grid { grid-template-columns: 1fr; gap: 50px; }
+  .act-grid { grid-template-columns: 1fr 1fr; }
+  .how-grid { grid-template-columns: 1fr; }
+  .demo-grid { grid-template-columns: 1fr; gap: 50px; }
   .phone { max-width: 300px; width: 100%; }
-  .footer-inner { flex-direction: column; gap: 30px; }
-  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-  .footer-mission { text-align: center; }
+  .ft-top { flex-direction: column; gap: 28px; }
+  .ft-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .ft-mission { text-align: center; }
   body { cursor: auto; }
   .cursor, .cursor-ring { display: none; }
 }
@@ -637,8 +312,8 @@ footer {
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="cur-ring"></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -648,17 +323,11 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-  <div class="grid-lines"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Now accepting waitlist</div>
-    <h1>
-      <span>Your doula.</span>
-      <em>In your pocket.</em>
-      <span>Every day.</span>
-    </h1>
+    <div class="hero-badge"><span class="badge-dot"></span>Now accepting waitlist</div>
+    <h1>Your doula.<br><em>In your pocket.</em><br>Every day.</h1>
     <p class="hero-sub">ORIMI is an AI doula that texts you every morning, prepares you for every appointment, and never stops showing up — through pregnancy, birth, and postpartum.</p>
     <p class="hero-sub2">Secure early access to our program and stay updated on launch announcements, insights, and upcoming feature previews.</p>
     <div class="hero-form">
@@ -666,11 +335,11 @@ footer {
       <button class="btn-gold" onclick="heroJoin()">Join the waitlist</button>
     </div>
     <div class="hero-proof">
-      <div class="proof-avatars">
-        <div class="proof-avatar">A</div>
-        <div class="proof-avatar">M</div>
-        <div class="proof-avatar">J</div>
-        <div class="proof-avatar">T</div>
+      <div class="proof-avs">
+        <div class="proof-av">A</div>
+        <div class="proof-av">M</div>
+        <div class="proof-av">J</div>
+        <div class="proof-av">T</div>
       </div>
       <span>200+ mamas already on the waitlist</span>
     </div>
@@ -681,26 +350,17 @@ footer {
 
 <!-- PROBLEM -->
 <section class="problem">
-  <div class="section-wrap">
-    <div class="problem-grid">
+  <div class="wrap">
+    <div class="prob-grid">
       <div>
-        <span class="label fade-up">The reality</span>
-        <h2 class="title fade-up">Black mothers deserve <em>better than this.</em></h2>
-        <p class="subtitle fade-up">The Black maternal health crisis is real, documented, and preventable. ORIMI exists because every Black mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
+        <span class="lbl fu">The reality</span>
+        <h2 class="ttl fu">Every mother deserves <em>better than this.</em></h2>
+        <p class="sub fu">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
       </div>
-      <div class="problem-stats">
-        <div class="stat-item fade-up">
-          <div class="stat-num">3×</div>
-          <div class="stat-text">Black mothers are 3 times more likely to die from pregnancy-related causes than white mothers in America</div>
-        </div>
-        <div class="stat-item fade-up">
-          <div class="stat-num">6%</div>
-          <div class="stat-text">Only 6% of births in the US have a doula present — despite evidence that doulas transform outcomes</div>
-        </div>
-        <div class="stat-item fade-up">
-          <div class="stat-num">39%</div>
-          <div class="stat-text">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication</div>
-        </div>
+      <div>
+        <div class="stat-row fu"><div class="stat-n">3×</div><div class="stat-t">Black mothers are 3 times more likely to die from pregnancy-related causes — maternal mortality affects mothers across all backgrounds in America</div></div>
+        <div class="stat-row fu"><div class="stat-n">6%</div><div class="stat-t">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes for mothers and babies</div></div>
+        <div class="stat-row fu"><div class="stat-n">39%</div><div class="stat-t">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and labor interventions</div></div>
       </div>
     </div>
   </div>
@@ -708,50 +368,18 @@ footer {
 
 <div class="divider"></div>
 
-<!-- FIVE ACTIONS -->
+<!-- ACTIONS -->
 <section class="actions">
-  <div class="section-wrap">
-    <div class="actions-header">
-      <span class="label fade-up">How ORIMI shows up</span>
-      <h2 class="title fade-up">Not a reminder app.<br><em>A doula.</em></h2>
-      <p class="subtitle fade-up">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
-    </div>
-    <div class="actions-grid fade-up">
-      <div class="action-card">
-        <div class="action-glow"></div>
-        <div class="action-n">01</div>
-        <span class="action-tag">Educate</span>
-        <div class="action-title">Teach her what's really happening</div>
-        <div class="action-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now — the substance that will let them breathe air. Specific to her week.</div>
-      </div>
-      <div class="action-card">
-        <div class="action-glow"></div>
-        <div class="action-n">02</div>
-        <span class="action-tag">Prepare</span>
-        <div class="action-title">Before every appointment</div>
-        <div class="action-desc">48 hours before the glucose test — what the drink tastes like, not to eat sugar beforehand, wear a top with sleeves, and the exact questions to ask.</div>
-      </div>
-      <div class="action-card">
-        <div class="action-glow"></div>
-        <div class="action-n">03</div>
-        <span class="action-tag">Support</span>
-        <div class="action-title">Hold space. Validate. Stay.</div>
-        <div class="action-desc">When something hard happens, ORIMI doesn't immediately problem-solve. She sits with it first. "That sounds really hard" before "here's what might help."</div>
-      </div>
-      <div class="action-card">
-        <div class="action-glow"></div>
-        <div class="action-n">04</div>
-        <span class="action-tag">Advocate</span>
-        <div class="action-title">Give her the words</div>
-        <div class="action-desc">The BRAIN framework. "What happens if we wait?" Reminding her she has the right to ask why — and that asking is not being difficult. It's being an informed parent.</div>
-      </div>
-      <div class="action-card">
-        <div class="action-glow"></div>
-        <div class="action-n">05</div>
-        <span class="action-tag">Anticipate</span>
-        <div class="action-title">Before she has to ask</div>
-        <div class="action-desc">At 13 emotional flashpoints — anatomy scan anxiety, week 37 labor fear, day 3 postpartum hormonal crash — ORIMI reaches out before the mom says she's struggling.</div>
-      </div>
+  <div class="wrap">
+    <span class="lbl fu">How ORIMI shows up</span>
+    <h2 class="ttl fu" style="max-width:500px;">Not a reminder app.<br><em>A doula.</em></h2>
+    <p class="sub fu">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+    <div class="act-grid fu">
+      <div class="act-card"><div class="act-n">01</div><span class="act-tag">Educate</span><div class="act-title">Teach her what's really happening</div><div class="act-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now — the substance that will let them breathe air. Specific to her week, her body, her baby.</div></div>
+      <div class="act-card"><div class="act-n">02</div><span class="act-tag">Prepare</span><div class="act-title">Before every appointment</div><div class="act-desc">48 hours before the glucose test — what the drink tastes like, not to eat sugar beforehand, wear a top with sleeves, and the exact questions to ask her provider.</div></div>
+      <div class="act-card"><div class="act-n">03</div><span class="act-tag">Support</span><div class="act-title">Hold space. Validate. Stay.</div><div class="act-desc">When something hard happens, ORIMI doesn't immediately problem-solve. She sits with it first. "That sounds really hard" before "here's what might help."</div></div>
+      <div class="act-card"><div class="act-n">04</div><span class="act-tag">Advocate</span><div class="act-title">Give her the words</div><div class="act-desc">The BRAIN framework. "What happens if we wait?" Reminding her she has the right to ask why — and that asking questions is not being difficult. It's being an informed parent.</div></div>
+      <div class="act-card"><div class="act-n">05</div><span class="act-tag">Anticipate</span><div class="act-title">Before she has to ask</div><div class="act-desc">At 13 emotional flashpoints — anatomy scan anxiety, week 37 labor fear, day 3 postpartum hormonal crash — ORIMI reaches out before the mom says she's struggling.</div></div>
     </div>
   </div>
 </section>
@@ -760,28 +388,13 @@ footer {
 
 <!-- HOW IT WORKS -->
 <section class="how">
-  <div class="section-wrap">
-    <span class="label fade-up">Getting started</span>
-    <h2 class="title fade-up">No app to download.<br><em>Just your phone.</em></h2>
-    <div class="how-steps fade-up">
-      <div class="how-step">
-        <div class="how-step-num">1</div>
-        <div class="how-step-icon">📱</div>
-        <div class="how-step-title">Text to join</div>
-        <div class="how-step-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">2</div>
-        <div class="how-step-icon">🤱🏾</div>
-        <div class="how-step-title">ORIMI learns you</div>
-        <div class="how-step-desc">She learns your stage, your provider, your preferences, your partner. Every message is personalized to exactly where you are.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">3</div>
-        <div class="how-step-icon">✦</div>
-        <div class="how-step-title">She never stops</div>
-        <div class="how-step-desc">Every morning. Before every appointment. At every emotional flashpoint. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div>
-      </div>
+  <div class="wrap">
+    <span class="lbl fu">Getting started</span>
+    <h2 class="ttl fu">No app to download.<br><em>Just your phone.</em></h2>
+    <div class="how-grid fu">
+      <div class="how-step"><div class="how-bg-n">1</div><div class="how-icon">📱</div><div class="how-title">Text to join</div><div class="how-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
+      <div class="how-step"><div class="how-bg-n">2</div><div class="how-icon">🤱🏾</div><div class="how-title">ORIMI learns you</div><div class="how-desc">She learns your stage, your provider, your preferences, your partner. Every message is personalized to exactly where you are.</div></div>
+      <div class="how-step"><div class="how-bg-n">3</div><div class="how-icon">✦</div><div class="how-title">She never stops</div><div class="how-desc">Every morning. Before every appointment. At every emotional flashpoint. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
     </div>
   </div>
 </section>
@@ -790,41 +403,23 @@ footer {
 
 <!-- SMS DEMO -->
 <section class="demo">
-  <div class="section-wrap">
-    <div class="demo-inner">
+  <div class="wrap">
+    <div class="demo-grid">
       <div>
-        <span class="label fade-up">What ORIMI sounds like</span>
-        <h2 class="title fade-up">A doula who<br>knows <em>you.</em></h2>
-        <p class="subtitle fade-up">This is the difference between a notification and a doula. ORIMI doesn't just tell moms when something is happening. She tells them what it is, why it matters, how to prepare, what it feels like, and what comes next.</p>
+        <span class="lbl fu">What ORIMI sounds like</span>
+        <h2 class="ttl fu">A doula who<br>knows <em>you.</em></h2>
+        <p class="sub fu">This is the difference between a notification and a doula. ORIMI doesn't just tell moms when something is happening — she tells them what it is, why it matters, how to prepare, and what comes next.</p>
       </div>
-      <div class="phone-wrap fade-up">
-        <div class="phone-glow"></div>
+      <div class="phone-wrap fu">
+        <div class="phone-shadow"></div>
         <div class="phone">
           <div class="phone-notch"></div>
-          <div class="phone-header">
-            <p>Messages</p>
-            <h4>ORIMI 🤱🏾</h4>
-          </div>
-          <div class="pmsg">
-            <div class="pmsg-o">Good morning Remy. Week 32. Baby's brain grew 30% last month and is still building. Two eggs this morning covers DHA and choline — that's what's fueling it. Keep protein at 80-100g today. How are you feeling?</div>
-            <div class="pmsg-time">Today 6:30am</div>
-          </div>
-          <div class="pmsg" style="display:flex;flex-direction:column;align-items:flex-end;">
-            <div class="pmsg-m">Feeling nervous about Thursday honestly</div>
-            <div class="pmsg-time">7:14am</div>
-          </div>
-          <div class="pmsg">
-            <div class="pmsg-o">That makes complete sense. Thursday: they'll press on your belly to feel baby's position, listen to the heartbeat via doppler. Wear a two-piece. Ask: "Is baby head-down yet?"</div>
-            <div class="pmsg-time">7:16am</div>
-          </div>
-          <div class="pmsg" style="display:flex;flex-direction:column;align-items:flex-end;">
-            <div class="pmsg-m">Thank you 🙏 that actually helps</div>
-            <div class="pmsg-time">7:18am</div>
-          </div>
-          <div class="pmsg">
-            <div class="pmsg-o">You've got this. ORIMI will check in after the visit.</div>
-            <div class="pmsg-time">7:19am</div>
-          </div>
+          <div class="phone-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
+          <div class="pm"><div class="pm-o">Good morning Remy. Week 32. Baby's brain grew 30% last month and is still building. Two eggs this morning covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
+          <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
+          <div class="pm"><div class="pm-o">That makes sense. Thursday: they'll check baby's position, listen to the heartbeat via doppler. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
+          <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
+          <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
         </div>
       </div>
     </div>
@@ -835,179 +430,126 @@ footer {
 
 <!-- WAITLIST -->
 <section class="waitlist" id="waitlist">
-  <div class="waitlist-orb"></div>
-  <div class="waitlist-inner">
-    <span class="label fade-up">Join the waitlist</span>
-    <h2 class="waitlist-title fade-up">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
-    <p class="waitlist-sub fade-up">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
-    <div class="wl-form fade-up" id="wl-form">
+  <div class="wl-orb1"></div>
+  <div class="wl-orb2"></div>
+  <div class="wl-inner">
+    <span class="wl-lbl fu">Join the waitlist</span>
+    <h2 class="wl-title fu">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
+    <p class="wl-sub fu">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
+    <div class="wl-form fu" id="wl-form">
       <input class="wl-input" type="text" placeholder="First name" id="wl-name">
       <input class="wl-input" type="email" placeholder="Email address" id="wl-email">
       <input class="wl-input" type="tel" placeholder="Phone number" id="wl-phone">
       <input class="wl-input" type="text" placeholder="Due date (MM/YYYY)" id="wl-due">
       <button class="wl-btn" onclick="joinWaitlist()">Join the waitlist →</button>
     </div>
-    <p class="wl-note fade-up" id="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
+    <p class="wl-note fu" id="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
   </div>
 </section>
 
-<!-- THANK YOU OVERLAY -->
+<!-- THANK YOU -->
 <div id="ty-overlay">
   <div id="ty-inner">
     <div class="ty-ring">
       <svg viewBox="0 0 110 110">
-        <circle cx="55" cy="55" r="48" fill="none" stroke="rgba(196,146,58,0.12)" stroke-width="1.5"/>
-        <circle cx="55" cy="55" r="48" fill="none" stroke="url(#goldGrad)" stroke-width="1.5"
+        <circle cx="55" cy="55" r="48" fill="none" stroke="rgba(155,110,42,0.12)" stroke-width="1.5"/>
+        <circle cx="55" cy="55" r="48" fill="none" stroke="url(#gg)" stroke-width="1.5"
           stroke-dasharray="301" stroke-dashoffset="301" id="ty-circle"
           style="transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1) 0.4s;"/>
-        <defs>
-          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#8B6030"/>
-            <stop offset="50%" stop-color="#C4923A"/>
-            <stop offset="100%" stop-color="#E8B86D"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B6E2A"/><stop offset="50%" stop-color="#C4923A"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs>
       </svg>
-      <div class="ty-ring-emoji" id="ty-emoji">🤱🏾</div>
+      <div class="ty-emoji" id="ty-emoji">🤱🏾</div>
     </div>
-    <span class="ty-label">You're on the list</span>
+    <span class="ty-lbl">You're on the list</span>
     <h2 class="ty-title">Welcome, <em id="ty-name">mama.</em></h2>
     <p class="ty-msg">ORIMI will reach out before your due date. In the meantime — rest, eat the dates, and know that someone is already thinking about you.</p>
     <div class="ty-steps">
-      <div class="ty-step">
-        <div class="ty-step-n">1</div>
-        <div class="ty-step-content">
-          <p>Confirmation email on its way</p>
-          <p>Check your inbox — add hello@orimi.com to your contacts so you never miss a message.</p>
-        </div>
-      </div>
-      <div class="ty-step">
-        <div class="ty-step-n">2</div>
-        <div class="ty-step-content">
-          <p>ORIMI will text you before your due date</p>
-          <p>She'll introduce herself and ask how you're feeling. No spam. Ever.</p>
-        </div>
-      </div>
-      <div class="ty-step">
-        <div class="ty-step-n">3</div>
-        <div class="ty-step-content">
-          <p>Early access before public launch</p>
-          <p>Waitlist mamas get in first — and at the founding member rate.</p>
-        </div>
-      </div>
+      <div class="ty-step"><div class="ty-step-n">1</div><div class="ty-step-content"><p>Confirmation email on its way</p><p>Check your inbox — add hello@orimi.com to your contacts so you never miss a message.</p></div></div>
+      <div class="ty-step"><div class="ty-step-n">2</div><div class="ty-step-content"><p>ORIMI will text you before your due date</p><p>She'll introduce herself and ask how you're feeling. No spam. Ever.</p></div></div>
+      <div class="ty-step"><div class="ty-step-n">3</div><div class="ty-step-content"><p>Early access before public launch</p><p>Waitlist mamas get in first — and at the founding member rate.</p></div></div>
     </div>
-    <button class="ty-share-btn" onclick="shareORIMI()">Share with a mama →</button>
-    <p class="ty-founder">"ORIMI is built by a mama who trusts the birthing process.<br>This is not a tech product. This is a doula."<br><span style="color:rgba(242,237,228,0.35);font-style:normal;">— Khylir Patton, Founder</span></p>
+    <button class="ty-share" onclick="shareORIMI()">Share with a mama →</button>
+    <p class="ty-founder">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula."<br><span style="color:rgba(44,36,22,0.4);font-style:normal;">— Khylir Patton, Founder</span></p>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo">ORIMI</div>
-      <div class="footer-tag">Your doula. In your pocket. Every day.</div>
-    </div>
-    <div class="footer-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
-      <a href="#">Instagram</a>
-      <a href="#">TikTok</a>
-    </div>
+  <div class="ft-top">
+    <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
+    <div class="ft-links"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
   </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2026 IYA Inc. All rights reserved.</div>
-    <div class="footer-mission">Built for Black mothers. By a Black mother. Because the system was not built for us — so we built our own.</div>
+  <div class="ft-bottom">
+    <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
+    <div class="ft-mission">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
   </div>
 </footer>
 
 <script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
+// Cursor
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx - 4 + 'px';
-  cursor.style.top = my - 4 + 'px';
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
 });
-function animateRing() {
-  rx += (mx - rx - 18) * 0.12;
-  ry += (my - ry - 18) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('button, a, input').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; ring.style.borderColor = 'rgba(196,146,58,0.6)'; });
-  el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; ring.style.borderColor = 'rgba(196,146,58,0.4)'; });
+(function anim() {
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(anim);
+})();
+document.querySelectorAll('button,a,input').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.transform='translate(-50%,-50%) scale(2.5)'; curR.style.transform='translate(-50%,-50%) scale(1.4)'; });
+  el.addEventListener('mouseleave', () => { cur.style.transform='translate(-50%,-50%) scale(1)'; curR.style.transform='translate(-50%,-50%) scale(1)'; });
 });
 
 // Nav scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
-});
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
 
-// Fade up
-const fadeEls = document.querySelectorAll('.fade-up');
-fadeEls.forEach(el => el.style.opacity = '0');
+// Scroll reveal
+const fus = document.querySelectorAll('.fu');
 const obs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-      entry.target.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-      obs.unobserve(entry.target);
-    }
-  });
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-fadeEls.forEach(el => obs.observe(el));
+fus.forEach(el => obs.observe(el));
 
 // Hero join
 function heroJoin() {
-  const email = document.getElementById('hero-email').value;
-  if (email) document.getElementById('wl-email').value = email;
-  document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
+  const v = document.getElementById('hero-email').value;
+  if(v) document.getElementById('wl-email').value = v;
+  document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});
 }
 
-// Waitlist submit
+// Waitlist
 function joinWaitlist() {
   const name = document.getElementById('wl-name').value.trim();
   const email = document.getElementById('wl-email').value.trim();
-  if (!name || !email) { alert('Please enter your name and email.'); return; }
+  if(!name||!email) { alert('Please enter your name and email.'); return; }
   const btn = document.querySelector('.wl-btn');
-  btn.textContent = 'Joining...';
-  btn.style.opacity = '0.6';
-  btn.disabled = true;
+  btn.textContent='Joining...'; btn.style.opacity='0.6'; btn.disabled=true;
   setTimeout(() => showTY(name), 900);
 }
 
 function showTY(name) {
-  document.getElementById('ty-name').textContent = name.split(' ')[0] + '.';
-  const overlay = document.getElementById('ty-overlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  document.getElementById('ty-name').textContent = name.split(' ')[0]+'.';
+  const ov = document.getElementById('ty-overlay');
+  ov.style.display='flex'; document.body.style.overflow='hidden';
   setTimeout(() => {
-    const inner = document.getElementById('ty-inner');
-    inner.style.opacity = '1';
-    inner.style.transform = 'translateY(0)';
+    const inn = document.getElementById('ty-inner');
+    inn.style.opacity='1'; inn.style.transform='translateY(0)';
     setTimeout(() => {
-      document.getElementById('ty-circle').style.strokeDashoffset = '0';
-      setTimeout(() => {
-        const em = document.getElementById('ty-emoji');
-        em.style.animation = 'emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both';
-      }, 600);
+      document.getElementById('ty-circle').style.strokeDashoffset='0';
+      setTimeout(() => { document.getElementById('ty-emoji').style.animation='emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both'; }, 600);
     }, 200);
   }, 80);
 }
 
 function shareORIMI() {
-  if (navigator.share) {
-    navigator.share({ title: 'ORIMI — Your Doula. In Your Pocket.', text: 'I just joined the ORIMI waitlist — an AI doula for Black mothers. You need to see this.', url: window.location.href });
+  if(navigator.share) {
+    navigator.share({title:'ORIMI — Your Doula. In Your Pocket.',text:'I just joined the ORIMI waitlist — an AI doula for every mother. You need to see this.',url:location.href});
   } else {
-    navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied! Share it with a mama who needs this.'));
+    navigator.clipboard.writeText(location.href).then(()=>alert('Link copied! Share it with a mama who needs this.'));
   }
 }
 </script>
