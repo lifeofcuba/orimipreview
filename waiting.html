@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORIMI — Your Doula. In Your Pocket. Every Day.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #EDE5D8;
+  color: #2C2416;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* BACKGROUND */
+.bg-wrap {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(145deg, #F0E8D8 0%, #E8DCC8 30%, #D4C9B0 60%, #C8BEA8 100%);
+}
+.bg-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(60px); pointer-events: none;
+}
+.bg-orb1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(196,146,58,0.25) 0%, transparent 70%);
+  top: -100px; left: -100px;
+  animation: float1 10s ease-in-out infinite;
+}
+.bg-orb2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(74,94,58,0.15) 0%, transparent 70%);
+  bottom: -80px; right: -80px;
+  animation: float2 12s ease-in-out infinite;
+}
+.bg-orb3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(196,146,58,0.12) 0%, transparent 70%);
+  top: 40%; right: 10%;
+  animation: float1 8s ease-in-out infinite 3s;
+}
+.bg-orb4 {
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(139,111,62,0.1) 0%, transparent 70%);
+  bottom: 20%; left: 5%;
+  animation: float2 14s ease-in-out infinite 1s;
+}
+@keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-30px) scale(1.05)} }
+@keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,20px) scale(1.03)} }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 500; letter-spacing: 4px;
+  text-transform: uppercase; color: #2C2416;
+}
+.nav-btn {
+  background: rgba(44,36,22,0.85);
+  backdrop-filter: blur(10px);
+  color: #F7F3ED; border: none;
+  padding: 10px 24px; border-radius: 100px;
+  font-size: 12px; font-family: 'DM Sans', sans-serif;
+  font-weight: 500; letter-spacing: 0.5px;
+  cursor: pointer; transition: all 0.3s;
+}
+.nav-btn:hover { background: #8B6F3E; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(44,36,22,0.25); }
+
+/* PAGE CONTENT */
+.page { position: relative; z-index: 1; }
+
+/* HERO SECTION — GLASS CARD */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 100px 24px 60px;
+}
+.glass-card {
+  background: rgba(255,255,255,0.28);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 32px;
+  padding: 56px 48px;
+  max-width: 620px; width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 60px rgba(44,36,22,0.12), 0 2px 8px rgba(44,36,22,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+  animation: cardIn 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes cardIn { from{opacity:0;transform:translateY(40px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+.card-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.7);
+  padding: 6px 16px; border-radius: 100px;
+  font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #6B5B45;
+  margin-bottom: 32px;
+}
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4A5E3A; box-shadow: 0 0 8px rgba(74,94,58,0.6); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 7vw, 72px);
+  font-weight: 300; line-height: 1.0;
+  letter-spacing: -1.5px; color: #2C2416;
+  margin-bottom: 16px;
+}
+.card-title em { font-style: italic; color: #8B6F3E; }
+
+.card-sub {
+  font-size: 15px; color: rgba(44,36,22,0.6);
+  line-height: 1.7; font-weight: 300;
+  margin-bottom: 10px;
+}
+.card-sub2 {
+  font-size: 13px; color: rgba(44,36,22,0.42);
+  font-style: italic; line-height: 1.6;
+  margin-bottom: 36px; font-weight: 300;
+}
+
+.card-form { display: flex; gap: 8px; margin-bottom: 20px; }
+.card-form input {
+  flex: 1; padding: 14px 18px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 100px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: #2C2416; outline: none;
+  transition: all 0.3s;
+  box-shadow: inset 0 1px 3px rgba(44,36,22,0.06);
+}
+.card-form input:focus {
+  background: rgba(255,255,255,0.8);
+  border-color: rgba(139,111,62,0.4);
+  box-shadow: 0 0 0 3px rgba(139,111,62,0.1);
+}
+.card-form input::placeholder { color: rgba(44,36,22,0.3); }
+.card-form button {
+  background: #2C2416; color: #F7F3ED;
+  border: none; padding: 14px 24px;
+  border-radius: 100px; font-size: 13px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  cursor: pointer; white-space: nowrap; transition: all 0.3s;
+}
+.card-form button:hover { background: #8B6F3E; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(44,36,22,0.25); }
+
+.card-proof {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 12px; color: rgba(44,36,22,0.42);
+}
+.proof-avs { display: flex; }
+.proof-av {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.8); margin-left: -7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 600; color: white;
+}
+.proof-av:first-child { margin-left:0; background: linear-gradient(135deg,#8B3A3A,#C4923A); }
+.proof-av:nth-child(2) { background: linear-gradient(135deg,#3D6B3A,#5A9E56); }
+.proof-av:nth-child(3) { background: linear-gradient(135deg,#3A6B8B,#8B6030); }
+.proof-av:nth-child(4) { background: linear-gradient(135deg,#6B3A8B,#C4923A); }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(44,36,22,0.35); animation: fadeIn 1s 1.2s ease both;
+}
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(44,36,22,0.3), transparent); animation: scrollPulse 2s ease infinite; }
+@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:0.4} 50%{transform:scaleY(0.6);opacity:1} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* CONTENT SECTIONS */
+.section {
+  padding: 100px 40px; position: relative; z-index: 1;
+}
+
+/* GLASS PANEL — for content sections */
+.glass-panel {
+  background: rgba(255,255,255,0.22);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 28px;
+  padding: 56px 48px;
+  max-width: 1100px; margin: 0 auto;
+  box-shadow: 0 4px 40px rgba(44,36,22,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #8B6F3E; margin-bottom: 16px; display: block; }
+.ttl { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 300; line-height: 1.08; letter-spacing: -0.5px; color: #2C2416; margin-bottom: 20px; }
+.ttl em { font-style: italic; color: #8B6F3E; }
+.sub { font-size: 16px; color: rgba(44,36,22,0.55); line-height: 1.8; font-weight: 300; }
+
+/* PROBLEM */
+.prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.stat-row { display: flex; gap: 20px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid rgba(44,36,22,0.08); transition: padding-left 0.3s; }
+.stat-row:first-child { border-top: 1px solid rgba(44,36,22,0.08); }
+.stat-row:hover { padding-left: 8px; }
+.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 54px; font-weight: 300; color: #8B6F3E; line-height: 1; min-width: 90px; flex-shrink: 0; }
+.stat-t { font-size: 13px; color: rgba(44,36,22,0.55); line-height: 1.6; font-weight: 300; }
+
+/* ACTIONS */
+.act-grid {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap: 12px; margin-top: 48px;
+}
+.act-card {
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 20px; padding: 28px 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.35s; position: relative; overflow: hidden;
+}
+.act-card:hover {
+  background: rgba(255,255,255,0.55);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(44,36,22,0.12);
+}
+.act-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, #8B6F3E, #C4923A);
+  transform: scaleX(0); transition: transform 0.35s; transform-origin: left;
+}
+.act-card:hover::before { transform: scaleX(1); }
+.act-n { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; color: rgba(139,111,62,0.15); line-height: 1; margin-bottom: 14px; }
+.act-tag { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8B6F3E; margin-bottom: 8px; display: block; }
+.act-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: #2C2416; margin-bottom: 8px; line-height: 1.2; }
+.act-desc { font-size: 11px; color: rgba(44,36,22,0.55); line-height: 1.65; font-weight: 300; }
+
+/* HOW */
+.how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
+.how-step {
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 20px; padding: 40px 32px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.how-step:hover { background: rgba(255,255,255,0.55); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(44,36,22,0.1); }
+.how-bg-n { font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: rgba(139,111,62,0.07); line-height: 1; position: absolute; top: 12px; right: 16px; }
+.how-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 20px; }
+.how-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: #2C2416; margin-bottom: 12px; }
+.how-desc { font-size: 13px; color: rgba(44,36,22,0.55); line-height: 1.7; font-weight: 300; }
+
+/* SMS DEMO */
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.phone-wrap { display: flex; justify-content: center; position: relative; }
+.phone-glow { position: absolute; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(139,111,62,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); filter: blur(30px); }
+.phone {
+  width: 268px; position: relative; z-index: 1;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 36px; padding: 20px 15px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(44,36,22,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.phone-notch { width: 70px; height: 5px; background: rgba(44,36,22,0.1); border-radius: 100px; margin: 0 auto 16px; }
+.phone-hdr { text-align: center; padding-bottom: 12px; border-bottom: 1px solid rgba(44,36,22,0.08); margin-bottom: 12px; }
+.phone-hdr p { font-size: 9px; color: rgba(44,36,22,0.4); margin-bottom: 2px; }
+.phone-hdr h4 { font-size: 12px; color: #2C2416; font-weight: 500; }
+.pm { margin-bottom: 8px; }
+.pm-o { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); border-radius: 13px 13px 13px 3px; padding: 9px 11px; font-size: 10.5px; color: #2C2416; line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; backdrop-filter: blur(4px); }
+.pm-m { background: rgba(139,111,62,0.12); border: 1px solid rgba(139,111,62,0.15); border-radius: 13px 13px 3px 13px; padding: 9px 11px; font-size: 10.5px; color: #4A3728; line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-left: 20px; }
+.pm-t { font-size: 9px; color: rgba(44,36,22,0.25); margin-top: 3px; padding: 0 3px; }
+
+/* WAITLIST SECTION */
+.waitlist-section { padding: 100px 40px; position: relative; z-index: 1; }
+.waitlist-glass {
+  background: rgba(44,36,22,0.88);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 32px;
+  padding: 72px 56px;
+  max-width: 640px; margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 20px 80px rgba(44,36,22,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.wl-lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #C4923A; margin-bottom: 16px; display: block; }
+.wl-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 5vw, 64px); font-weight: 300; line-height: 1.08; letter-spacing: -1px; color: #F7F3ED; margin-bottom: 16px; }
+.wl-title em { font-style: italic; color: #E8B86D; }
+.wl-sub { font-size: 15px; color: rgba(247,243,237,0.5); line-height: 1.8; font-weight: 300; margin-bottom: 40px; }
+.wl-form { display: flex; flex-direction: column; gap: 10px; }
+.wl-input {
+  width: 100%; padding: 15px 20px;
+  background: rgba(247,243,237,0.07);
+  border: 1px solid rgba(247,243,237,0.12);
+  border-radius: 14px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: #F7F3ED; outline: none; transition: all 0.3s;
+}
+.wl-input:focus { border-color: rgba(196,146,58,0.4); background: rgba(247,243,237,0.1); box-shadow: 0 0 0 3px rgba(196,146,58,0.08); }
+.wl-input::placeholder { color: rgba(247,243,237,0.22); }
+.wl-btn {
+  width: 100%; padding: 17px;
+  background: linear-gradient(135deg, #8B6F3E, #C4923A, #E8B86D);
+  color: #2C2416; border: none; border-radius: 14px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  font-weight: 600; cursor: pointer; letter-spacing: 0.3px;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.wl-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent); transform: translateX(-100%); transition: transform 0.6s; }
+.wl-btn:hover::before { transform: translateX(100%); }
+.wl-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(196,146,58,0.35); }
+.wl-note { font-size: 11px; color: rgba(247,243,237,0.2); margin-top: 18px; font-style: italic; line-height: 1.7; font-weight: 300; }
+
+/* THANK YOU */
+#ty-overlay {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(240,234,224,0.92);
+  backdrop-filter: blur(30px);
+  align-items: center; justify-content: center;
+  text-align: center; padding: 40px 20px;
+}
+#ty-inner { max-width: 520px; margin: 0 auto; opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
+.ty-card {
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 28px; padding: 48px 40px;
+  box-shadow: 0 8px 40px rgba(44,36,22,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.ty-ring { width: 100px; height: 100px; margin: 0 auto 32px; position: relative; }
+.ty-ring svg { width: 100px; height: 100px; transform: rotate(-90deg); }
+.ty-emoji { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; }
+.ty-lbl { font-size: 10px; color: #8B6F3E; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; display: block; }
+.ty-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 62px); font-weight: 300; color: #2C2416; line-height: 1.05; letter-spacing: -0.5px; margin-bottom: 16px; }
+.ty-title em { font-style: italic; color: #8B6F3E; }
+.ty-msg { font-size: 15px; color: rgba(44,36,22,0.55); line-height: 1.8; font-weight: 300; margin-bottom: 32px; }
+.ty-steps { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 16px; padding: 24px; margin-bottom: 28px; text-align: left; }
+.ty-step { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(44,36,22,0.06); }
+.ty-step:last-child { border-bottom: none; padding-bottom: 0; }
+.ty-step-n { width: 26px; height: 26px; border-radius: 50%; background: rgba(139,111,62,0.1); border: 1px solid rgba(139,111,62,0.2); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #8B6F3E; font-weight: 600; flex-shrink: 0; }
+.ty-step-txt p:first-child { font-size: 12px; color: #2C2416; font-weight: 500; margin-bottom: 2px; }
+.ty-step-txt p:last-child { font-size: 11px; color: rgba(44,36,22,0.5); font-weight: 300; line-height: 1.5; }
+.ty-share { background: transparent; border: 1px solid rgba(44,36,22,0.15); color: #8B6F3E; padding: 10px 24px; border-radius: 100px; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-bottom: 24px; }
+.ty-share:hover { background: rgba(139,111,62,0.08); border-color: rgba(139,111,62,0.3); }
+.ty-founder { font-size: 11px; color: rgba(44,36,22,0.3); font-style: italic; line-height: 1.7; font-weight: 300; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  padding: 48px 40px 36px;
+}
+.ft-glass {
+  background: rgba(44,36,22,0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px; padding: 40px 48px;
+  max-width: 1100px; margin: 0 auto;
+}
+.ft-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+.ft-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: #F7F3ED; margin-bottom: 6px; }
+.ft-tag { font-size: 11px; color: rgba(247,243,237,0.3); font-style: italic; font-weight: 300; }
+.ft-links { display: flex; gap: 24px; align-items: center; }
+.ft-links a { font-size: 11px; color: rgba(247,243,237,0.3); text-decoration: none; transition: color 0.2s; }
+.ft-links a:hover { color: #C4923A; }
+.ft-bottom { display: flex; justify-content: space-between; align-items: center; }
+.ft-copy { font-size: 10px; color: rgba(247,243,237,0.2); }
+.ft-mission { font-size: 10px; color: rgba(247,243,237,0.2); font-style: italic; max-width: 280px; text-align: right; line-height: 1.6; }
+
+/* FADE UP */
+.fu { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fu.visible { opacity: 1; transform: translateY(0); }
+
+/* ANIMATIONS */
+@keyframes emojiPop { 0%{transform:scale(1)} 40%{transform:scale(1.5) rotate(10deg)} 70%{transform:scale(0.9)} 100%{transform:scale(1)} }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-logo { font-size: 18px; }
+  .hero { padding: 90px 20px 50px; }
+  .glass-card { padding: 40px 24px; border-radius: 24px; }
+  .card-title { font-size: clamp(40px, 10vw, 60px); }
+  .card-form { flex-direction: column; }
+  .card-form button { width: 100%; padding: 14px; }
+  .section { padding: 70px 20px; }
+  .glass-panel { padding: 40px 28px; border-radius: 22px; }
+  .prob-grid { grid-template-columns: 1fr; gap: 40px; }
+  .act-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .how-grid { grid-template-columns: 1fr; gap: 10px; }
+  .demo-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .phone { max-width: 300px; width: 100%; margin: 0 auto; }
+  .waitlist-section { padding: 70px 20px; }
+  .waitlist-glass { padding: 48px 28px; border-radius: 24px; }
+  .wl-title { font-size: clamp(36px, 8vw, 52px); }
+  footer { padding: 32px 20px 28px; }
+  .ft-glass { padding: 32px 24px; border-radius: 20px; }
+  .ft-top { flex-direction: column; gap: 20px; }
+  .ft-links { flex-wrap: wrap; gap: 14px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .ft-mission { text-align: center; max-width: 100%; }
+  .ty-card { padding: 36px 24px; }
+}
+@media (max-width: 420px) {
+  .act-grid { grid-template-columns: 1fr; }
+  .card-title { font-size: 38px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-wrap">
+  <div class="bg-orb bg-orb1"></div>
+  <div class="bg-orb bg-orb2"></div>
+  <div class="bg-orb bg-orb3"></div>
+  <div class="bg-orb bg-orb4"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">ORIMI</div>
+  <button class="nav-btn" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join waitlist</button>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="glass-card">
+        <div class="card-badge"><span class="badge-dot"></span>Now accepting waitlist</div>
+        <h1 class="card-title">Your doula.<br><em>In your pocket.</em><br>Every day.</h1>
+        <p class="card-sub">ORIMI is an AI doula that texts you every morning, prepares you for every appointment, and never stops showing up — through pregnancy, birth, and postpartum.</p>
+        <p class="card-sub2">Secure early access to our program and stay updated on launch announcements, insights, and upcoming feature previews.</p>
+        <div class="card-form">
+          <input type="email" placeholder="Your email address" id="hero-email">
+          <button onclick="heroJoin()">Join waitlist</button>
+        </div>
+        <div class="card-proof">
+          <div class="proof-avs">
+            <div class="proof-av">A</div>
+            <div class="proof-av">M</div>
+            <div class="proof-av">J</div>
+            <div class="proof-av">T</div>
+          </div>
+          <span>Join 200+ mamas already on the waitlist</span>
+        </div>
+      </div>
+      <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section">
+    <div class="glass-panel fu">
+      <div class="prob-grid">
+        <div>
+          <span class="lbl">The reality</span>
+          <h2 class="ttl">Every mother deserves <em>better than this.</em></h2>
+          <p class="sub">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
+        </div>
+        <div>
+          <div class="stat-row"><div class="stat-n">3×</div><div class="stat-t">Black mothers are 3 times more likely to die from pregnancy-related causes — maternal mortality affects mothers across all backgrounds in America</div></div>
+          <div class="stat-row"><div class="stat-n">6%</div><div class="stat-t">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes for mothers and babies</div></div>
+          <div class="stat-row"><div class="stat-n">39%</div><div class="stat-t">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and interventions</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIONS -->
+  <section class="section" style="padding-top:0;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="fu" style="margin-bottom:40px;">
+        <span class="lbl">How ORIMI shows up</span>
+        <h2 class="ttl">Not a reminder app.<br><em>A doula.</em></h2>
+        <p class="sub">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+      </div>
+      <div class="act-grid fu">
+        <div class="act-card"><div class="act-n">01</div><span class="act-tag">Educate</span><div class="act-title">Teach her what's really happening</div><div class="act-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now. Specific to her week, her body, her baby.</div></div>
+        <div class="act-card"><div class="act-n">02</div><span class="act-tag">Prepare</span><div class="act-title">Before every appointment</div><div class="act-desc">48 hours before the glucose test — what the drink tastes like, not to eat sugar beforehand, and the exact questions to ask.</div></div>
+        <div class="act-card"><div class="act-n">03</div><span class="act-tag">Support</span><div class="act-title">Hold space. Validate. Stay.</div><div class="act-desc">"That sounds really hard" before "here's what might help." The thing no app does well but every mama needs.</div></div>
+        <div class="act-card"><div class="act-n">04</div><span class="act-tag">Advocate</span><div class="act-title">Give her the words</div><div class="act-desc">The BRAIN framework. Teaching her she has the right to ask why — and that asking is not being difficult. It's being an informed parent.</div></div>
+        <div class="act-card"><div class="act-n">05</div><span class="act-tag">Anticipate</span><div class="act-title">Before she has to ask</div><div class="act-desc">At 13 emotional flashpoints — anatomy scan, week 37 labor fear, day 3 postpartum crash — ORIMI reaches out first.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" style="padding-top:0;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="fu" style="margin-bottom:40px;">
+        <span class="lbl">Getting started</span>
+        <h2 class="ttl">No app to download.<br><em>Just your phone.</em></h2>
+      </div>
+      <div class="how-grid fu">
+        <div class="how-step"><div class="how-bg-n">1</div><div class="how-icon">📱</div><div class="how-title">Text to join</div><div class="how-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
+        <div class="how-step"><div class="how-bg-n">2</div><div class="how-icon">🤱🏾</div><div class="how-title">ORIMI learns you</div><div class="how-desc">She learns your stage, your provider, your preferences. Every message is personalized to exactly where you are.</div></div>
+        <div class="how-step"><div class="how-bg-n">3</div><div class="how-icon">✦</div><div class="how-title">She never stops</div><div class="how-desc">Every morning. Before every appointment. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SMS DEMO -->
+  <section class="section" style="padding-top:0;">
+    <div class="glass-panel fu">
+      <div class="demo-grid">
+        <div>
+          <span class="lbl">What ORIMI sounds like</span>
+          <h2 class="ttl">A doula who<br>knows <em>you.</em></h2>
+          <p class="sub">This is the difference between a notification and a doula. ORIMI tells moms what it is, why it matters, how to prepare, and what comes next.</p>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone-glow"></div>
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
+            <div class="pm"><div class="pm-o">Good morning Remy. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
+            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
+            <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler for heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
+            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
+            <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section class="waitlist-section" id="waitlist">
+    <div class="waitlist-glass fu">
+      <span class="wl-lbl">Join the waitlist</span>
+      <h2 class="wl-title">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
+      <p class="wl-sub">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
+      <div class="wl-form" id="wl-form">
+        <input class="wl-input" type="text" placeholder="First name" id="wl-name">
+        <input class="wl-input" type="email" placeholder="Email address" id="wl-email">
+        <input class="wl-input" type="tel" placeholder="Phone number" id="wl-phone">
+        <input class="wl-input" type="text" placeholder="Due date (MM/YYYY)" id="wl-due">
+        <button class="wl-btn" onclick="joinWaitlist()">Join the waitlist →</button>
+      </div>
+      <p class="wl-note" id="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-glass">
+      <div class="ft-top">
+        <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
+        <div class="ft-links"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
+      </div>
+      <div class="ft-bottom">
+        <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
+        <div class="ft-mission">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- THANK YOU -->
+<div id="ty-overlay">
+  <div id="ty-inner">
+    <div class="ty-card">
+      <div class="ty-ring">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(139,111,62,0.12)" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="44" fill="none" stroke="url(#gg)" stroke-width="1.5"
+            stroke-dasharray="276" stroke-dashoffset="276" id="ty-circle"
+            style="transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1) 0.4s;"/>
+          <defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B6F3E"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs>
+        </svg>
+        <div class="ty-emoji" id="ty-emoji">🤱🏾</div>
+      </div>
+      <span class="ty-lbl">You're on the list</span>
+      <h2 class="ty-title">Welcome, <em id="ty-name">mama.</em></h2>
+      <p class="ty-msg">ORIMI will reach out before your due date. In the meantime — rest, eat the dates, and know that someone is already thinking about you.</p>
+      <div class="ty-steps">
+        <div class="ty-step"><div class="ty-step-n">1</div><div class="ty-step-txt"><p>Confirmation email on its way</p><p>Add hello@orimi.com to your contacts so you never miss a message.</p></div></div>
+        <div class="ty-step"><div class="ty-step-n">2</div><div class="ty-step-txt"><p>ORIMI will text you before your due date</p><p>She'll introduce herself and ask how you're feeling. No spam. Ever.</p></div></div>
+        <div class="ty-step"><div class="ty-step-n">3</div><div class="ty-step-txt"><p>Early access before public launch</p><p>Waitlist mamas get in first — at the founding member rate.</p></div></div>
+      </div>
+      <button class="ty-share" onclick="shareORIMI()">Share with a mama →</button>
+      <p class="ty-founder">"This is not a tech product. This is a doula."<br><span style="color:rgba(44,36,22,0.4);font-style:normal;">— Khylir Patton, Founder</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  if(scrollY > 60) {
+    nav.style.background = 'rgba(240,232,220,0.7)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.borderBottom = '1px solid rgba(255,255,255,0.4)';
+  } else {
+    nav.style.background = '';
+    nav.style.backdropFilter = '';
+    nav.style.borderBottom = '';
+  }
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+// Hero join
+function heroJoin() {
+  const v = document.getElementById('hero-email').value;
+  if(v) document.getElementById('wl-email').value = v;
+  document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});
+}
+
+// Waitlist submit
+function joinWaitlist() {
+  const name = document.getElementById('wl-name').value.trim();
+  const email = document.getElementById('wl-email').value.trim();
+  if(!name||!email) { alert('Please enter your name and email.'); return; }
+  const btn = document.querySelector('.wl-btn');
+  btn.textContent='Joining...'; btn.style.opacity='0.6'; btn.disabled=true;
+  setTimeout(() => showTY(name), 900);
+}
+
+function showTY(name) {
+  document.getElementById('ty-name').textContent = name.split(' ')[0]+'.';
+  const ov = document.getElementById('ty-overlay');
+  ov.style.display='flex'; document.body.style.overflow='hidden';
+  setTimeout(() => {
+    const inn = document.getElementById('ty-inner');
+    inn.style.opacity='1'; inn.style.transform='translateY(0)';
+    setTimeout(() => {
+      document.getElementById('ty-circle').style.strokeDashoffset='0';
+      setTimeout(() => { document.getElementById('ty-emoji').style.animation='emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both'; }, 600);
+    }, 200);
+  }, 80);
+}
+
+function shareORIMI() {
+  if(navigator.share) {
+    navigator.share({title:'ORIMI',text:'I just joined the ORIMI waitlist — an AI doula for every mother.',url:location.href});
+  } else {
+    navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!'));
+  }
+}
+</script>
+</body>
+</html>
