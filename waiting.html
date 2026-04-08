@@ -7,655 +7,794 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: #EDE5D8;
-  color: #2C2416;
-  overflow-x: hidden;
-  min-height: 100vh;
+:root{
+  --bg:#F5EFE6;--bg2:#EDE5D8;--bg3:#E4D9C8;
+  --brown:#2C2416;--brown2:#4A3728;
+  --gold:#9B6E2A;--gold2:#C4923A;--gold3:#E8B86D;
+  --cream:#FAF6F0;--muted:rgba(44,36,22,.52);
+  --border:rgba(155,110,42,.18);--border2:rgba(44,36,22,.07);
+  --green:#3A5C32;--green2:#5A8A4E;
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--brown);overflow-x:hidden;cursor:none;}
 
-/* BACKGROUND */
-.bg-wrap {
-  position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(145deg, #F0E8D8 0%, #E8DCC8 30%, #D4C9B0 60%, #C8BEA8 100%);
-}
-.bg-orb {
-  position: absolute; border-radius: 50%;
-  filter: blur(60px); pointer-events: none;
-}
-.bg-orb1 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(196,146,58,0.25) 0%, transparent 70%);
-  top: -100px; left: -100px;
-  animation: float1 10s ease-in-out infinite;
-}
-.bg-orb2 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(74,94,58,0.15) 0%, transparent 70%);
-  bottom: -80px; right: -80px;
-  animation: float2 12s ease-in-out infinite;
-}
-.bg-orb3 {
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(196,146,58,0.12) 0%, transparent 70%);
-  top: 40%; right: 10%;
-  animation: float1 8s ease-in-out infinite 3s;
-}
-.bg-orb4 {
-  width: 250px; height: 250px;
-  background: radial-gradient(circle, rgba(139,111,62,0.1) 0%, transparent 70%);
-  bottom: 20%; left: 5%;
-  animation: float2 14s ease-in-out infinite 1s;
-}
-@keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-30px) scale(1.05)} }
-@keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,20px) scale(1.03)} }
+/* CURSOR */
+#cur{width:7px;height:7px;background:var(--gold2);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cur-ring{width:34px;height:34px;border:1px solid rgba(155,110,42,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+
+/* CANVAS */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.4;}
 
 /* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 20px 40px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.nav-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px; font-weight: 500; letter-spacing: 4px;
-  text-transform: uppercase; color: #2C2416;
-}
-.nav-btn {
-  background: rgba(44,36,22,0.85);
-  backdrop-filter: blur(10px);
-  color: #F7F3ED; border: none;
-  padding: 10px 24px; border-radius: 100px;
-  font-size: 12px; font-family: 'DM Sans', sans-serif;
-  font-weight: 500; letter-spacing: 0.5px;
-  cursor: pointer; transition: all 0.3s;
-}
-.nav-btn:hover { background: #8B6F3E; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(44,36,22,0.25); }
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 52px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(245,239,230,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 52px;box-shadow:0 4px 30px rgba(44,36,22,.06);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--brown);}
+.nav-btn{background:var(--brown);color:var(--cream);border:none;padding:11px 28px;border-radius:100px;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.nav-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.08),transparent);transform:translateX(-100%);transition:transform .5s;}
+.nav-btn:hover::before{transform:translateX(100%);}
+.nav-btn:hover{background:var(--gold);transform:translateY(-1px);box-shadow:0 6px 24px rgba(155,110,42,.3);}
 
-/* PAGE CONTENT */
-.page { position: relative; z-index: 1; }
+/* PAGE */
+.page{position:relative;z-index:1;}
 
-/* HERO SECTION — GLASS CARD */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 100px 24px 60px;
-}
-.glass-card {
-  background: rgba(255,255,255,0.28);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 32px;
-  padding: 56px 48px;
-  max-width: 620px; width: 100%;
-  text-align: center;
-  box-shadow: 0 8px 60px rgba(44,36,22,0.12), 0 2px 8px rgba(44,36,22,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
-  animation: cardIn 1s cubic-bezier(0.16,1,0.3,1) both;
-}
-@keyframes cardIn { from{opacity:0;transform:translateY(40px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+/* =========================================
+   TEXT ANIMATION SYSTEM — FIXED
+   ========================================= */
 
-.card-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(255,255,255,0.7);
-  padding: 6px 16px; border-radius: 100px;
-  font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #6B5B45;
-  margin-bottom: 32px;
-}
-.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4A5E3A; box-shadow: 0 0 8px rgba(74,94,58,0.6); animation: blink 2s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+/* Word-by-word slide up */
+.word-reveal .wr{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.word-reveal .wi{display:inline-block;transform:translateY(105%);opacity:0;transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s ease;}
+.word-reveal.active .wi{transform:translateY(0);opacity:1;}
 
-.card-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(44px, 7vw, 72px);
-  font-weight: 300; line-height: 1.0;
-  letter-spacing: -1.5px; color: #2C2416;
-  margin-bottom: 16px;
-}
-.card-title em { font-style: italic; color: #8B6F3E; }
+/* Blur fade in */
+.blur-reveal{filter:blur(10px);opacity:0;transform:translateY(10px);transition:filter .9s ease,opacity .7s ease,transform .7s ease;}
+.blur-reveal.active{filter:blur(0);opacity:1;transform:translateY(0);}
 
-.card-sub {
-  font-size: 15px; color: rgba(44,36,22,0.6);
-  line-height: 1.7; font-weight: 300;
-  margin-bottom: 10px;
-}
-.card-sub2 {
-  font-size: 13px; color: rgba(44,36,22,0.42);
-  font-style: italic; line-height: 1.6;
-  margin-bottom: 36px; font-weight: 300;
-}
+/* Slide from left */
+.slide-left{opacity:0;transform:translateX(-32px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);}
+.slide-left.active{opacity:1;transform:translateX(0);}
 
-.card-form { display: flex; gap: 8px; margin-bottom: 20px; }
-.card-form input {
-  flex: 1; padding: 14px 18px;
-  background: rgba(255,255,255,0.6);
-  border: 1px solid rgba(255,255,255,0.8);
-  border-radius: 100px; font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
-  color: #2C2416; outline: none;
-  transition: all 0.3s;
-  box-shadow: inset 0 1px 3px rgba(44,36,22,0.06);
-}
-.card-form input:focus {
-  background: rgba(255,255,255,0.8);
-  border-color: rgba(139,111,62,0.4);
-  box-shadow: 0 0 0 3px rgba(139,111,62,0.1);
-}
-.card-form input::placeholder { color: rgba(44,36,22,0.3); }
-.card-form button {
-  background: #2C2416; color: #F7F3ED;
-  border: none; padding: 14px 24px;
-  border-radius: 100px; font-size: 13px;
-  font-family: 'DM Sans', sans-serif; font-weight: 500;
-  cursor: pointer; white-space: nowrap; transition: all 0.3s;
-}
-.card-form button:hover { background: #8B6F3E; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(44,36,22,0.25); }
+/* Scale fade */
+.scale-reveal{opacity:0;transform:scale(.9) translateY(12px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);}
+.scale-reveal.active{opacity:1;transform:scale(1) translateY(0);}
 
-.card-proof {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  font-size: 12px; color: rgba(44,36,22,0.42);
-}
-.proof-avs { display: flex; }
-.proof-av {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.8); margin-left: -7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 600; color: white;
-}
-.proof-av:first-child { margin-left:0; background: linear-gradient(135deg,#8B3A3A,#C4923A); }
-.proof-av:nth-child(2) { background: linear-gradient(135deg,#3D6B3A,#5A9E56); }
-.proof-av:nth-child(3) { background: linear-gradient(135deg,#3A6B8B,#8B6030); }
-.proof-av:nth-child(4) { background: linear-gradient(135deg,#6B3A8B,#C4923A); }
+/* Simple fade up */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .85s ease,transform .85s ease;}
+.fu.active{opacity:1;transform:translateY(0);}
 
-/* SCROLL INDICATOR */
-.scroll-hint {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-  color: rgba(44,36,22,0.35); animation: fadeIn 1s 1.2s ease both;
-}
-.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(44,36,22,0.3), transparent); animation: scrollPulse 2s ease infinite; }
-@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:0.4} 50%{transform:scaleY(0.6);opacity:1} }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+/* Hero title lines */
+.hl{display:block;overflow:hidden;}
+.hli{display:block;transform:translateY(108%);transition:transform .9s cubic-bezier(.16,1,.3,1);}
+.hli.plain{color:var(--brown);}
+.hli.em{font-style:italic;color:var(--gold2);}
+.hli.active{transform:translateY(0);}
 
-/* CONTENT SECTIONS */
-.section {
-  padding: 100px 40px; position: relative; z-index: 1;
-}
+/* =========================================
+   HERO
+   ========================================= */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 52px 80px;position:relative;overflow:hidden;}
+.hero-inner{position:relative;z-index:1;max-width:820px;}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);background:rgba(255,255,255,.5);backdrop-filter:blur(8px);padding:7px 18px;border-radius:100px;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:44px;opacity:0;animation:fadeUp .8s .3s ease forwards;}
+.ey-dot{width:6px;height:6px;border-radius:50%;background:var(--green2);box-shadow:0 0 8px rgba(90,138,78,.6);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* GLASS PANEL — for content sections */
-.glass-panel {
-  background: rgba(255,255,255,0.22);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.4);
-  border-radius: 28px;
-  padding: 56px 48px;
-  max-width: 1100px; margin: 0 auto;
-  box-shadow: 0 4px 40px rgba(44,36,22,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
-}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(62px,9.5vw,118px);font-weight:300;line-height:1.0;letter-spacing:-2px;margin-bottom:36px;}
 
-.lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #8B6F3E; margin-bottom: 16px; display: block; }
-.ttl { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4.5vw, 60px); font-weight: 300; line-height: 1.08; letter-spacing: -0.5px; color: #2C2416; margin-bottom: 20px; }
-.ttl em { font-style: italic; color: #8B6F3E; }
-.sub { font-size: 16px; color: rgba(44,36,22,0.55); line-height: 1.8; font-weight: 300; }
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.8;font-weight:300;max-width:540px;margin-bottom:10px;opacity:0;animation:fadeUp .8s 1.3s ease forwards;}
+.hero-sub2{font-size:13px;color:rgba(44,36,22,.36);font-style:italic;line-height:1.6;max-width:460px;margin-bottom:44px;font-weight:300;opacity:0;animation:fadeUp .8s 1.5s ease forwards;}
+
+.hero-cta{display:flex;gap:14px;align-items:center;margin-bottom:40px;opacity:0;animation:fadeUp .8s 1.6s ease forwards;}
+.btn-primary{background:var(--brown);color:var(--cream);border:none;padding:16px 34px;border-radius:100px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;letter-spacing:.5px;transition:all .3s;position:relative;overflow:hidden;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.08),transparent);transform:translateX(-100%);transition:transform .5s;}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-primary:hover{background:var(--gold);transform:translateY(-2px);box-shadow:0 8px 32px rgba(155,110,42,.35);}
+.btn-outline{background:transparent;color:var(--brown);border:1.5px solid var(--border2);padding:16px 26px;border-radius:100px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:400;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .3s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+.hero-proof{display:flex;align-items:center;gap:12px;font-size:12px;color:rgba(44,36,22,.36);opacity:0;animation:fadeUp .8s 1.8s ease forwards;}
+.proof-avs{display:flex;}
+.proof-av{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);margin-left:-7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:white;}
+.proof-av:first-child{margin-left:0;background:linear-gradient(135deg,#8B3A3A,#C4923A);}
+.proof-av:nth-child(2){background:linear-gradient(135deg,#3D6B3A,#5A9E56);}
+.proof-av:nth-child(3){background:linear-gradient(135deg,#3A6B8B,#8B6030);}
+.proof-av:nth-child(4){background:linear-gradient(135deg,#6B3A8B,#C4923A);}
+
+/* FLOATING TECH TAGS */
+.hero-tags{position:absolute;right:52px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;opacity:0;animation:fadeUp .8s 2s ease forwards;}
+@media(max-width:1100px){.hero-tags{display:none;}}
+.htag{background:rgba(255,255,255,.45);border:1px solid rgba(155,110,42,.15);backdrop-filter:blur(10px);padding:8px 16px;border-radius:100px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(44,36,22,.5);animation:tagPulse 4s ease-in-out infinite;}
+.htag:nth-child(2){animation-delay:.6s;}
+.htag:nth-child(3){animation-delay:1.2s;}
+.htag:nth-child(4){animation-delay:1.8s;}
+@keyframes tagPulse{0%,100%{transform:translateX(0);opacity:.6}50%{transform:translateX(-5px);opacity:1;}}
+
+/* =========================================
+   SECTIONS
+   ========================================= */
+section{padding:110px 52px;position:relative;z-index:1;}
+.s-wrap{max-width:1100px;margin:0 auto;}
+.lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.lbl::before{content:'';width:20px;height:1px;background:var(--gold);}
+.ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,62px);font-weight:300;line-height:1.06;letter-spacing:-.5px;color:var(--brown);margin-bottom:20px;}
+.ttl em{font-style:italic;color:var(--gold2);}
+.sub{font-size:16px;color:var(--muted);line-height:1.8;font-weight:300;}
+
+/* GLASS PANELS */
+.gp{background:rgba(255,255,255,.35);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.55);border-radius:26px;padding:52px 48px;box-shadow:0 4px 50px rgba(44,36,22,.07),inset 0 1px 0 rgba(255,255,255,.7);}
 
 /* PROBLEM */
-.prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.stat-row { display: flex; gap: 20px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid rgba(44,36,22,0.08); transition: padding-left 0.3s; }
-.stat-row:first-child { border-top: 1px solid rgba(44,36,22,0.08); }
-.stat-row:hover { padding-left: 8px; }
-.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 54px; font-weight: 300; color: #8B6F3E; line-height: 1; min-width: 90px; flex-shrink: 0; }
-.stat-t { font-size: 13px; color: rgba(44,36,22,0.55); line-height: 1.6; font-weight: 300; }
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.stat-row{display:flex;gap:20px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--border2);transition:all .3s;cursor:default;}
+.stat-row:first-child{border-top:1px solid var(--border2);}
+.stat-row:hover{padding-left:10px;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--gold2);line-height:1;min-width:92px;flex-shrink:0;}
+.stat-t{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;}
+
+/* CULTURAL */
+.cult-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px;}
+.cult-card{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.7);border-radius:18px;padding:28px 22px;backdrop-filter:blur(10px);transition:all .4s;position:relative;overflow:hidden;}
+.cult-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold3));transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.cult-card:hover{background:rgba(255,255,255,.7);transform:translateY(-6px);box-shadow:0 16px 40px rgba(44,36,22,.1);}
+.cult-card:hover::after{transform:scaleX(1);}
+.cult-icon{font-size:26px;margin-bottom:14px;}
+.cult-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--brown);margin-bottom:8px;}
+.cult-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;}
 
 /* ACTIONS */
-.act-grid {
-  display: grid; grid-template-columns: repeat(5,1fr);
-  gap: 12px; margin-top: 48px;
-}
-.act-card {
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(255,255,255,0.55);
-  border-radius: 20px; padding: 28px 20px;
-  backdrop-filter: blur(10px);
-  transition: all 0.35s; position: relative; overflow: hidden;
-}
-.act-card:hover {
-  background: rgba(255,255,255,0.55);
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(44,36,22,0.12);
-}
-.act-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(to right, #8B6F3E, #C4923A);
-  transform: scaleX(0); transition: transform 0.35s; transform-origin: left;
-}
-.act-card:hover::before { transform: scaleX(1); }
-.act-n { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; color: rgba(139,111,62,0.15); line-height: 1; margin-bottom: 14px; }
-.act-tag { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8B6F3E; margin-bottom: 8px; display: block; }
-.act-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: #2C2416; margin-bottom: 8px; line-height: 1.2; }
-.act-desc { font-size: 11px; color: rgba(44,36,22,0.55); line-height: 1.65; font-weight: 300; }
+.act-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-top:48px;}
+.act-card{background:rgba(255,255,255,.5);padding:32px 22px;transition:all .35s;position:relative;overflow:hidden;backdrop-filter:blur(8px);}
+.act-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold3));transform:scaleX(0);transition:transform .35s;transform-origin:left;}
+.act-card:hover{background:rgba(255,255,255,.75);}
+.act-card:hover::before{transform:scaleX(1);}
+.act-n{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;color:rgba(155,110,42,.1);line-height:1;margin-bottom:14px;}
+.act-tag{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
+.act-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--brown);margin-bottom:8px;line-height:1.2;}
+.act-desc{font-size:11px;color:var(--muted);line-height:1.7;font-weight:300;}
 
 /* HOW */
-.how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
-.how-step {
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(255,255,255,0.55);
-  border-radius: 20px; padding: 40px 32px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s; position: relative; overflow: hidden;
-}
-.how-step:hover { background: rgba(255,255,255,0.55); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(44,36,22,0.1); }
-.how-bg-n { font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: rgba(139,111,62,0.07); line-height: 1; position: absolute; top: 12px; right: 16px; }
-.how-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 20px; }
-.how-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: #2C2416; margin-bottom: 12px; }
-.how-desc { font-size: 13px; color: rgba(44,36,22,0.55); line-height: 1.7; font-weight: 300; }
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-top:48px;}
+.how-step{background:rgba(255,255,255,.45);padding:44px 34px;position:relative;overflow:hidden;transition:all .3s;backdrop-filter:blur(8px);}
+.how-step:hover{background:rgba(255,255,255,.7);}
+.how-bg-n{font-family:'Cormorant Garamond',serif;font-size:96px;font-weight:300;color:rgba(155,110,42,.06);line-height:1;position:absolute;top:12px;right:16px;}
+.how-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:20px;}
+.how-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--brown);margin-bottom:12px;}
+.how-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* PARTNER */
+.partner-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:30px;}
+.ps-card{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.65);border-radius:16px;padding:26px 24px;backdrop-filter:blur(8px);transition:all .3s;}
+.ps-card:hover{background:rgba(255,255,255,.65);transform:translateY(-3px);}
+.ps-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold2);line-height:1;margin-bottom:10px;}
+.ps-text{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:8px;}
+.ps-src{font-size:10px;color:rgba(44,36,22,.28);font-style:italic;}
+.partner-bottom{background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.65);border-radius:18px;padding:36px 38px;backdrop-filter:blur(8px);}
+.partner-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+.pi{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.pi-dot{width:6px;height:6px;border-radius:50%;background:var(--gold2);flex-shrink:0;margin-top:6px;box-shadow:0 0 6px rgba(196,146,58,.4);}
+.pi-title{font-size:13px;font-weight:500;color:var(--brown);margin-bottom:3px;}
+.pi-desc{font-size:11px;color:var(--muted);font-weight:300;line-height:1.5;}
 
 /* SMS DEMO */
-.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.phone-wrap { display: flex; justify-content: center; position: relative; }
-.phone-glow { position: absolute; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(139,111,62,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); filter: blur(30px); }
-.phone {
-  width: 268px; position: relative; z-index: 1;
-  background: rgba(255,255,255,0.45);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 36px; padding: 20px 15px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 60px rgba(44,36,22,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
-}
-.phone-notch { width: 70px; height: 5px; background: rgba(44,36,22,0.1); border-radius: 100px; margin: 0 auto 16px; }
-.phone-hdr { text-align: center; padding-bottom: 12px; border-bottom: 1px solid rgba(44,36,22,0.08); margin-bottom: 12px; }
-.phone-hdr p { font-size: 9px; color: rgba(44,36,22,0.4); margin-bottom: 2px; }
-.phone-hdr h4 { font-size: 12px; color: #2C2416; font-weight: 500; }
-.pm { margin-bottom: 8px; }
-.pm-o { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9); border-radius: 13px 13px 13px 3px; padding: 9px 11px; font-size: 10.5px; color: #2C2416; line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; backdrop-filter: blur(4px); }
-.pm-m { background: rgba(139,111,62,0.12); border: 1px solid rgba(139,111,62,0.15); border-radius: 13px 13px 3px 13px; padding: 9px 11px; font-size: 10.5px; color: #4A3728; line-height: 1.6; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-left: 20px; }
-.pm-t { font-size: 9px; color: rgba(44,36,22,0.25); margin-top: 3px; padding: 0 3px; }
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.phone-wrap{position:relative;display:flex;justify-content:center;}
+.phone-halo{position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(155,110,42,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(24px);}
+.phone{width:270px;position:relative;z-index:1;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85);border-radius:38px;padding:20px 15px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(44,36,22,.12),inset 0 1px 0 rgba(255,255,255,.9);}
+.phone-notch{width:70px;height:5px;background:rgba(44,36,22,.08);border-radius:100px;margin:0 auto 16px;}
+.phone-hdr{text-align:center;padding-bottom:12px;border-bottom:1px solid rgba(44,36,22,.06);margin-bottom:12px;}
+.phone-hdr p{font-size:9px;color:var(--muted);margin-bottom:2px;}
+.phone-hdr h4{font-size:12px;color:var(--brown);font-weight:500;}
+.pm{margin-bottom:8px;}
+.pm-o{background:rgba(155,110,42,.1);border:1px solid rgba(155,110,42,.12);border-radius:13px 13px 13px 3px;padding:9px 11px;font-size:10.5px;color:var(--brown);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;}
+.pm-m{background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9);border-radius:13px 13px 3px 13px;padding:9px 11px;font-size:10.5px;color:var(--muted);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;margin-left:20px;}
+.pm-t{font-size:9px;color:rgba(44,36,22,.22);margin-top:3px;padding:0 3px;}
 
-/* WAITLIST SECTION */
-.waitlist-section { padding: 100px 40px; position: relative; z-index: 1; }
-.waitlist-glass {
-  background: rgba(44,36,22,0.88);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 32px;
-  padding: 72px 56px;
-  max-width: 640px; margin: 0 auto;
-  text-align: center;
-  box-shadow: 0 20px 80px rgba(44,36,22,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
-}
-.wl-lbl { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #C4923A; margin-bottom: 16px; display: block; }
-.wl-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 5vw, 64px); font-weight: 300; line-height: 1.08; letter-spacing: -1px; color: #F7F3ED; margin-bottom: 16px; }
-.wl-title em { font-style: italic; color: #E8B86D; }
-.wl-sub { font-size: 15px; color: rgba(247,243,237,0.5); line-height: 1.8; font-weight: 300; margin-bottom: 40px; }
-.wl-form { display: flex; flex-direction: column; gap: 10px; }
-.wl-input {
-  width: 100%; padding: 15px 20px;
-  background: rgba(247,243,237,0.07);
-  border: 1px solid rgba(247,243,237,0.12);
-  border-radius: 14px; font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
-  color: #F7F3ED; outline: none; transition: all 0.3s;
-}
-.wl-input:focus { border-color: rgba(196,146,58,0.4); background: rgba(247,243,237,0.1); box-shadow: 0 0 0 3px rgba(196,146,58,0.08); }
-.wl-input::placeholder { color: rgba(247,243,237,0.22); }
-.wl-btn {
-  width: 100%; padding: 17px;
-  background: linear-gradient(135deg, #8B6F3E, #C4923A, #E8B86D);
-  color: #2C2416; border: none; border-radius: 14px;
-  font-size: 14px; font-family: 'DM Sans', sans-serif;
-  font-weight: 600; cursor: pointer; letter-spacing: 0.3px;
-  transition: all 0.3s; position: relative; overflow: hidden;
-}
-.wl-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent); transform: translateX(-100%); transition: transform 0.6s; }
-.wl-btn:hover::before { transform: translateX(100%); }
-.wl-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(196,146,58,0.35); }
-.wl-note { font-size: 11px; color: rgba(247,243,237,0.2); margin-top: 18px; font-style: italic; line-height: 1.7; font-weight: 300; }
-
-/* THANK YOU */
-#ty-overlay {
-  display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(240,234,224,0.92);
-  backdrop-filter: blur(30px);
-  align-items: center; justify-content: center;
-  text-align: center; padding: 40px 20px;
-}
-#ty-inner { max-width: 520px; margin: 0 auto; opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
-.ty-card {
-  background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 28px; padding: 48px 40px;
-  box-shadow: 0 8px 40px rgba(44,36,22,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
-}
-.ty-ring { width: 100px; height: 100px; margin: 0 auto 32px; position: relative; }
-.ty-ring svg { width: 100px; height: 100px; transform: rotate(-90deg); }
-.ty-emoji { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; }
-.ty-lbl { font-size: 10px; color: #8B6F3E; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; display: block; }
-.ty-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 62px); font-weight: 300; color: #2C2416; line-height: 1.05; letter-spacing: -0.5px; margin-bottom: 16px; }
-.ty-title em { font-style: italic; color: #8B6F3E; }
-.ty-msg { font-size: 15px; color: rgba(44,36,22,0.55); line-height: 1.8; font-weight: 300; margin-bottom: 32px; }
-.ty-steps { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 16px; padding: 24px; margin-bottom: 28px; text-align: left; }
-.ty-step { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(44,36,22,0.06); }
-.ty-step:last-child { border-bottom: none; padding-bottom: 0; }
-.ty-step-n { width: 26px; height: 26px; border-radius: 50%; background: rgba(139,111,62,0.1); border: 1px solid rgba(139,111,62,0.2); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #8B6F3E; font-weight: 600; flex-shrink: 0; }
-.ty-step-txt p:first-child { font-size: 12px; color: #2C2416; font-weight: 500; margin-bottom: 2px; }
-.ty-step-txt p:last-child { font-size: 11px; color: rgba(44,36,22,0.5); font-weight: 300; line-height: 1.5; }
-.ty-share { background: transparent; border: 1px solid rgba(44,36,22,0.15); color: #8B6F3E; padding: 10px 24px; border-radius: 100px; font-size: 11px; font-family: 'DM Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-bottom: 24px; }
-.ty-share:hover { background: rgba(139,111,62,0.08); border-color: rgba(139,111,62,0.3); }
-.ty-founder { font-size: 11px; color: rgba(44,36,22,0.3); font-style: italic; line-height: 1.7; font-weight: 300; }
+/* WAITLIST */
+.waitlist-wrap{padding:100px 52px;position:relative;z-index:1;}
+.wl-glass{background:rgba(44,36,22,.9);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:72px 56px;max-width:640px;margin:0 auto;text-align:center;box-shadow:0 20px 80px rgba(44,36,22,.25),inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden;}
+.wl-glass::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,58,.1) 0%,transparent 65%);filter:blur(30px);pointer-events:none;}
+.wl-lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold3);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.wl-lbl::before,.wl-lbl::after{content:'';width:16px;height:1px;background:var(--gold3);opacity:.6;}
+.wl-title{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:300;line-height:1.06;letter-spacing:-1px;color:#F7F3ED;margin-bottom:16px;}
+.wl-title em{font-style:italic;color:var(--gold3);}
+.wl-sub{font-size:15px;color:rgba(247,243,237,.5);line-height:1.8;font-weight:300;margin-bottom:36px;}
+.wl-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));color:var(--brown);border:none;border-radius:14px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .3s;position:relative;overflow:hidden;}
+.wl-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.12),transparent);transform:translateX(-100%);transition:transform .6s;}
+.wl-btn:hover::before{transform:translateX(100%);}
+.wl-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(196,146,58,.4);}
+.wl-note{font-size:11px;color:rgba(247,243,237,.2);margin-top:18px;font-style:italic;line-height:1.7;font-weight:300;}
 
 /* FOOTER */
-footer {
-  position: relative; z-index: 1;
-  padding: 48px 40px 36px;
-}
-.ft-glass {
-  background: rgba(44,36,22,0.75);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 24px; padding: 40px 48px;
-  max-width: 1100px; margin: 0 auto;
-}
-.ft-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
-.ft-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: #F7F3ED; margin-bottom: 6px; }
-.ft-tag { font-size: 11px; color: rgba(247,243,237,0.3); font-style: italic; font-weight: 300; }
-.ft-links { display: flex; gap: 24px; align-items: center; }
-.ft-links a { font-size: 11px; color: rgba(247,243,237,0.3); text-decoration: none; transition: color 0.2s; }
-.ft-links a:hover { color: #C4923A; }
-.ft-bottom { display: flex; justify-content: space-between; align-items: center; }
-.ft-copy { font-size: 10px; color: rgba(247,243,237,0.2); }
-.ft-mission { font-size: 10px; color: rgba(247,243,237,0.2); font-style: italic; max-width: 280px; text-align: right; line-height: 1.6; }
+footer{padding:40px 52px 32px;position:relative;z-index:1;}
+.ft-inner{background:rgba(44,36,22,.75);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:36px 44px;max-width:1100px;margin:0 auto;}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:18px;}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:#F7F3ED;margin-bottom:5px;}
+.ft-tag{font-size:11px;color:rgba(247,243,237,.28);font-style:italic;font-weight:300;}
+.ft-links{display:flex;gap:22px;}
+.ft-links a{font-size:11px;color:rgba(247,243,237,.28);text-decoration:none;transition:color .2s;}
+.ft-links a:hover{color:var(--gold3);}
+.ft-bottom{display:flex;justify-content:space-between;align-items:center;}
+.ft-copy{font-size:10px;color:rgba(247,243,237,.18);}
+.ft-mission{font-size:10px;color:rgba(247,243,237,.18);font-style:italic;max-width:280px;text-align:right;line-height:1.6;}
 
-/* FADE UP */
-.fu { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fu.visible { opacity: 1; transform: translateY(0); }
+/* =========================================
+   SURVEY
+   ========================================= */
+#sv-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(245,239,230,.97);backdrop-filter:blur(30px);align-items:center;justify-content:center;padding:20px;}
+.sv-wrap{width:100%;max-width:580px;position:relative;}
+.sv-close{position:absolute;top:-48px;right:0;background:transparent;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.sv-close:hover{border-color:var(--gold);color:var(--gold);}
+.sv-prog{height:1.5px;background:rgba(155,110,42,.12);border-radius:100px;margin-bottom:52px;overflow:hidden;}
+.sv-prog-bar{height:100%;background:linear-gradient(to right,var(--gold),var(--gold3));border-radius:100px;transition:width .6s cubic-bezier(.16,1,.3,1);}
+.sv-screen{animation:svIn .45s cubic-bezier(.16,1,.3,1) both;}
+@keyframes svIn{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes svOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-18px)}}
+.sv-step{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.sv-step::before{content:'';width:14px;height:1px;background:var(--gold);}
+.sv-q{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,50px);font-weight:300;line-height:1.1;letter-spacing:-.5px;color:var(--brown);margin-bottom:10px;}
+.sv-q em{font-style:italic;color:var(--gold2);}
+.sv-hint{font-size:13px;color:var(--muted);margin-bottom:32px;font-weight:300;line-height:1.6;}
+.sv-inp{width:100%;padding:20px 24px;background:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.9);border-radius:16px;font-size:20px;font-family:'Cormorant Garamond',serif;color:var(--brown);outline:none;transition:all .3s;box-shadow:0 2px 20px rgba(44,36,22,.05);}
+.sv-inp:focus{background:rgba(255,255,255,.95);border-color:rgba(155,110,42,.35);box-shadow:0 0 0 4px rgba(155,110,42,.07);}
+.sv-inp::placeholder{color:rgba(44,36,22,.22);font-style:italic;}
+.sv-note{font-size:11px;color:rgba(44,36,22,.3);margin-top:10px;font-style:italic;}
+.sv-actions{display:flex;align-items:center;gap:16px;margin-top:28px;}
+.sv-btn{background:var(--brown);color:var(--cream);border:none;padding:15px 32px;border-radius:100px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.sv-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.08),transparent);transform:translateX(-100%);transition:transform .5s;}
+.sv-btn:hover::before{transform:translateX(100%);}
+.sv-btn:hover{background:var(--gold);transform:translateY(-2px);box-shadow:0 8px 28px rgba(155,110,42,.3);}
+.sv-arrow{display:inline-block;transition:transform .3s;}
+.sv-btn:hover .sv-arrow{transform:translateX(4px);}
+.sv-skip{font-size:12px;color:rgba(44,36,22,.28);cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .2s;}
+.sv-skip:hover{color:var(--gold);}
+.sv-opts{display:flex;flex-direction:column;gap:8px;}
+.sv-opt{display:flex;align-items:center;gap:14px;padding:13px 18px;background:rgba(255,255,255,.5);border:1.5px solid rgba(255,255,255,.8);border-radius:13px;cursor:pointer;transition:all .25s;font-size:14px;color:var(--muted);font-weight:300;}
+.sv-opt:hover{background:rgba(255,255,255,.8);border-color:rgba(155,110,42,.2);color:var(--brown);transform:translateX(4px);}
+.sv-opt.sel{background:rgba(155,110,42,.07);border-color:rgba(155,110,42,.3);color:var(--brown);}
+.opt-chk{width:20px;height:20px;border-radius:50%;border:1px solid rgba(155,110,42,.25);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s;}
+.sv-opt.sel .opt-chk{background:var(--gold2);border-color:var(--gold2);color:white;font-weight:700;}
+.multi-note{font-size:11px;color:var(--muted);margin-bottom:14px;font-style:italic;}
+
+/* TRANSITION SCREEN */
+.ts-wrap{text-align:center;padding:20px 0;}
+.ts-icon{font-size:52px;margin-bottom:26px;display:inline-block;animation:iconFloat 3s ease-in-out infinite;}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ts-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,56px);font-weight:300;color:var(--brown);line-height:1.08;margin-bottom:14px;}
+.ts-title em{font-style:italic;color:var(--gold2);}
+.ts-sub{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;max-width:420px;margin:0 auto 36px;}
+
+/* FINAL SCREEN */
+.fn-wrap{text-align:center;padding:16px 0;}
+.fn-ring{width:100px;height:100px;margin:0 auto 32px;position:relative;}
+.fn-ring svg{width:100px;height:100px;transform:rotate(-90deg);}
+.fn-em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;}
+.fn-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,62px);font-weight:300;color:var(--brown);line-height:1.05;letter-spacing:-1px;margin-bottom:18px;}
+.fn-title em{font-style:italic;color:var(--gold2);}
+.fn-msg{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:10px;max-width:420px;margin-left:auto;margin-right:auto;}
+.fn-sig{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--gold2);margin:20px 0 28px;}
+.fn-steps{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.8);border-radius:16px;padding:24px;margin-bottom:28px;text-align:left;box-shadow:0 4px 20px rgba(44,36,22,.05);}
+.fn-step{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border2);}
+.fn-step:last-child{border-bottom:none;padding-bottom:0;}
+.fn-sn{width:26px;height:26px;border-radius:50%;background:rgba(155,110,42,.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);font-weight:600;flex-shrink:0;}
+.fn-sc p:first-child{font-size:12px;color:var(--brown);margin-bottom:2px;font-weight:500;}
+.fn-sc p:last-child{font-size:11px;color:var(--muted);font-weight:300;line-height:1.5;}
+.fn-share{background:transparent;border:1.5px solid var(--border);color:var(--gold);padding:11px 24px;border-radius:100px;font-size:11px;font-family:'DM Sans',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.fn-share:hover{background:rgba(155,110,42,.06);border-color:var(--gold2);}
 
 /* ANIMATIONS */
-@keyframes emojiPop { 0%{transform:scale(1)} 40%{transform:scale(1.5) rotate(10deg)} 70%{transform:scale(0.9)} 100%{transform:scale(1)} }
+@keyframes emojiPop{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(10deg)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 
 /* MOBILE */
-@media (max-width: 768px) {
-  nav { padding: 16px 20px; }
-  .nav-logo { font-size: 18px; }
-  .hero { padding: 90px 20px 50px; }
-  .glass-card { padding: 40px 24px; border-radius: 24px; }
-  .card-title { font-size: clamp(40px, 10vw, 60px); }
-  .card-form { flex-direction: column; }
-  .card-form button { width: 100%; padding: 14px; }
-  .section { padding: 70px 20px; }
-  .glass-panel { padding: 40px 28px; border-radius: 22px; }
-  .prob-grid { grid-template-columns: 1fr; gap: 40px; }
-  .act-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .how-grid { grid-template-columns: 1fr; gap: 10px; }
-  .demo-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-  .phone { max-width: 300px; width: 100%; margin: 0 auto; }
-  .waitlist-section { padding: 70px 20px; }
-  .waitlist-glass { padding: 48px 28px; border-radius: 24px; }
-  .wl-title { font-size: clamp(36px, 8vw, 52px); }
-  footer { padding: 32px 20px 28px; }
-  .ft-glass { padding: 32px 24px; border-radius: 20px; }
-  .ft-top { flex-direction: column; gap: 20px; }
-  .ft-links { flex-wrap: wrap; gap: 14px; }
-  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
-  .ft-mission { text-align: center; max-width: 100%; }
-  .ty-card { padding: 36px 24px; }
+@media(max-width:900px){
+  body{cursor:auto;}#cur,#cur-ring{display:none;}
+  nav,nav.scrolled{padding:16px 22px;}
+  section{padding:70px 22px;}
+  .hero{padding:90px 22px 60px;}
+  .hero-title{font-size:clamp(46px,10vw,72px);}
+  .hero-cta{flex-direction:column;align-items:flex-start;}
+  .hero-tags{display:none;}
+  .gp{padding:36px 24px;border-radius:20px;}
+  .prob-grid,.demo-grid{grid-template-columns:1fr;gap:44px;}
+  .cult-grid{grid-template-columns:1fr 1fr;}
+  .act-grid,.how-grid{grid-template-columns:1fr;}
+  .partner-stats{grid-template-columns:1fr;}
+  .partner-grid{grid-template-columns:1fr;gap:28px;}
+  .partner-bottom{padding:24px 22px;}
+  .phone{max-width:300px;margin:0 auto;}
+  .waitlist-wrap{padding:70px 22px;}
+  .wl-glass{padding:48px 28px;border-radius:22px;}
+  footer{padding:28px 22px;}
+  .ft-top{flex-direction:column;gap:20px;}
+  .ft-links{flex-wrap:wrap;gap:14px;}
+  .ft-bottom{flex-direction:column;gap:10px;text-align:center;}
+  .ft-mission{text-align:center;max-width:100%;}
+  #sv-overlay{padding:16px;}
 }
-@media (max-width: 420px) {
-  .act-grid { grid-template-columns: 1fr; }
-  .card-title { font-size: 38px; }
+@media(max-width:420px){
+  .cult-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:42px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ANIMATED BACKGROUND -->
-<div class="bg-wrap">
-  <div class="bg-orb bg-orb1"></div>
-  <div class="bg-orb bg-orb2"></div>
-  <div class="bg-orb bg-orb3"></div>
-  <div class="bg-orb bg-orb4"></div>
-</div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<canvas id="bg-canvas"></canvas>
 
-<!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">ORIMI</div>
-  <button class="nav-btn" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join waitlist</button>
+  <button class="nav-btn" onclick="openSurvey()">Join waitlist</button>
 </nav>
 
 <div class="page">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div>
-      <div class="glass-card">
-        <div class="card-badge"><span class="badge-dot"></span>Now accepting waitlist</div>
-        <h1 class="card-title">Your doula.<br><em>In your pocket.</em><br>Every day.</h1>
-        <p class="card-sub">ORIMI is an AI doula that texts you every morning, prepares you for every appointment, and never stops showing up — through pregnancy, birth, and postpartum.</p>
-        <p class="card-sub2">Secure early access to our program and stay updated on launch announcements, insights, and upcoming feature previews.</p>
-        <div class="card-form">
-          <input type="email" placeholder="Your email address" id="hero-email">
-          <button onclick="heroJoin()">Join waitlist</button>
-        </div>
-        <div class="card-proof">
-          <div class="proof-avs">
-            <div class="proof-av">A</div>
-            <div class="proof-av">M</div>
-            <div class="proof-av">J</div>
-            <div class="proof-av">T</div>
-          </div>
-          <span>Join 200+ mamas already on the waitlist</span>
-        </div>
-      </div>
-      <div class="scroll-hint">
-        <div class="scroll-line"></div>
-        <span>Scroll</span>
-      </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="ey-dot"></span>Now accepting waitlist</div>
+    <div class="hero-title">
+      <span class="hl"><span class="hli plain" id="hl1">Your doula.</span></span>
+      <span class="hl"><span class="hli em" id="hl2">In your pocket.</span></span>
+      <span class="hl"><span class="hli plain" id="hl3">Every day.</span></span>
     </div>
-  </section>
+    <p class="hero-sub">ORIMI is an AI doula that texts you every morning, honors your culture and traditions, prepares you for every appointment, and never stops showing up — through pregnancy, birth, and postpartum.</p>
+    <p class="hero-sub2">Secure early access and stay updated on launch announcements, insights, and upcoming feature previews.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="openSurvey()">Join the waitlist →</button>
+      <button class="btn-outline" onclick="document.getElementById('learn').scrollIntoView({behavior:'smooth'})">Learn more</button>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-avs">
+        <div class="proof-av">A</div><div class="proof-av">M</div>
+        <div class="proof-av">J</div><div class="proof-av">T</div>
+      </div>
+      <span>200+ mamas already on the waitlist</span>
+    </div>
+  </div>
+  <div class="hero-tags">
+    <div class="htag">AI Doula Intelligence</div>
+    <div class="htag">Culturally Fluent</div>
+    <div class="htag">Partner Support</div>
+    <div class="htag">SMS-First</div>
+  </div>
+</section>
 
-  <!-- PROBLEM -->
-  <section class="section">
-    <div class="glass-panel fu">
+<!-- PROBLEM -->
+<section id="learn">
+  <div class="s-wrap">
+    <div class="gp fu">
       <div class="prob-grid">
         <div>
-          <span class="lbl">The reality</span>
-          <h2 class="ttl">Every mother deserves <em>better than this.</em></h2>
-          <p class="sub">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
+          <div class="lbl slide-left">The reality</div>
+          <h2 class="ttl word-reveal">Every mother deserves <em>better than this.</em></h2>
+          <p class="sub fu" style="transition-delay:.2s">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
         </div>
         <div>
-          <div class="stat-row"><div class="stat-n">3×</div><div class="stat-t">Black mothers are 3 times more likely to die from pregnancy-related causes — maternal mortality affects mothers across all backgrounds in America</div></div>
-          <div class="stat-row"><div class="stat-n">6%</div><div class="stat-t">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes for mothers and babies</div></div>
-          <div class="stat-row"><div class="stat-n">39%</div><div class="stat-t">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and interventions</div></div>
+          <div class="stat-row scale-reveal"><div class="stat-n">3×</div><div class="stat-t">Black mothers are 3 times more likely to die from pregnancy-related causes — and the healthcare system has historically underserved women across many backgrounds</div></div>
+          <div class="stat-row scale-reveal" style="transition-delay:.1s"><div class="stat-n">6%</div><div class="stat-t">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes</div></div>
+          <div class="stat-row scale-reveal" style="transition-delay:.2s"><div class="stat-n">39%</div><div class="stat-t">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and interventions</div></div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ACTIONS -->
-  <section class="section" style="padding-top:0;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="fu" style="margin-bottom:40px;">
-        <span class="lbl">How ORIMI shows up</span>
-        <h2 class="ttl">Not a reminder app.<br><em>A doula.</em></h2>
-        <p class="sub">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+<!-- CULTURAL -->
+<section style="padding-top:0;">
+  <div class="s-wrap">
+    <div class="gp fu">
+      <div style="max-width:620px;margin:0 auto 44px;text-align:center;">
+        <div class="lbl blur-reveal" style="justify-content:center;">Culturally fluent. Not one-size-fits-all.</div>
+        <h2 class="ttl word-reveal">ORIMI meets you <em>where you are.</em></h2>
+        <p class="sub fu" style="max-width:100%;transition-delay:.2s">Every mom deserves a doula who speaks her language, honors her traditions, and prepares her to make decisions from knowledge instead of fear. ORIMI respects your practices — and carries extra vigilance for the communities the healthcare system has historically underserved.</p>
       </div>
-      <div class="act-grid fu">
-        <div class="act-card"><div class="act-n">01</div><span class="act-tag">Educate</span><div class="act-title">Teach her what's really happening</div><div class="act-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now. Specific to her week, her body, her baby.</div></div>
-        <div class="act-card"><div class="act-n">02</div><span class="act-tag">Prepare</span><div class="act-title">Before every appointment</div><div class="act-desc">48 hours before the glucose test — what the drink tastes like, not to eat sugar beforehand, and the exact questions to ask.</div></div>
-        <div class="act-card"><div class="act-n">03</div><span class="act-tag">Support</span><div class="act-title">Hold space. Validate. Stay.</div><div class="act-desc">"That sounds really hard" before "here's what might help." The thing no app does well but every mama needs.</div></div>
-        <div class="act-card"><div class="act-n">04</div><span class="act-tag">Advocate</span><div class="act-title">Give her the words</div><div class="act-desc">The BRAIN framework. Teaching her she has the right to ask why — and that asking is not being difficult. It's being an informed parent.</div></div>
-        <div class="act-card"><div class="act-n">05</div><span class="act-tag">Anticipate</span><div class="act-title">Before she has to ask</div><div class="act-desc">At 13 emotional flashpoints — anatomy scan, week 37 labor fear, day 3 postpartum crash — ORIMI reaches out first.</div></div>
+      <div class="cult-grid">
+        <div class="cult-card fu"><div class="cult-icon">🌺</div><div class="cult-title">Cuarentena</div><div class="cult-desc">40 days of rest, warming foods, and family support for Latina moms. ORIMI knows this tradition and honors it.</div></div>
+        <div class="cult-card fu" style="transition-delay:.1s"><div class="cult-icon">🌙</div><div class="cult-title">Sitting the month</div><div class="cult-desc">Zuò yuèzi — Chinese postpartum confinement of rest, warmth, and nourishment. ORIMI understands.</div></div>
+        <div class="cult-card fu" style="transition-delay:.2s"><div class="cult-icon">🌿</div><div class="cult-title">Caribbean traditions</div><div class="cult-desc">Lying-in, herbal baths, and community-centered care. ORIMI recognizes what medicine often overlooks.</div></div>
+        <div class="cult-card fu" style="transition-delay:.3s"><div class="cult-icon">✨</div><div class="cult-title">Your tradition</div><div class="cult-desc">Some moms want science. Some want spirit. Some want both. ORIMI reads your energy and meets you exactly there.</div></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- HOW IT WORKS -->
-  <section class="section" style="padding-top:0;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="fu" style="margin-bottom:40px;">
-        <span class="lbl">Getting started</span>
-        <h2 class="ttl">No app to download.<br><em>Just your phone.</em></h2>
+<!-- ACTIONS -->
+<section style="padding-top:0;">
+  <div class="s-wrap">
+    <div class="fu" style="margin-bottom:44px;">
+      <div class="lbl slide-left">How ORIMI shows up</div>
+      <h2 class="ttl word-reveal">Not a reminder app. <em>A doula.</em></h2>
+      <p class="sub fu" style="max-width:520px;transition-delay:.2s">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+    </div>
+    <div class="act-grid fu">
+      <div class="act-card"><div class="act-n">01</div><span class="act-tag">Educate</span><div class="act-title">Teach her what's really happening</div><div class="act-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now. Specific to her week, her body, her baby.</div></div>
+      <div class="act-card"><div class="act-n">02</div><span class="act-tag">Prepare</span><div class="act-title">Before every appointment</div><div class="act-desc">48 hours before the glucose test — what to expect, what to eat, what to wear, and the exact questions to ask.</div></div>
+      <div class="act-card"><div class="act-n">03</div><span class="act-tag">Support</span><div class="act-title">Hold space. Validate. Stay.</div><div class="act-desc">"That sounds really hard" before "here's what might help." The thing no app does well but every mama needs.</div></div>
+      <div class="act-card"><div class="act-n">04</div><span class="act-tag">Advocate</span><div class="act-title">Give her the words</div><div class="act-desc">The BRAIN framework. Teaching her she has the right to ask why — and that asking is not being difficult.</div></div>
+      <div class="act-card"><div class="act-n">05</div><span class="act-tag">Anticipate</span><div class="act-title">Before she has to ask</div><div class="act-desc">At 13 emotional flashpoints — anatomy scan, week 37 labor fear, day 3 postpartum crash — ORIMI reaches out first.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section style="padding-top:0;">
+  <div class="s-wrap">
+    <div class="fu" style="margin-bottom:44px;">
+      <div class="lbl slide-left">Getting started</div>
+      <h2 class="ttl word-reveal">No app to download. <em>Just your phone.</em></h2>
+    </div>
+    <div class="how-grid fu">
+      <div class="how-step"><div class="how-bg-n">1</div><div class="how-icon">📱</div><div class="how-title">Text to join</div><div class="how-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
+      <div class="how-step"><div class="how-bg-n">2</div><div class="how-icon">🤱🏾</div><div class="how-title">ORIMI learns you</div><div class="how-desc">She learns your stage, your provider, your preferences. Every message is personalized to exactly where you are.</div></div>
+      <div class="how-step"><div class="how-bg-n">3</div><div class="how-icon">✦</div><div class="how-title">She never stops</div><div class="how-desc">Every morning. Before every appointment. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section style="padding-top:0;">
+  <div class="s-wrap">
+    <div class="gp fu">
+      <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
+        <div class="lbl blur-reveal" style="justify-content:center;">For the partner too</div>
+        <h2 class="ttl word-reveal">She equips her <em>partner too.</em></h2>
+        <p class="sub fu" style="max-width:100%;transition-delay:.2s">A partner who knows what to expect, how to advocate, and when to simply hold space isn't just emotionally helpful. They're physiologically helping her labor progress.</p>
       </div>
-      <div class="how-grid fu">
-        <div class="how-step"><div class="how-bg-n">1</div><div class="how-icon">📱</div><div class="how-title">Text to join</div><div class="how-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
-        <div class="how-step"><div class="how-bg-n">2</div><div class="how-icon">🤱🏾</div><div class="how-title">ORIMI learns you</div><div class="how-desc">She learns your stage, your provider, your preferences. Every message is personalized to exactly where you are.</div></div>
-        <div class="how-step"><div class="how-bg-n">3</div><div class="how-icon">✦</div><div class="how-title">She never stops</div><div class="how-desc">Every morning. Before every appointment. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
+      <div class="partner-stats fu">
+        <div class="ps-card"><div class="ps-num">↑ Oxytocin</div><div class="ps-text">Continuous support promotes maternal relaxation, reduces stress hormones, and enhances oxytocin release — directly contributing to cervical dilation and effective contractions</div><div class="ps-src">Frontiers in Endocrinology, 2021</div></div>
+        <div class="ps-card"><div class="ps-num">↓ Cesarean</div><div class="ps-text">Women with continuous support are significantly less likely to need a cesarean, less likely to use pain medication, and more likely to give birth spontaneously</div><div class="ps-src">Cochrane Review</div></div>
+        <div class="ps-card"><div class="ps-num">16/18</div><div class="ps-text">Partner-inclusive education programs showed significant reductions in postpartum depression in 16 out of 18 studies reviewed</div><div class="ps-src">Frontiers in Psychiatry, 2024</div></div>
+        <div class="ps-card"><div class="ps-num">$91M</div><div class="ps-text">Doula-model care saved $91M, led to 219,530 fewer cesareans and 51 fewer maternal deaths across 1.8 million women</div><div class="ps-src">Oregon Health Authority</div></div>
+      </div>
+      <div class="partner-bottom fu">
+        <div class="partner-grid">
+          <div>
+            <div class="lbl slide-left">What partners receive</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:300;color:var(--brown);line-height:1.1;margin-bottom:14px;">Real doula-level guidance. <em style="font-style:italic;color:var(--gold2);">Every week.</em></h3>
+            <p style="font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;">ORIMI sends partners weekly updates — what's happening with baby, what she's feeling, one specific thing they can do today, and how to be the support person she actually needs.</p>
+          </div>
+          <div>
+            <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">What's happening with baby this week</div><div class="pi-desc">Plain language that makes them feel connected to the pregnancy.</div></div></div>
+            <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">What she's feeling and why</div><div class="pi-desc">The back pain is real. The heartburn is biology. Understanding removes helplessness.</div></div></div>
+            <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">One specific thing to do today</div><div class="pi-desc">Warm rice sock on her lower back. Rub her feet for 10 minutes. Concrete, not vague.</div></div></div>
+            <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">How to hold space in the birth room</div><div class="pi-desc">Dim lights. Counter-pressure. Advocate with staff. An informed partner changes outcomes.</div></div></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SMS DEMO -->
-  <section class="section" style="padding-top:0;">
-    <div class="glass-panel fu">
+<!-- SMS DEMO -->
+<section style="padding-top:0;">
+  <div class="s-wrap">
+    <div class="gp fu">
       <div class="demo-grid">
         <div>
-          <span class="lbl">What ORIMI sounds like</span>
-          <h2 class="ttl">A doula who<br>knows <em>you.</em></h2>
-          <p class="sub">This is the difference between a notification and a doula. ORIMI tells moms what it is, why it matters, how to prepare, and what comes next.</p>
+          <div class="lbl slide-left">What ORIMI sounds like</div>
+          <h2 class="ttl word-reveal">A doula who knows <em>you.</em></h2>
+          <p class="sub fu" style="transition-delay:.2s">ORIMI tells moms what it is, why it matters, how to prepare, and what comes next. Not a notification. A doula.</p>
         </div>
-        <div class="phone-wrap">
-          <div class="phone-glow"></div>
+        <div class="phone-wrap fu">
+          <div class="phone-halo"></div>
           <div class="phone">
             <div class="phone-notch"></div>
             <div class="phone-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
             <div class="pm"><div class="pm-o">Good morning Remy. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
             <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
-            <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler for heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
+            <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
             <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
             <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- WAITLIST -->
-  <section class="waitlist-section" id="waitlist">
-    <div class="waitlist-glass fu">
-      <span class="wl-lbl">Join the waitlist</span>
-      <h2 class="wl-title">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
-      <p class="wl-sub">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
-      <div class="wl-form" id="wl-form">
-        <input class="wl-input" type="text" placeholder="First name" id="wl-name">
-        <input class="wl-input" type="email" placeholder="Email address" id="wl-email">
-        <input class="wl-input" type="tel" placeholder="Phone number" id="wl-phone">
-        <input class="wl-input" type="text" placeholder="Due date (MM/YYYY)" id="wl-due">
-        <button class="wl-btn" onclick="joinWaitlist()">Join the waitlist →</button>
-      </div>
-      <p class="wl-note" id="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="ft-glass">
-      <div class="ft-top">
-        <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
-        <div class="ft-links"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
-      </div>
-      <div class="ft-bottom">
-        <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
-        <div class="ft-mission">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
-      </div>
-    </div>
-  </footer>
-
+<!-- WAITLIST -->
+<div class="waitlist-wrap" id="waitlist">
+  <div class="wl-glass fu">
+    <div class="wl-lbl">Join the waitlist</div>
+    <h2 class="wl-title">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
+    <p class="wl-sub">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
+    <button class="wl-btn" onclick="openSurvey()">Join the waitlist →</button>
+    <p class="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
+  </div>
 </div>
 
-<!-- THANK YOU -->
-<div id="ty-overlay">
-  <div id="ty-inner">
-    <div class="ty-card">
-      <div class="ty-ring">
-        <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(139,111,62,0.12)" stroke-width="1.5"/>
-          <circle cx="50" cy="50" r="44" fill="none" stroke="url(#gg)" stroke-width="1.5"
-            stroke-dasharray="276" stroke-dashoffset="276" id="ty-circle"
-            style="transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1) 0.4s;"/>
-          <defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B6F3E"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs>
-        </svg>
-        <div class="ty-emoji" id="ty-emoji">🤱🏾</div>
-      </div>
-      <span class="ty-lbl">You're on the list</span>
-      <h2 class="ty-title">Welcome, <em id="ty-name">mama.</em></h2>
-      <p class="ty-msg">ORIMI will reach out before your due date. In the meantime — rest, eat the dates, and know that someone is already thinking about you.</p>
-      <div class="ty-steps">
-        <div class="ty-step"><div class="ty-step-n">1</div><div class="ty-step-txt"><p>Confirmation email on its way</p><p>Add hello@orimi.com to your contacts so you never miss a message.</p></div></div>
-        <div class="ty-step"><div class="ty-step-n">2</div><div class="ty-step-txt"><p>ORIMI will text you before your due date</p><p>She'll introduce herself and ask how you're feeling. No spam. Ever.</p></div></div>
-        <div class="ty-step"><div class="ty-step-n">3</div><div class="ty-step-txt"><p>Early access before public launch</p><p>Waitlist mamas get in first — at the founding member rate.</p></div></div>
-      </div>
-      <button class="ty-share" onclick="shareORIMI()">Share with a mama →</button>
-      <p class="ty-founder">"This is not a tech product. This is a doula."<br><span style="color:rgba(44,36,22,0.4);font-style:normal;">— Khylir Patton, Founder</span></p>
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
+      <div class="ft-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
     </div>
+    <div class="ft-bottom">
+      <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
+      <div class="ft-mission">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- SURVEY -->
+<div id="sv-overlay">
+  <div class="sv-wrap">
+    <button class="sv-close" onclick="closeSurvey()">✕</button>
+    <div class="sv-prog"><div class="sv-prog-bar" id="sv-prog" style="width:0%"></div></div>
+    <div id="sv-container"></div>
   </div>
 </div>
 
 <script>
-// Nav scroll effect
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('nav');
-  if(scrollY > 60) {
-    nav.style.background = 'rgba(240,232,220,0.7)';
-    nav.style.backdropFilter = 'blur(20px)';
-    nav.style.borderBottom = '1px solid rgba(255,255,255,0.4)';
-  } else {
-    nav.style.background = '';
-    nav.style.backdropFilter = '';
-    nav.style.borderBottom = '';
+/* ============ 3D CANVAS — LIGHT MODE ============ */
+(function(){
+  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  let W,H,mx=0,my=0,t=0,pts=[];
+
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+
+  function Pt(){
+    this.reset=function(){
+      this.x=(Math.random()-.5)*W*2;
+      this.y=(Math.random()-.5)*H*2;
+      this.z=Math.random()*1400+200;
+      this.vz=Math.random()*.5+.15;
+      this.col=['rgba(155,110,42,','rgba(90,138,78,','rgba(196,146,58,'][Math.floor(Math.random()*3)];
+      this.a=Math.random()*.35+.05;
+    };
+    this.reset();this.z=Math.random()*1400;
+    this.draw=function(){
+      const px=(this.x/(this.z*.0008+1))+W/2+(mx-W/2)*.018;
+      const py=(this.y/(this.z*.0008+1))+H/2+(my-H/2)*.018;
+      if(px<-20||px>W+20||py<-20||py>H+20){this.reset();return;}
+      const r=Math.max(.2,(1-this.z/1600)*2.2);
+      const a=this.a*(1-this.z/1600);
+      ctx.beginPath();ctx.arc(px,py,r,0,Math.PI*2);
+      ctx.fillStyle=this.col+a+')';ctx.fill();
+      this.z-=this.vz;if(this.z<0)this.reset();
+    };
   }
+
+  function drawGrid(){
+    t+=.0025;
+    const ox=(mx-W/2)*.025,oy=(my-H/2)*.025;
+    ctx.strokeStyle='rgba(155,110,42,0.045)';ctx.lineWidth=.6;
+    for(let i=0;i<=18;i++){
+      const fx=W*i/18;
+      ctx.beginPath();
+      ctx.moveTo(fx+ox*Math.sin(t+i*.4),-H*.1);
+      ctx.bezierCurveTo(fx+ox*.5,H*.3,fx-ox*.5,H*.7,fx-ox*Math.sin(t+i*.4),H*1.1);
+      ctx.stroke();
+      const fy=H*i/18;
+      ctx.beginPath();
+      ctx.moveTo(-W*.1,fy+oy*Math.cos(t+i*.3));
+      ctx.bezierCurveTo(W*.3,fy+oy*.5,W*.7,fy-oy*.5,W*1.1,fy-oy*Math.cos(t+i*.3));
+      ctx.stroke();
+    }
+  }
+
+  function drawOrbs(){
+    const orbs=[
+      {x:.12,y:.18,r:280,r2:.08,g:.05,b:'.18'},
+      {x:.88,y:.82,r:220,r2:.06,g:.06,b:'.12'},
+      {x:.72,y:.12,r:200,r2:.07,g:.04,b:'.10'},
+      {x:.22,y:.78,r:180,r2:.05,g:.05,b:'.09'},
+    ];
+    orbs.forEach((o,i)=>{
+      const ox=o.x*W+Math.sin(t+i*1.2)*35;
+      const oy=o.y*H+Math.cos(t+i*.8)*25;
+      const g=ctx.createRadialGradient(ox,oy,0,ox,oy,o.r);
+      g.addColorStop(0,`rgba(196,146,58,${o.b})`);
+      g.addColorStop(.5,`rgba(155,110,42,${parseFloat(o.b)*.4})`);
+      g.addColorStop(1,'rgba(196,146,58,0)');
+      ctx.beginPath();ctx.arc(ox,oy,o.r,0,Math.PI*2);
+      ctx.fillStyle=g;ctx.fill();
+    });
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    // warm light bg
+    const bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#F8F2E8');
+    bg.addColorStop(.4,'#F2EBE0');
+    bg.addColorStop(1,'#EBE3D6');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    drawOrbs();drawGrid();
+    pts.forEach(p=>p.draw());
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  for(let i=0;i<150;i++){const p=new Pt();pts.push(p);}
+  window.addEventListener('resize',resize);
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  loop();
+})();
+
+/* ============ CURSOR ============ */
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-ring');
+let mx2=0,my2=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;cur.style.left=mx2+'px';cur.style.top=my2+'px';});
+(function ac(){rx+=(mx2-rx)*.12;ry+=(my2-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.querySelectorAll('button,a,.sv-opt,.act-card,.cult-card,.how-step,.stat-row').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';curR.style.width='50px';curR.style.height='50px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';curR.style.width='34px';curR.style.height='34px';});
 });
 
-// Scroll reveal
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+/* ============ NAV ============ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
 
-// Hero join
-function heroJoin() {
-  const v = document.getElementById('hero-email').value;
-  if(v) document.getElementById('wl-email').value = v;
-  document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});
+/* ============ HERO TITLE ============ */
+setTimeout(()=>{
+  ['hl1','hl2','hl3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    setTimeout(()=>{
+      el.style.transition='transform .95s cubic-bezier(.16,1,.3,1), opacity .6s ease';
+      el.style.transform='translateY(0)';
+      el.style.opacity='1';
+    },500+i*160);
+  });
+},100);
+
+/* ============ WORD REVEAL — no HTML tag breaking ============ */
+function initWordReveal(el){
+  if(el.dataset.wrInit)return;
+  el.dataset.wrInit='1';
+  // collect child nodes preserving HTML tags
+  const nodes=[];
+  el.childNodes.forEach(node=>{
+    if(node.nodeType===3){
+      // text node — split into words
+      node.textContent.split(/(\s+)/).forEach(w=>{
+        if(/^\s+$/.test(w)){nodes.push({type:'space',val:w});}
+        else if(w){nodes.push({type:'word',val:w});}
+      });
+    } else {
+      // element node (em, strong, etc) — keep whole
+      nodes.push({type:'elem',el:node.cloneNode(true)});
+    }
+  });
+  el.innerHTML='';
+  let delay=0;
+  nodes.forEach(n=>{
+    if(n.type==='space'){
+      el.appendChild(document.createTextNode(' '));
+    } else if(n.type==='word'){
+      const wrap=document.createElement('span');
+      wrap.className='wr';
+      const inner=document.createElement('span');
+      inner.className='wi';
+      inner.style.transitionDelay=delay+'s';
+      inner.textContent=n.val;
+      wrap.appendChild(inner);
+      el.appendChild(wrap);
+      delay+=0.055;
+    } else {
+      // whole element — wrap it
+      const wrap=document.createElement('span');
+      wrap.className='wr';
+      const inner=document.createElement('span');
+      inner.className='wi';
+      inner.style.transitionDelay=delay+'s';
+      inner.appendChild(n.el);
+      wrap.appendChild(inner);
+      el.appendChild(wrap);
+      delay+=0.08;
+    }
+  });
 }
 
-// Waitlist submit
-function joinWaitlist() {
-  const name = document.getElementById('wl-name').value.trim();
-  const email = document.getElementById('wl-email').value.trim();
-  if(!name||!email) { alert('Please enter your name and email.'); return; }
-  const btn = document.querySelector('.wl-btn');
-  btn.textContent='Joining...'; btn.style.opacity='0.6'; btn.disabled=true;
-  setTimeout(() => showTY(name), 900);
+/* ============ SCROLL REVEAL ============ */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    // word reveal
+    if(el.classList.contains('word-reveal')){
+      initWordReveal(el);
+      requestAnimationFrame(()=>el.classList.add('active'));
+    } else {
+      el.classList.add('active');
+    }
+    // children
+    el.querySelectorAll('.word-reveal').forEach(child=>{
+      if(!child.dataset.wrInit){initWordReveal(child);requestAnimationFrame(()=>child.classList.add('active'));}
+    });
+    el.querySelectorAll('.blur-reveal,.slide-left,.scale-reveal,.fu').forEach((child,i)=>{
+      setTimeout(()=>child.classList.add('active'),i*80);
+    });
+    obs.unobserve(el);
+  });
+},{threshold:.07,rootMargin:'0px 0px -20px 0px'});
+
+document.querySelectorAll('.fu,.word-reveal,.blur-reveal,.slide-left,.scale-reveal').forEach(el=>{
+  if(!el.closest('#sv-overlay'))obs.observe(el);
+});
+
+/* ============ SURVEY ============ */
+const SB='https://dnpegzznqkronofwljqi.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRucGVnenpucWtyb25vZndsanFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkwOTMsImV4cCI6MjA5MDQ4NTA5M30.rZy6AhfeSGREE6b43WjyokHwLNGB2LJPAgbwc445R_4';
+let S={s:0,name:'',email:'',phone:'',journey:'',needs:[],using:'',price:'',partner:'',saved:false};
+
+const SCREENS=[
+  ()=>`<div class="sv-step">Step 1 of 3</div><h2 class="sv-q">What's your <em>name?</em></h2><p class="sv-hint">ORIMI will use this to personalize every message.</p><input class="sv-inp" id="si-name" type="text" placeholder="First name…" value="${S.name}" autocomplete="given-name"><div class="sv-actions"><button class="sv-btn" onclick="nxt(0)">Continue <span class="sv-arrow">→</span></button></div>`,
+  ()=>`<div class="sv-step">Step 2 of 3</div><h2 class="sv-q">Best email to <em>reach you?</em></h2><p class="sv-hint">Early access details go here first.</p><input class="sv-inp" id="si-email" type="email" placeholder="Your email…" value="${S.email}" autocomplete="email"><div class="sv-actions"><button class="sv-btn" onclick="nxt(1)">Continue <span class="sv-arrow">→</span></button></div>`,
+  ()=>`<div class="sv-step">Step 3 of 3</div><h2 class="sv-q">Want to be first to <em>text with ORIMI?</em></h2><p class="sv-hint">Drop your number — optional but encouraged.</p><input class="sv-inp" id="si-phone" type="tel" placeholder="Your number…" value="${S.phone}" autocomplete="tel"><p class="sv-note">We'll only text you about early access. No spam. Unsubscribe anytime.</p><div class="sv-actions"><button class="sv-btn" onclick="nxt(2)">Continue <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(2)">Skip for now</span></div>`,
+  ()=>`<div class="ts-wrap"><div class="ts-icon">🤱🏾</div><h2 class="ts-title">Thanks, <em>${S.name||'mama'}.</em></h2><p class="ts-sub">While you wait for early access, help us build ORIMI around what YOU actually need. 5 quick questions.</p><div class="sv-actions" style="justify-content:center;"><button class="sv-btn" onclick="nxt(3)">Let's do it <span class="sv-arrow">→</span></button></div></div>`,
+  ()=>`<div class="sv-step">Question 1 of 5</div><h2 class="sv-q">Where are you <em>right now?</em></h2><div class="sv-opts">${['Trying to conceive','Pregnant (1st trimester)','Pregnant (2nd trimester)','Pregnant (3rd trimester)','Postpartum (0-3 months)','Postpartum (4-12 months)','Planning a future pregnancy'].map(o=>`<div class="sv-opt${S.journey===o?' sel':''}" onclick="p1('journey',this)"><div class="opt-chk">${S.journey===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-actions" style="margin-top:18px;"><button class="sv-btn" onclick="nxt(4)">Next <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(4)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 2 of 5</div><h2 class="sv-q">What would help you <em>most right now?</em></h2><p class="multi-note">Pick your top 2.</p><div class="sv-opts">${["Someone to explain what's happening to my body week by week","Help preparing for doctor/midwife appointments","Breathing exercises and stress relief","Nutrition and wellness guidance for my stage","A birth plan that actually reflects what I want","Support for my partner so they know how to help","Someone to talk to between appointments","Postpartum recovery and mental health support","Help finding holistic providers"].map(o=>`<div class="sv-opt${S.needs.includes(o)?' sel':''}" onclick="pm('needs',this,2)"><div class="opt-chk">${S.needs.includes(o)?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-actions" style="margin-top:18px;"><button class="sv-btn" onclick="nxt(5)">Next <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(5)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 3 of 5</div><h2 class="sv-q">What are you <em>currently using?</em></h2><div class="sv-opts">${['A pregnancy tracking app (What to Expect, The Bump, Ovia, etc.)','A doula (in person)','My OB/midwife office resources','Social media groups or mom communities','Nothing — figuring it out on my own','Other'].map(o=>`<div class="sv-opt${S.using===o?' sel':''}" onclick="p1('using',this)"><div class="opt-chk">${S.using===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-actions" style="margin-top:18px;"><button class="sv-btn" onclick="nxt(6)">Next <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(6)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 4 of 5</div><h2 class="sv-q">What would feel <em>fair to pay monthly?</em></h2><p class="sv-hint" style="margin-bottom:18px;">For personalized check-ins, appointment prep, partner guidance, and support from pregnancy through postpartum.</p><div class="sv-opts">${['Under $10/month','$10–20/month','$20–35/month','$35–50/month','$50+/month if it replaced the need for other services',"I'd only use it if it was free"].map(o=>`<div class="sv-opt${S.price===o?' sel':''}" onclick="p1('price',this)"><div class="opt-chk">${S.price===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-actions" style="margin-top:18px;"><button class="sv-btn" onclick="nxt(7)">Next <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(7)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 5 of 5</div><h2 class="sv-q">Is there a partner <em>involved?</em></h2><div class="sv-opts">${["Yes — they'd love that","Yes — but they probably wouldn't sign up on their own","No partner or support person right now","I'm not sure yet"].map(o=>`<div class="sv-opt${S.partner===o?' sel':''}" onclick="p1('partner',this)"><div class="opt-chk">${S.partner===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-actions" style="margin-top:18px;"><button class="sv-btn" onclick="nxt(8)">Submit <span class="sv-arrow">→</span></button><span class="sv-skip" onclick="nxt(8)">Skip</span></div>`,
+  ()=>`<div class="fn-wrap"><div class="fn-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(155,110,42,.12)" stroke-width="1.5"/><circle cx="50" cy="50" r="44" fill="none" stroke="url(#gg)" stroke-width="1.5" stroke-dasharray="276" stroke-dashoffset="276" id="fn-c" style="transition:stroke-dashoffset 1.8s cubic-bezier(.16,1,.3,1) .3s;"/><defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B6E2A"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs></svg><div class="fn-em" id="fn-em">🤱🏾</div></div><h2 class="fn-title">You're in, <em id="fn-n">${S.name||'mama'}.</em></h2><p class="fn-msg">We're building ORIMI around moms like you. You'll hear from us soon with early access details.</p><p class="fn-msg">In the meantime: you're already doing the most important thing — showing up and asking for support.</p><p class="fn-sig">Talk soon.<br>— ORIMI</p><div class="fn-steps"><div class="fn-step"><div class="fn-sn">1</div><div class="fn-sc"><p>Confirmation email on its way</p><p>Add hello@orimi.com to your contacts.</p></div></div><div class="fn-step"><div class="fn-sn">2</div><div class="fn-sc"><p>ORIMI will text you before your due date</p><p>She'll introduce herself. No spam. Ever.</p></div></div><div class="fn-step"><div class="fn-sn">3</div><div class="fn-sc"><p>Early access before public launch</p><p>Waitlist mamas get in first — at the founding member rate.</p></div></div></div><button class="fn-share" onclick="share()">Know someone who needs this? Share →</button></div>`
+];
+
+function render(n){
+  const box=document.getElementById('sv-container');
+  const old=box.querySelector('.sv-screen');
+  document.getElementById('sv-prog').style.width=Math.round(n/10*100)+'%';
+  if(old){old.style.animation='svOut .28s ease forwards';setTimeout(()=>build(n),260);}
+  else build(n);
 }
 
-function showTY(name) {
-  document.getElementById('ty-name').textContent = name.split(' ')[0]+'.';
-  const ov = document.getElementById('ty-overlay');
-  ov.style.display='flex'; document.body.style.overflow='hidden';
-  setTimeout(() => {
-    const inn = document.getElementById('ty-inner');
-    inn.style.opacity='1'; inn.style.transform='translateY(0)';
-    setTimeout(() => {
-      document.getElementById('ty-circle').style.strokeDashoffset='0';
-      setTimeout(() => { document.getElementById('ty-emoji').style.animation='emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both'; }, 600);
-    }, 200);
-  }, 80);
-}
-
-function shareORIMI() {
-  if(navigator.share) {
-    navigator.share({title:'ORIMI',text:'I just joined the ORIMI waitlist — an AI doula for every mother.',url:location.href});
-  } else {
-    navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!'));
+function build(n){
+  document.getElementById('sv-container').innerHTML=`<div class="sv-screen">${SCREENS[n]()}</div>`;
+  if(n===9){
+    setTimeout(()=>{
+      const ci=document.getElementById('fn-c');if(ci)ci.style.strokeDashoffset='0';
+      setTimeout(()=>{const em=document.getElementById('fn-em');if(em)em.style.animation='emojiPop .6s cubic-bezier(.34,1.56,.64,1) both';},600);
+    },200);
+    save();
   }
 }
+
+function nxt(cur){
+  if(cur===0){const v=document.getElementById('si-name')?.value.trim();if(!v){shk('si-name');return;}S.name=v;}
+  if(cur===1){const v=document.getElementById('si-email')?.value.trim();if(!v||!v.includes('@')){shk('si-email');return;}S.email=v;if(!S.saved)saveLead();}
+  if(cur===2){S.phone=document.getElementById('si-phone')?.value.trim()||'';}
+  S.s=cur+1;render(S.s);
+}
+
+function p1(field,el){
+  const val=el.childNodes[1]?.textContent?.trim()||el.innerText.replace('✓','').trim();
+  el.closest('.sv-opts').querySelectorAll('.sv-opt').forEach(o=>{o.classList.remove('sel');o.querySelector('.opt-chk').textContent='';});
+  el.classList.add('sel');el.querySelector('.opt-chk').textContent='✓';
+  S[field]=val;
+}
+
+function pm(field,el,max){
+  const val=el.childNodes[1]?.textContent?.trim()||el.innerText.replace('✓','').trim();
+  const isSel=el.classList.contains('sel');
+  const sels=el.closest('.sv-opts').querySelectorAll('.sv-opt.sel');
+  if(!isSel&&sels.length>=max){
+    const first=sels[0];first.classList.remove('sel');first.querySelector('.opt-chk').textContent='';
+    const fv=first.childNodes[1]?.textContent?.trim()||first.innerText.replace('✓','').trim();
+    const idx=S[field].indexOf(fv);if(idx>-1)S[field].splice(idx,1);
+  }
+  el.classList.toggle('sel');
+  const chk=el.querySelector('.opt-chk');
+  if(el.classList.contains('sel')){S[field].push(val);chk.textContent='✓';}
+  else{const idx=S[field].indexOf(val);if(idx>-1)S[field].splice(idx,1);chk.textContent='';}
+}
+
+function shk(id){const el=document.getElementById(id);if(!el)return;el.style.animation='shake .4s ease';el.style.borderColor='rgba(200,80,80,.4)';setTimeout(()=>{el.style.animation='';el.style.borderColor='';},400);}
+async function saveLead(){S.saved=true;try{await fetch(`${SB}/rest/v1/orimi_waitlist`,{method:'POST',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({first_name:S.name,email:S.email,created_at:new Date().toISOString()})});}catch(e){}}
+async function save(){try{await fetch(`${SB}/rest/v1/orimi_waitlist`,{method:'POST',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({first_name:S.name,email:S.email,phone:S.phone,journey_stage:S.journey,needs:S.needs,currently_using:S.using,willingness_to_pay:S.price,partner_involved:S.partner,created_at:new Date().toISOString(),source:document.referrer||'direct'})});}catch(e){}}
+function openSurvey(){const e=document.getElementById('hero-email');if(e?.value)S.email=e.value;document.getElementById('sv-overlay').style.display='flex';document.body.style.overflow='hidden';S.s=0;render(0);}
+function closeSurvey(){document.getElementById('sv-overlay').style.display='none';document.body.style.overflow='';}
+function share(){if(navigator.share)navigator.share({title:'ORIMI',text:'I just joined the ORIMI waitlist — an AI doula for every mother.',url:location.href});else navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!'));}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSurvey();});
+const ss=document.createElement('style');ss.textContent='@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}';document.head.appendChild(ss);
 </script>
 </body>
 </html>
