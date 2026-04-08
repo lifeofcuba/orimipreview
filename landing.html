@@ -173,14 +173,24 @@ section{padding:120px 52px;position:relative;z-index:1;}
 
 /* DEMO */
 .dg{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.pw{position:relative;display:flex;justify-content:center;}
-.ph-halo{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,58,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(20px);}
-.ph{width:272px;position:relative;z-index:1;background:var(--bg3);border:1px solid rgba(196,146,58,.15);border-radius:38px;padding:22px 16px;box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(196,146,58,.07);}
-.ph-notch{width:72px;height:5px;background:rgba(255,255,255,.05);border-radius:100px;margin:0 auto 18px;}
+ .pw{position:relative;display:flex;justify-content:center;}
+ .ph-halo{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,58,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(24px);}
+ .ph-shell{position:relative;z-index:1;padding:2px;border-radius:46px;background:linear-gradient(160deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,.08) 18%,rgba(30,24,18,.95) 45%,rgba(12,9,6,.98) 100%);box-shadow:0 40px 100px rgba(0,0,0,.58),0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -2px 0 rgba(0,0,0,.45);}
+ .ph-shell::before{content:'';position:absolute;inset:8px;border-radius:38px;border:1px solid rgba(255,255,255,.08);pointer-events:none;}
+ .ph-shell::after{content:'';position:absolute;top:10px;left:14px;right:14px;height:45%;border-radius:30px;background:linear-gradient(110deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.04) 24%,transparent 46%);pointer-events:none;mix-blend-mode:screen;}
+ .ph-btn{position:absolute;left:-3px;width:3px;border-radius:3px;background:linear-gradient(to bottom,rgba(220,220,220,.45),rgba(30,30,30,.85));box-shadow:0 0 0 1px rgba(0,0,0,.35);}
+ .ph-btn.vup{top:118px;height:36px;}
+ .ph-btn.vdown{top:160px;height:44px;}
+ .ph-btn.power{left:auto;right:-3px;top:144px;height:56px;}
+ .ph{width:272px;position:relative;background:radial-gradient(120% 120% at 10% 0%,rgba(196,146,58,.08),transparent 42%),linear-gradient(180deg,#11100D 0%,#090806 100%);border:1px solid rgba(255,255,255,.08);border-radius:42px;padding:16px 16px 22px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);}
+ .ph::after{content:'';position:absolute;inset:0;border-radius:42px;pointer-events:none;background:radial-gradient(130% 80% at 85% 100%,rgba(196,146,58,.08),transparent 55%);}
+ .ph-notch{width:104px;height:26px;background:linear-gradient(180deg,rgba(17,17,17,.98),rgba(6,6,6,.98));border:1px solid rgba(255,255,255,.06);border-radius:18px;margin:0 auto 14px;position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+ .ph-notch::before{content:'';position:absolute;top:8px;left:18px;width:52px;height:6px;border-radius:100px;background:rgba(255,255,255,.08);}
+ .ph-notch::after{content:'';position:absolute;top:7px;right:14px;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(90,158,86,.8),rgba(18,40,22,.95) 70%);box-shadow:0 0 8px rgba(90,158,86,.45);}
 .ph-hdr{text-align:center;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:14px;}
 .ph-hdr p{font-size:10px;color:var(--muted);margin-bottom:2px;}
 .ph-hdr h4{font-size:13px;color:var(--cream);font-weight:400;}
-.pm{margin-bottom:9px;}
+ .pm{margin-bottom:9px;position:relative;z-index:1;}
 .pm-o{background:rgba(196,146,58,.1);border:1px solid rgba(196,146,58,.1);border-radius:14px 14px 14px 3px;padding:10px 12px;font-size:11px;color:var(--cream2);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;}
 .pm-m{background:rgba(255,255,255,.05);border-radius:14px 14px 3px 14px;padding:10px 12px;font-size:11px;color:rgba(242,237,228,.55);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;margin-left:22px;}
 .pm-t{font-size:9px;color:rgba(242,237,228,.2);margin-top:4px;padding:0 4px;}
@@ -474,14 +484,19 @@ footer{padding:40px 52px 32px;position:relative;z-index:1;}
         </div>
         <div class="pw fup">
           <div class="ph-halo"></div>
-          <div class="ph">
-            <div class="ph-notch"></div>
-            <div class="ph-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
-            <div class="pm"><div class="pm-o">Good morning Sasha. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
-            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
-            <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
-            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
-            <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
+          <div class="ph-shell">
+            <span class="ph-btn vup"></span>
+            <span class="ph-btn vdown"></span>
+            <span class="ph-btn power"></span>
+            <div class="ph">
+              <div class="ph-notch"></div>
+              <div class="ph-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
+              <div class="pm"><div class="pm-o">Good morning Sasha. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
+              <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
+              <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
+              <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
+              <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
+            </div>
           </div>
         </div>
       </div>
