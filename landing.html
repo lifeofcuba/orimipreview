@@ -7,996 +7,744 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F5F0E8;
-  --brown: #2C2416;
-  --gold: #9B6E2A;
-  --gold2: #C4923A;
-  --gold3: #E8B86D;
-  --cream: #FAF6F0;
-  --muted: rgba(44,36,22,0.5);
-  --border: rgba(155,110,42,0.2);
+:root{
+  --bg:#050403;--bg2:#0C0906;--bg3:#130E08;
+  --gold:#C4923A;--gold2:#E8B86D;--gold3:#8B6030;
+  --cream:#F2EDE4;--cream2:#C8BEA8;
+  --green2:#5A9E56;
+  --muted:rgba(242,237,228,0.45);
+  --border:rgba(196,146,58,0.15);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--brown);overflow-x:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--cream);overflow-x:hidden;cursor:none;}
 
-/* ========= 3D CANVAS BACKGROUND ========= */
+/* CURSOR */
+#cur{width:7px;height:7px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur-ring{width:34px;height:34px;border:1px solid rgba(196,146,58,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s,border-color .15s;}
+@media(max-width:900px){#cur,#cur-ring{display:none;}body{cursor:auto;}}
+
+/* CANVAS */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-/* ========= GRAIN ========= */
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:0.5;}
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.5;}
 
-/* ========= NAV ========= */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 48px;display:flex;justify-content:space-between;align-items:center;transition:all 0.4s;}
-nav.scrolled{background:rgba(245,240,232,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:16px 48px;box-shadow:0 4px 30px rgba(44,36,22,0.06);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--brown);}
-.nav-btn{background:var(--brown);color:var(--cream);border:none;padding:11px 28px;border-radius:100px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
-.nav-btn:hover{background:var(--gold);transform:translateY(-1px);box-shadow:0 6px 24px rgba(155,110,42,0.3);}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:24px 52px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(5,4,3,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:16px 52px;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:5px;text-transform:uppercase;background:linear-gradient(135deg,var(--cream) 0%,var(--gold2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-btn{background:transparent;border:1px solid var(--border);color:var(--cream2);padding:10px 26px;border-radius:100px;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold2);box-shadow:0 0 20px rgba(196,146,58,.15);}
 
-/* ========= PAGE ========= */
+/* PAGE */
 .page{position:relative;z-index:1;}
 
-/* ========= HERO ========= */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 48px 80px;text-align:center;position:relative;}
-.hero-glass{background:rgba(255,255,255,0.3);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.55);border-radius:32px;padding:60px 52px;max-width:640px;width:100%;box-shadow:0 8px 60px rgba(44,36,22,0.1),inset 0 1px 0 rgba(255,255,255,0.7);animation:glassIn 1.2s cubic-bezier(0.16,1,0.3,1) both;}
-@keyframes glassIn{from{opacity:0;transform:translateY(50px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.8);padding:7px 18px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(44,36,22,0.6);margin-bottom:36px;}
-.badge-dot{width:6px;height:6px;border-radius:50%;background:#4A5E3A;box-shadow:0 0 8px rgba(74,94,58,0.6);animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,80px);font-weight:300;line-height:1.0;letter-spacing:-1.5px;color:var(--brown);margin-bottom:20px;}
-.hero-h1 em{font-style:italic;color:var(--gold2);}
-.hero-sub{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:10px;}
-.hero-sub2{font-size:13px;color:rgba(44,36,22,0.38);font-style:italic;line-height:1.6;margin-bottom:36px;font-weight:300;}
-.hero-form{display:flex;gap:8px;margin-bottom:20px;}
-.hero-form input{flex:1;padding:14px 20px;background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.9);border-radius:100px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--brown);outline:none;transition:all 0.3s;}
-.hero-form input:focus{background:rgba(255,255,255,0.85);box-shadow:0 0 0 3px rgba(155,110,42,0.1);}
-.hero-form input::placeholder{color:rgba(44,36,22,0.3);}
-.btn-primary{background:var(--brown);color:var(--cream);border:none;padding:14px 26px;border-radius:100px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;white-space:nowrap;transition:all 0.3s;position:relative;overflow:hidden;}
-.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.08),transparent);transform:translateX(-100%);transition:transform 0.5s;}
-.btn-primary:hover::before{transform:translateX(100%);}
-.btn-primary:hover{background:var(--gold);transform:translateY(-1px);box-shadow:0 6px 24px rgba(155,110,42,0.3);}
-.hero-proof{display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;color:rgba(44,36,22,0.38);}
+/* ===== TEXT ANIMATION CLASSES ===== */
+/* Word slide-up (safe — works on any text) */
+.wrev{display:inline;}
+.wrev .wr{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.wrev .wr .wi{display:inline-block;transform:translateY(110%);opacity:0;transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s ease;}
+.wrev.go .wi{transform:translateY(0);opacity:1;}
+
+/* Fade-up block */
+.fup{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s cubic-bezier(.16,1,.3,1);}
+.fup.go{opacity:1;transform:translateY(0);}
+
+/* Blur dissolve */
+.bdis{opacity:0;filter:blur(10px);transition:opacity .7s ease,filter .7s ease;}
+.bdis.go{opacity:1;filter:blur(0);}
+
+/* Slide from left */
+.sleft{opacity:0;transform:translateX(-32px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);}
+.sleft.go{opacity:1;transform:translateX(0);}
+
+/* Scale pop */
+.spop{opacity:0;transform:scale(.88);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);}
+.spop.go{opacity:1;transform:scale(1);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 52px 80px;position:relative;overflow:hidden;}
+.hero-inner{position:relative;z-index:1;max-width:900px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(196,146,58,.2);background:rgba(196,146,58,.05);backdrop-filter:blur(8px);padding:8px 20px;border-radius:100px;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);margin-bottom:44px;opacity:0;animation:fadeUp .8s .3s ease forwards;}
+.ey-dot{width:5px;height:5px;border-radius:50%;background:var(--green2);box-shadow:0 0 8px var(--green2);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* Hero title — line by line slide */
+.hero-title{font-family:'Cormorant Garamond',serif;line-height:1.0;letter-spacing:-2px;margin-bottom:0;}
+.ht-line{display:block;overflow:hidden;margin-bottom:2px;}
+.ht-li{display:block;transform:translateY(110%);opacity:0;font-weight:300;}
+.ht-li.plain{background:linear-gradient(135deg,var(--cream) 0%,var(--cream2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ht-li.gold{font-style:italic;background:linear-gradient(135deg,var(--gold3) 0%,var(--gold) 45%,var(--gold2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ht-sz{font-size:clamp(62px,9.5vw,118px);}
+.ht-revealed .ht-li{transform:translateY(0);opacity:1;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .6s ease;}
+
+.hero-sub-wrap{margin:36px 0 44px;max-width:540px;}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.8;font-weight:300;opacity:0;animation:fadeUp .8s 1.1s ease forwards;}
+.hero-sub2{font-size:13px;color:rgba(242,237,228,.28);font-style:italic;line-height:1.6;margin-top:8px;font-weight:300;opacity:0;animation:fadeUp .8s 1.3s ease forwards;}
+.hero-cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.4s ease forwards;}
+.btn-glow{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#050403;border:none;padding:16px 36px;border-radius:100px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.5px;transition:all .3s;position:relative;overflow:hidden;}
+.btn-glow::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-100%);transition:transform .55s;}
+.btn-glow:hover::before{transform:translateX(100%);}
+.btn-glow:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(196,146,58,.45);}
+.btn-ghost{background:transparent;color:var(--cream2);border:1px solid var(--border);padding:16px 28px;border-radius:100px;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:400;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold2);}
+.hero-proof{margin-top:36px;display:flex;align-items:center;gap:12px;font-size:12px;color:rgba(242,237,228,.28);opacity:0;animation:fadeUp .8s 1.6s ease forwards;}
 .proof-avs{display:flex;}
-.proof-av{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,0.8);margin-left:-7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:white;}
+.proof-av{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--bg);margin-left:-7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:white;}
 .proof-av:first-child{margin-left:0;background:linear-gradient(135deg,#8B3A3A,#C4923A);}
 .proof-av:nth-child(2){background:linear-gradient(135deg,#3D6B3A,#5A9E56);}
 .proof-av:nth-child(3){background:linear-gradient(135deg,#3A6B8B,#8B6030);}
 .proof-av:nth-child(4){background:linear-gradient(135deg,#6B3A8B,#C4923A);}
-.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(44,36,22,0.3);animation:fadeIn 1s 1.5s ease both;}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(44,36,22,0.3),transparent);animation:scrollP 2s ease infinite;}
-@keyframes scrollP{0%,100%{transform:scaleY(1);opacity:0.4}50%{transform:scaleY(0.6);opacity:1}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ========= SECTIONS ========= */
-section{padding:100px 48px;position:relative;z-index:1;}
-.s-wrap{max-width:1100px;margin:0 auto;}
-.lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block;}
-.ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,60px);font-weight:300;line-height:1.08;letter-spacing:-0.5px;color:var(--brown);margin-bottom:20px;}
+/* Floating tags */
+.hero-tags{position:absolute;right:-20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;opacity:0;animation:fadeUp .8s 1.8s ease forwards;}
+@media(max-width:1100px){.hero-tags{display:none;}}
+.htag{background:rgba(196,146,58,.05);border:1px solid rgba(196,146,58,.12);padding:8px 16px;border-radius:100px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(196,146,58,.6);white-space:nowrap;animation:tagF 4s ease-in-out infinite;}
+.htag:nth-child(2){animation-delay:.5s;}.htag:nth-child(3){animation-delay:1s;}.htag:nth-child(4){animation-delay:1.5s;}
+@keyframes tagF{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,228,.2);opacity:0;animation:fadeUp .8s 2s ease forwards;}
+.sh-line{width:40px;height:1px;background:linear-gradient(to right,rgba(196,146,58,.4),transparent);}
+
+/* SECTIONS */
+section{padding:120px 52px;position:relative;z-index:1;}
+.sw{max-width:1100px;margin:0 auto;}
+.lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.lbl::before{content:'';width:20px;height:1px;background:var(--gold);flex-shrink:0;}
+.ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:300;line-height:1.05;letter-spacing:-1px;margin-bottom:22px;color:var(--cream);}
 .ttl em{font-style:italic;color:var(--gold2);}
 .sub{font-size:16px;color:var(--muted);line-height:1.8;font-weight:300;}
-.glass-panel{background:rgba(255,255,255,0.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.45);border-radius:28px;padding:52px 48px;box-shadow:0 4px 40px rgba(44,36,22,0.07),inset 0 1px 0 rgba(255,255,255,0.5);}
+.gp{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:52px 48px;box-shadow:0 4px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04);}
 
-/* ========= PROBLEM ========= */
-.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.stat-row{display:flex;gap:20px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(44,36,22,0.08);transition:padding-left 0.3s;}
-.stat-row:first-child{border-top:1px solid rgba(44,36,22,0.08);}
-.stat-row:hover{padding-left:8px;}
-.stat-n{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;color:var(--gold2);line-height:1;min-width:90px;flex-shrink:0;}
-.stat-t{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;}
+/* PROBLEM */
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center;}
+.sr{display:flex;gap:22px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.05);transition:all .3s;cursor:default;}
+.sr:first-child{border-top:1px solid rgba(255,255,255,.05);}
+.sr:hover{padding-left:10px;}
+.sn{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;background:linear-gradient(135deg,var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;min-width:92px;flex-shrink:0;}
+.st{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;}
 
-/* ========= CULTURAL ========= */
-.cult-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px;}
-.cult-card{background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.65);border-radius:18px;padding:28px 22px;backdrop-filter:blur(10px);transition:all 0.35s;}
-.cult-card:hover{background:rgba(255,255,255,0.65);transform:translateY(-5px);box-shadow:0 14px 36px rgba(44,36,22,0.1);}
-.cult-icon{font-size:28px;margin-bottom:14px;}
-.cult-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--brown);margin-bottom:8px;}
-.cult-desc{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;}
+/* CULTURAL */
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px;}
+.cc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:28px 22px;transition:all .4s;position:relative;overflow:hidden;}
+.cc::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(196,146,58,.07),transparent 65%);opacity:0;transition:opacity .4s;}
+.cc:hover{border-color:rgba(196,146,58,.2);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.cc:hover::after{opacity:1;}
+.ci{font-size:26px;margin-bottom:14px;}
+.ct{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);margin-bottom:8px;}
+.cd{font-size:12px;color:var(--muted);line-height:1.65;font-weight:300;}
 
-/* ========= ACTIONS ========= */
-.act-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(44,36,22,0.06);border:1px solid rgba(44,36,22,0.06);border-radius:24px;overflow:hidden;margin-top:48px;}
-.act-card{background:rgba(255,255,255,0.5);padding:32px 22px;transition:all 0.35s;position:relative;overflow:hidden;backdrop-filter:blur(10px);}
-.act-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold3));transform:scaleX(0);transition:transform 0.35s;transform-origin:left;}
-.act-card:hover{background:rgba(255,255,255,0.75);transform:translateY(-4px);}
-.act-card:hover::after{transform:scaleX(1);}
-.act-n{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:rgba(155,110,42,0.1);line-height:1;margin-bottom:14px;}
-.act-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
-.act-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--brown);margin-bottom:8px;line-height:1.2;}
-.act-desc{font-size:11px;color:var(--muted);line-height:1.65;font-weight:300;}
+/* ACTIONS */
+.ag{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05);border-radius:20px;overflow:hidden;margin-top:48px;}
+.ac{background:var(--bg2);padding:32px 22px;transition:all .4s;position:relative;overflow:hidden;}
+.ac::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold3),var(--gold2));transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.ac:hover{background:rgba(196,146,58,.04);}
+.ac:hover::before{transform:scaleX(1);}
+.an{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(196,146,58,.07);line-height:1;margin-bottom:16px;}
+.at{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block;}
+.atl{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--cream);margin-bottom:10px;line-height:1.2;}
+.ad{font-size:11px;color:var(--muted);line-height:1.7;font-weight:300;}
 
-/* ========= HOW ========= */
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(44,36,22,0.06);border:1px solid rgba(44,36,22,0.06);border-radius:24px;overflow:hidden;margin-top:48px;}
-.how-step{background:rgba(255,255,255,0.45);padding:44px 34px;position:relative;overflow:hidden;transition:all 0.3s;backdrop-filter:blur(10px);}
-.how-step:hover{background:rgba(255,255,255,0.7);}
-.how-bg-n{font-family:'Cormorant Garamond',serif;font-size:90px;font-weight:300;color:rgba(155,110,42,0.06);line-height:1;position:absolute;top:12px;right:16px;}
-.how-icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:20px;}
-.how-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--brown);margin-bottom:12px;}
-.how-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+/* HOW */
+.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05);border-radius:20px;overflow:hidden;margin-top:48px;}
+.hs{background:var(--bg2);padding:44px 34px;position:relative;overflow:hidden;transition:background .3s;}
+.hs:hover{background:rgba(196,146,58,.03);}
+.hs-n{font-family:'Cormorant Garamond',serif;font-size:100px;font-weight:300;color:rgba(196,146,58,.04);line-height:1;position:absolute;top:12px;right:16px;}
+.hs-ic{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:rgba(196,146,58,.06);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:22px;}
+.hs-t{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;color:var(--cream);margin-bottom:12px;}
+.hs-d{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
 
-/* ========= PARTNER ========= */
-.partner-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:36px;}
-.ps-card{background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.65);border-radius:18px;padding:26px 24px;backdrop-filter:blur(10px);}
-.ps-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold2);line-height:1;margin-bottom:10px;}
-.ps-text{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:8px;}
-.ps-source{font-size:10px;color:rgba(44,36,22,0.3);font-style:italic;}
-.partner-bottom{background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.65);border-radius:20px;padding:36px 40px;backdrop-filter:blur(10px);}
-.partner-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
-.pi{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
-.pi-dot{width:7px;height:7px;border-radius:50%;background:var(--gold2);flex-shrink:0;margin-top:5px;}
-.pi-title{font-size:13px;font-weight:500;color:var(--brown);margin-bottom:2px;}
-.pi-desc{font-size:12px;color:var(--muted);font-weight:300;line-height:1.5;}
+/* PARTNER */
+.ps-g{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px;}
+.ps{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:26px 24px;transition:border-color .3s;}
+.ps:hover{border-color:var(--border);}
+.ps-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;background:linear-gradient(135deg,var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:10px;}
+.ps-t{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;margin-bottom:8px;}
+.ps-s{font-size:10px;color:rgba(242,237,228,.2);font-style:italic;}
+.pb{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:36px 38px;}
+.pb-g{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+.pi{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.pi-d{width:6px;height:6px;border-radius:50%;background:var(--gold2);flex-shrink:0;margin-top:6px;box-shadow:0 0 8px rgba(196,146,58,.4);}
+.pi-t{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:3px;}
+.pi-s{font-size:11px;color:var(--muted);font-weight:300;line-height:1.5;}
 
-/* ========= SMS DEMO ========= */
-.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.phone-wrap{display:flex;justify-content:center;position:relative;}
-.phone-glow{position:absolute;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(155,110,42,0.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(28px);}
-.phone{width:268px;position:relative;z-index:1;background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.8);border-radius:36px;padding:20px 15px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(44,36,22,0.15),inset 0 1px 0 rgba(255,255,255,0.9);}
-.phone-notch{width:70px;height:5px;background:rgba(44,36,22,0.1);border-radius:100px;margin:0 auto 16px;}
-.phone-hdr{text-align:center;padding-bottom:12px;border-bottom:1px solid rgba(44,36,22,0.07);margin-bottom:12px;}
-.phone-hdr p{font-size:9px;color:var(--muted);margin-bottom:2px;}
-.phone-hdr h4{font-size:12px;color:var(--brown);font-weight:500;}
-.pm{margin-bottom:8px;}
-.pm-o{background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.95);border-radius:13px 13px 13px 3px;padding:9px 11px;font-size:10.5px;color:var(--brown);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;}
-.pm-m{background:rgba(155,110,42,0.1);border:1px solid rgba(155,110,42,0.15);border-radius:13px 13px 3px 13px;padding:9px 11px;font-size:10.5px;color:rgba(44,36,22,0.7);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;margin-left:20px;}
-.pm-t{font-size:9px;color:rgba(44,36,22,0.25);margin-top:3px;padding:0 3px;}
+/* DEMO */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.pw{position:relative;display:flex;justify-content:center;}
+.ph-halo{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,58,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);filter:blur(20px);}
+.ph{width:272px;position:relative;z-index:1;background:var(--bg3);border:1px solid rgba(196,146,58,.15);border-radius:38px;padding:22px 16px;box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(196,146,58,.07);}
+.ph-notch{width:72px;height:5px;background:rgba(255,255,255,.05);border-radius:100px;margin:0 auto 18px;}
+.ph-hdr{text-align:center;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:14px;}
+.ph-hdr p{font-size:10px;color:var(--muted);margin-bottom:2px;}
+.ph-hdr h4{font-size:13px;color:var(--cream);font-weight:400;}
+.pm{margin-bottom:9px;}
+.pm-o{background:rgba(196,146,58,.1);border:1px solid rgba(196,146,58,.1);border-radius:14px 14px 14px 3px;padding:10px 12px;font-size:11px;color:var(--cream2);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;}
+.pm-m{background:rgba(255,255,255,.05);border-radius:14px 14px 3px 14px;padding:10px 12px;font-size:11px;color:rgba(242,237,228,.55);line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300;margin-left:22px;}
+.pm-t{font-size:9px;color:rgba(242,237,228,.2);margin-top:4px;padding:0 4px;}
 
-/* ========= SURVEY MODAL ========= */
-#survey-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(245,240,232,0.95);backdrop-filter:blur(30px);align-items:center;justify-content:center;padding:20px;}
-.survey-shell{width:100%;max-width:560px;position:relative;}
-.survey-progress{height:2px;background:rgba(155,110,42,0.15);border-radius:100px;margin-bottom:48px;overflow:hidden;}
-.survey-progress-bar{height:100%;background:linear-gradient(to right,var(--gold),var(--gold3));border-radius:100px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);}
-.survey-screen{display:none;animation:screenIn 0.5s cubic-bezier(0.16,1,0.3,1) both;}
-.survey-screen.active{display:block;}
-@keyframes screenIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes screenOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-20px)}}
-.survey-step{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block;}
-.survey-q{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:300;line-height:1.1;letter-spacing:-0.5px;color:var(--brown);margin-bottom:12px;}
-.survey-q em{font-style:italic;color:var(--gold2);}
-.survey-hint{font-size:13px;color:var(--muted);margin-bottom:36px;font-weight:300;line-height:1.6;}
-.survey-input{width:100%;padding:18px 22px;background:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.9);border-radius:16px;font-size:18px;font-family:'Cormorant Garamond',serif;color:var(--brown);outline:none;transition:all 0.3s;box-shadow:0 2px 20px rgba(44,36,22,0.06);}
-.survey-input:focus{background:rgba(255,255,255,0.9);border-color:rgba(155,110,42,0.3);box-shadow:0 0 0 4px rgba(155,110,42,0.08);}
-.survey-input::placeholder{color:rgba(44,36,22,0.25);font-style:italic;}
-.survey-note{font-size:11px;color:rgba(44,36,22,0.35);margin-top:10px;font-style:italic;}
-.survey-btn{margin-top:28px;background:var(--brown);color:var(--cream);border:none;padding:16px 36px;border-radius:100px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:10px;}
-.survey-btn:hover{background:var(--gold);transform:translateY(-2px);box-shadow:0 8px 28px rgba(155,110,42,0.3);}
-.survey-btn .arrow{transition:transform 0.3s;}
-.survey-btn:hover .arrow{transform:translateX(4px);}
-.survey-skip{display:block;font-size:12px;color:rgba(44,36,22,0.3);margin-top:16px;cursor:pointer;text-decoration:underline;transition:color 0.2s;}
-.survey-skip:hover{color:var(--gold);}
-.survey-options{display:flex;flex-direction:column;gap:10px;}
-.s-opt{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,0.5);border:1.5px solid rgba(255,255,255,0.8);border-radius:14px;cursor:pointer;transition:all 0.25s;font-size:14px;color:var(--brown);font-weight:300;}
-.s-opt:hover{background:rgba(255,255,255,0.8);border-color:rgba(155,110,42,0.25);transform:translateX(4px);}
-.s-opt.selected{background:rgba(155,110,42,0.08);border-color:rgba(155,110,42,0.4);color:var(--gold);}
-.s-opt .opt-check{width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(155,110,42,0.3);flex-shrink:0;transition:all 0.25s;display:flex;align-items:center;justify-content:center;}
-.s-opt.selected .opt-check{background:var(--gold2);border-color:var(--gold2);}
-.s-opt.selected .opt-check::after{content:'✓';font-size:10px;color:white;font-weight:600;}
-.s-opt-multi{border-radius:8px;}
-.multi-select-note{font-size:11px;color:var(--muted);margin-bottom:16px;font-style:italic;}
+/* WAITLIST */
+.wl-wrap{padding:100px 52px;position:relative;z-index:1;}
+.wl-g{background:rgba(255,255,255,.035);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.07);border-radius:28px;padding:72px 60px;max-width:660px;margin:0 auto;text-align:center;position:relative;overflow:hidden;}
+.wl-g::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,58,.07) 0%,transparent 65%);filter:blur(40px);pointer-events:none;}
+.wl-lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.wl-lbl::before,.wl-lbl::after{content:'';width:18px;height:1px;background:var(--gold3);}
+.wl-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,68px);font-weight:300;line-height:1.05;letter-spacing:-1px;margin-bottom:18px;color:var(--cream);}
+.wl-ttl em{font-style:italic;color:var(--gold2);}
+.wl-sub{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:36px;}
+.wl-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#050403;border:none;border-radius:14px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .3s;position:relative;overflow:hidden;}
+.wl-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.12),transparent);transform:translateX(-100%);transition:transform .6s;}
+.wl-btn:hover::before{transform:translateX(100%);}
+.wl-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(196,146,58,.4);}
+.wl-note{font-size:11px;color:rgba(242,237,228,.2);margin-top:18px;font-style:italic;line-height:1.7;font-weight:300;}
 
-/* TRANSITION SCREEN */
-.transition-screen{text-align:center;padding:20px 0;}
-.ts-emoji{font-size:48px;margin-bottom:24px;animation:emojiBounce 1s ease infinite;}
-@keyframes emojiBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.ts-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:300;color:var(--brown);line-height:1.1;margin-bottom:14px;}
-.ts-title em{font-style:italic;color:var(--gold2);}
-.ts-sub{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;max-width:440px;margin:0 auto 36px;}
+/* FOOTER */
+footer{padding:40px 52px 32px;position:relative;z-index:1;}
+.ft{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:36px 44px;max-width:1100px;margin:0 auto;}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:20px;}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(135deg,var(--cream),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
+.ft-tag{font-size:11px;color:rgba(242,237,228,.22);font-style:italic;font-weight:300;}
+.ft-links{display:flex;gap:22px;flex-wrap:wrap;}
+.ft-links a{font-size:11px;color:rgba(242,237,228,.22);text-decoration:none;transition:color .2s;}
+.ft-links a:hover{color:var(--gold2);}
+.ft-bot{display:flex;justify-content:space-between;align-items:center;}
+.ft-copy{font-size:10px;color:rgba(242,237,228,.15);}
+.ft-mis{font-size:10px;color:rgba(242,237,228,.15);font-style:italic;max-width:280px;text-align:right;line-height:1.6;}
 
-/* TRANSITION ENTRY EFFECT */
-.transition-screen .ts-emoji,
-.transition-screen .ts-title,
-.transition-screen .ts-sub,
-.transition-screen .survey-btn{
-  opacity:0;
-  transform:translateY(28px) scale(0.98);
-  filter:blur(8px);
-}
+/* SURVEY */
+#sv{display:none;position:fixed;inset:0;z-index:800;background:rgba(5,4,3,.97);backdrop-filter:blur(30px);align-items:center;justify-content:center;padding:20px;}
+.sv-w{width:100%;max-width:580px;position:relative;}
+.sv-x{position:absolute;top:-52px;right:0;background:transparent;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.sv-x:hover{border-color:var(--gold);color:var(--gold);}
+.sv-bar{height:1px;background:rgba(196,146,58,.1);border-radius:100px;margin-bottom:52px;overflow:hidden;}
+.sv-prog{height:100%;background:linear-gradient(to right,var(--gold3),var(--gold2));border-radius:100px;transition:width .6s cubic-bezier(.16,1,.3,1);}
+.sv-scr{animation:scIn .45s cubic-bezier(.16,1,.3,1) both;}
+@keyframes scIn{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes scOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-18px)}}
+.sv-step{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.sv-step::before{content:'';width:16px;height:1px;background:var(--gold);}
+.sv-q{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,50px);font-weight:300;line-height:1.08;letter-spacing:-.5px;color:var(--cream);margin-bottom:10px;}
+.sv-q em{font-style:italic;color:var(--gold2);}
+.sv-hint{font-size:13px;color:var(--muted);margin-bottom:34px;font-weight:300;line-height:1.6;}
+.sv-inp{width:100%;padding:20px 24px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;font-size:22px;font-family:'Cormorant Garamond',serif;color:var(--cream);outline:none;transition:all .3s;}
+.sv-inp:focus{background:rgba(255,255,255,.07);border-color:rgba(196,146,58,.3);box-shadow:0 0 0 4px rgba(196,146,58,.06);}
+.sv-inp::placeholder{color:rgba(242,237,228,.18);font-style:italic;}
+.sv-note{font-size:11px;color:rgba(242,237,228,.22);margin-top:10px;font-style:italic;}
+.sv-acts{display:flex;align-items:center;gap:16px;margin-top:30px;}
+.sv-btn{background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#050403;border:none;padding:15px 32px;border-radius:100px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.sv-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.12),transparent);transform:translateX(-100%);transition:transform .5s;}
+.sv-btn:hover::before{transform:translateX(100%);}
+.sv-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,146,58,.35);}
+.sv-arr{display:inline-block;transition:transform .3s;}
+.sv-btn:hover .sv-arr{transform:translateX(4px);}
+.sv-skip{font-size:12px;color:rgba(242,237,228,.22);cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .2s;}
+.sv-skip:hover{color:var(--gold);}
+.sv-opts{display:flex;flex-direction:column;gap:8px;}
+.sv-opt{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:13px;cursor:pointer;transition:all .25s;font-size:13px;color:var(--muted);font-weight:300;}
+.sv-opt:hover{background:rgba(196,146,58,.05);border-color:rgba(196,146,58,.15);color:var(--cream);transform:translateX(4px);}
+.sv-opt.sel{background:rgba(196,146,58,.08);border-color:rgba(196,146,58,.3);color:var(--cream2);}
+.oc{width:20px;height:20px;border-radius:50%;border:1px solid rgba(196,146,58,.25);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .25s;}
+.sv-opt.sel .oc{background:var(--gold2);border-color:var(--gold2);color:#050403;font-weight:700;}
+.mn{font-size:11px;color:var(--muted);margin-bottom:14px;font-style:italic;}
 
-.transition-screen.animate-in .ts-emoji{
-  animation:transitionFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.05s forwards,
-            emojiFloatIn 1.2s ease 0.05s forwards,
-            emojiBounce 1.4s ease 1.15s infinite;
-}
+/* TRANSITION */
+.ts{text-align:center;padding:20px 0;}
+.ts-ic{font-size:52px;margin-bottom:26px;display:inline-block;animation:iF 3s ease-in-out infinite;}
+@keyframes iF{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ts-t{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,58px);font-weight:300;color:var(--cream);line-height:1.08;margin-bottom:14px;}
+.ts-t em{font-style:italic;color:var(--gold2);}
+.ts-s{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;max-width:420px;margin:0 auto 36px;}
 
-.transition-screen.animate-in .ts-title{
-  animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s forwards;
-}
+/* FINAL */
+.fn{text-align:center;padding:16px 0;}
+.fn-r{width:100px;height:100px;margin:0 auto 30px;position:relative;}
+.fn-r svg{width:100px;height:100px;transform:rotate(-90deg);}
+.fn-em{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;}
+.fn-t{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,64px);font-weight:300;color:var(--cream);line-height:1.05;letter-spacing:-1px;margin-bottom:18px;}
+.fn-t em{font-style:italic;color:var(--gold2);}
+.fn-m{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:10px;max-width:420px;margin-left:auto;margin-right:auto;}
+.fn-sig{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--gold2);margin:20px 0 30px;}
+.fn-steps{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px;margin-bottom:28px;text-align:left;}
+.fn-step{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.fn-step:last-child{border-bottom:none;padding-bottom:0;}
+.fn-sn{width:26px;height:26px;border-radius:50%;background:rgba(196,146,58,.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold2);font-weight:600;flex-shrink:0;}
+.fn-sc p:first-child{font-size:12px;color:var(--cream);margin-bottom:2px;}
+.fn-sc p:last-child{font-size:11px;color:var(--muted);font-weight:300;line-height:1.5;}
+.fn-sh{background:transparent;border:1px solid var(--border);color:var(--gold2);padding:11px 24px;border-radius:100px;font-size:11px;font-family:'DM Sans',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.fn-sh:hover{background:rgba(196,146,58,.06);border-color:var(--gold);}
 
-.transition-screen.animate-in .ts-sub{
-  animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.34s forwards;
-}
+/* ANIMATIONS */
+.fup{opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .85s cubic-bezier(.16,1,.3,1);}
+.fup.go{opacity:1;transform:translateY(0);}
+@keyframes ep{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(10deg)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 
-.transition-screen.animate-in .survey-btn{
-  animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
-}
-
-@keyframes transitionFadeUp{
-  0%{
-    opacity:0;
-    transform:translateY(28px) scale(0.98);
-    filter:blur(8px);
-  }
-  60%{
-    opacity:1;
-    transform:translateY(-4px) scale(1.01);
-    filter:blur(0);
-  }
-  100%{
-    opacity:1;
-    transform:translateY(0) scale(1);
-    filter:blur(0);
-  }
-}
-
-@keyframes emojiFloatIn{
-  0%{
-    transform:translateY(32px) scale(0.85) rotate(-8deg);
-  }
-  70%{
-    transform:translateY(-4px) scale(1.06) rotate(3deg);
-  }
-  100%{
-    transform:translateY(0) scale(1) rotate(0deg);
-  }
-}
-
-/* FRAMER-STYLE TEXT REVEAL */
-.ts-title,.ts-sub,.final-title,.final-msg,.final-sig{perspective:1200px;}
-.fly-line{display:block;overflow:hidden;padding-bottom:0.12em;margin-bottom:-0.12em;}
-.fly-line + .fly-line{margin-top:0.04em;}
-.fly-word{display:inline-block;opacity:0;transform:translate3d(0,118%,0) skewY(6deg) scaleY(1.06);transform-origin:center bottom;filter:blur(10px);will-change:transform,opacity,filter;backface-visibility:hidden;}
-.animate-in .fly-word{animation:textFlyInMask 0.95s cubic-bezier(0.16,1,0.3,1) forwards;animation-delay:var(--d,0s);}
-.transition-screen.animate-in .ts-sub .fly-word{animation-duration:1.02s;}
-.final-screen.animate-in .final-msg .fly-word{animation-duration:1s;}
-.final-screen.animate-in .final-sig{animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.98s forwards;}
-.final-screen.animate-in .share-btn{animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 1.1s forwards;}
-
-@keyframes textFlyInMask{
-  0%{
-    opacity:0;
-    transform:translate3d(0,118%,0) skewY(6deg) scaleY(1.06);
-    filter:blur(10px);
-  }
-  62%{
-    opacity:1;
-    transform:translate3d(0,-10%,0) skewY(-1.5deg) scaleY(0.995);
-    filter:blur(0);
-  }
-  100%{
-    opacity:1;
-    transform:translate3d(0,0,0) skewY(0) scaleY(1);
-    filter:blur(0);
-  }
-}
-
-/* FINAL SCREEN */
-.final-screen{text-align:center;padding:20px 0;}
-.final-ring{width:100px;height:100px;margin:0 auto 32px;position:relative;}
-.final-ring svg{width:100px;height:100px;transform:rotate(-90deg);}
-.final-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;}
-.final-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,64px);font-weight:300;color:var(--brown);line-height:1.05;letter-spacing:-0.5px;margin-bottom:16px;}
-.final-title em{font-style:italic;color:var(--gold2);}
-.final-msg{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:12px;max-width:440px;margin-left:auto;margin-right:auto;}
-.final-sig{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--gold2);margin-bottom:36px;}
-.share-btn{background:transparent;border:1.5px solid var(--border);color:var(--gold);padding:12px 28px;border-radius:100px;font-size:12px;font-family:'DM Sans',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
-.share-btn:hover{background:rgba(155,110,42,0.08);border-color:var(--gold2);}
-
-.final-screen .final-ring,
-.final-screen .final-title,
-.final-screen .final-msg,
-.final-screen .final-sig,
-.final-screen .share-btn{
-  opacity:0;
-  transform:translateY(24px);
-  filter:blur(6px);
-}
-
-.final-screen.animate-in .final-ring{animation:transitionFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.05s forwards;}
-.final-screen.animate-in .final-title{animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s forwards;}
-.final-screen.animate-in .final-msg:nth-of-type(1){animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.32s forwards;}
-.final-screen.animate-in .final-msg:nth-of-type(2){animation:transitionFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.44s forwards;}
-
-/* ========= WAITLIST CTA ========= */
-.waitlist-wrap{padding:100px 48px;position:relative;z-index:1;}
-.waitlist-glass{background:rgba(44,36,22,0.88);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,0.1);border-radius:32px;padding:72px 56px;max-width:640px;margin:0 auto;text-align:center;box-shadow:0 20px 80px rgba(44,36,22,0.25),inset 0 1px 0 rgba(255,255,255,0.08);}
-.wl-lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold3);margin-bottom:16px;display:block;}
-.wl-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1.08;letter-spacing:-1px;color:#F7F3ED;margin-bottom:16px;}
-.wl-title em{font-style:italic;color:var(--gold3);}
-.wl-sub{font-size:15px;color:rgba(247,243,237,0.5);line-height:1.8;font-weight:300;margin-bottom:36px;}
-.wl-cta-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));color:var(--brown);border:none;border-radius:14px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;letter-spacing:0.3px;transition:all 0.3s;position:relative;overflow:hidden;}
-.wl-cta-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.12),transparent);transform:translateX(-100%);transition:transform 0.6s;}
-.wl-cta-btn:hover::before{transform:translateX(100%);}
-.wl-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(196,146,58,0.35);}
-.wl-note{font-size:12px;color:rgba(247,243,237,0.22);margin-top:18px;font-style:italic;line-height:1.7;font-weight:300;}
-
-/* ========= FOOTER ========= */
-footer{padding:40px 48px 32px;position:relative;z-index:1;}
-.ft-glass{background:rgba(44,36,22,0.75);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:36px 44px;max-width:1100px;margin:0 auto;}
-.ft-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:18px;}
-.ft-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:4px;text-transform:uppercase;color:#F7F3ED;margin-bottom:5px;}
-.ft-tag{font-size:11px;color:rgba(247,243,237,0.3);font-style:italic;font-weight:300;}
-.ft-links{display:flex;gap:22px;}
-.ft-links a{font-size:11px;color:rgba(247,243,237,0.3);text-decoration:none;transition:color 0.2s;}
-.ft-links a:hover{color:var(--gold3);}
-.ft-bottom{display:flex;justify-content:space-between;align-items:center;}
-.ft-copy{font-size:10px;color:rgba(247,243,237,0.18);}
-.ft-mission{font-size:10px;color:rgba(247,243,237,0.18);font-style:italic;max-width:280px;text-align:right;line-height:1.6;}
-
-/* ========= ANIMATIONS ========= */
-.fu{opacity:0;transform:translateY(24px);transition:opacity 0.85s ease,transform 0.85s ease;}
-.fu.visible{opacity:1;transform:translateY(0);}
-@keyframes emojiPop{0%{transform:scale(1)}40%{transform:scale(1.5) rotate(10deg)}70%{transform:scale(0.9)}100%{transform:scale(1)}}
-
-/* ========= MOBILE ========= */
-@media(max-width:768px){
+/* MOBILE */
+@media(max-width:900px){
   nav,nav.scrolled{padding:16px 20px;}
   section{padding:70px 20px;}
   .hero{padding:90px 20px 60px;}
-  .hero-glass{padding:40px 24px;border-radius:24px;}
-  .hero-h1{font-size:clamp(42px,10vw,62px);}
-  .hero-form{flex-direction:column;}
-  .hero-form button{width:100%;padding:14px;}
-  .glass-panel{padding:36px 24px;border-radius:22px;}
-  .prob-grid{grid-template-columns:1fr;gap:40px;}
-  .cult-grid{grid-template-columns:1fr 1fr;}
-  .act-grid{grid-template-columns:1fr;}
-  .how-grid{grid-template-columns:1fr;}
-  .demo-grid{grid-template-columns:1fr;gap:40px;text-align:center;}
-  .phone{max-width:300px;margin:0 auto;}
-  .partner-stats{grid-template-columns:1fr;}
-  .partner-bottom-grid{grid-template-columns:1fr;gap:28px;}
-  .partner-bottom{padding:28px 22px;}
-  .waitlist-wrap{padding:70px 20px;}
-  .waitlist-glass{padding:48px 28px;border-radius:24px;}
+  .ht-sz{font-size:clamp(44px,10vw,70px);}
+  .hero-cta{flex-direction:column;align-items:flex-start;}
+  .gp{padding:36px 24px;border-radius:20px;}
+  .prob-grid,.dg{grid-template-columns:1fr;gap:44px;}
+  .cg{grid-template-columns:1fr 1fr;}
+  .ag,.hg{grid-template-columns:1fr;}
+  .ps-g{grid-template-columns:1fr;}
+  .pb-g{grid-template-columns:1fr;gap:28px;}
+  .pb{padding:26px 22px;}
+  .ph{max-width:300px;margin:0 auto;}
+  .wl-wrap{padding:70px 20px;}
+  .wl-g{padding:48px 28px;border-radius:22px;}
   footer{padding:28px 20px;}
-  .ft-glass{padding:28px 22px;border-radius:18px;}
+  .ft{padding:28px 22px;border-radius:18px;}
   .ft-top{flex-direction:column;gap:20px;}
-  .ft-links{flex-wrap:wrap;gap:14px;}
-  .ft-bottom{flex-direction:column;gap:10px;text-align:center;}
-  .ft-mission{text-align:center;max-width:100%;}
-  #survey-overlay{padding:20px 16px;}
-  .survey-shell{padding:0;}
-  .survey-q{font-size:clamp(28px,7vw,44px);}
+  .ft-bot{flex-direction:column;gap:10px;text-align:center;}
+  .ft-mis{text-align:center;max-width:100%;}
+  #sv{padding:16px;}
+  .sv-q{font-size:clamp(28px,7vw,44px);}
 }
-@media(max-width:420px){
-  .cult-grid{grid-template-columns:1fr;}
-  .hero-h1{font-size:40px;}
-}
+@media(max-width:420px){.cg{grid-template-columns:1fr;}.ht-sz{font-size:40px;}}
 </style>
 </head>
 <body>
 
-<!-- 3D CANVAS -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
 <canvas id="bg-canvas"></canvas>
 
 <nav id="nav">
   <div class="nav-logo">ORIMI</div>
-  <button class="nav-btn" onclick="openSurvey()">Join waitlist</button>
+  <button class="nav-btn" onclick="openSV()">Join waitlist</button>
 </nav>
 
 <div class="page">
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div>
-      <div class="hero-glass">
-        <div class="hero-badge"><span class="badge-dot"></span>Now accepting waitlist</div>
-        <h1 class="hero-h1">Your doula.<br><em>In your pocket.</em><br>Every day.</h1>
-        <p class="hero-sub">ORIMI is an AI doula that texts you every morning, honors your culture and traditions, prepares you for every appointment, and never stops showing up.</p>
-        <p class="hero-sub2">Secure early access and stay updated on launch announcements, insights, and upcoming feature previews.</p>
-        <div class="hero-form">
-          <input type="email" placeholder="Your email address" id="hero-email">
-          <button class="btn-primary" onclick="heroStart()">Join waitlist</button>
-        </div>
-        <div class="hero-proof">
-          <div class="proof-avs">
-            <div class="proof-av">A</div><div class="proof-av">M</div>
-            <div class="proof-av">J</div><div class="proof-av">T</div>
-          </div>
-          <span>200+ mamas already on the waitlist</span>
-        </div>
-      </div>
-      <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="ey-dot"></span>Now accepting waitlist</div>
+    <div class="hero-title" id="htitle">
+      <div class="ht-line ht-sz"><span class="ht-li plain">Your doula.</span></div>
+      <div class="ht-line ht-sz"><span class="ht-li gold">In your pocket.</span></div>
+      <div class="ht-line ht-sz"><span class="ht-li plain">Every day.</span></div>
     </div>
-  </section>
-
-  <!-- PROBLEM -->
-  <section>
-    <div class="s-wrap">
-      <div class="glass-panel fu">
-        <div class="prob-grid">
-          <div>
-            <span class="lbl">The reality</span>
-            <h2 class="ttl">Every mother deserves <em>better than this.</em></h2>
-            <p class="sub">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
-          </div>
-          <div>
-            <div class="stat-row"><div class="stat-n">3×</div><div class="stat-t">Black mothers are 3 times more likely to die from pregnancy-related causes — and the healthcare system has historically underserved women across many backgrounds</div></div>
-            <div class="stat-row"><div class="stat-n">6%</div><div class="stat-t">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes</div></div>
-            <div class="stat-row"><div class="stat-n">39%</div><div class="stat-t">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and interventions</div></div>
-          </div>
-        </div>
-      </div>
+    <div class="hero-sub-wrap">
+      <p class="hero-sub">ORIMI is an AI doula that texts you every morning, honors your culture and traditions, prepares you for every appointment, and never stops showing up — through pregnancy, birth, and postpartum.</p>
+      <p class="hero-sub2">Secure early access and stay updated on launch announcements, insights, and upcoming feature previews.</p>
     </div>
-  </section>
-
-  <!-- CULTURAL -->
-  <section style="padding-top:0;">
-    <div class="s-wrap">
-      <div class="glass-panel fu">
-        <div style="max-width:640px;margin:0 auto 44px;text-align:center;">
-          <span class="lbl">Culturally fluent. Not one-size-fits-all.</span>
-          <h2 class="ttl">ORIMI meets you<br><em>where you are.</em></h2>
-          <p class="sub" style="max-width:100%;">Every mom deserves a doula who speaks her language, honors her traditions, and prepares her to make decisions from knowledge instead of fear. ORIMI respects your practices — and carries extra vigilance for the communities the healthcare system has historically underserved.</p>
-        </div>
-        <div class="cult-grid">
-          <div class="cult-card fu"><div class="cult-icon">🌺</div><div class="cult-title">Cuarentena</div><div class="cult-desc">40 days of rest, warming foods, and family support for Latina moms. ORIMI knows this tradition and honors it.</div></div>
-          <div class="cult-card fu"><div class="cult-icon">🌙</div><div class="cult-title">Sitting the month</div><div class="cult-desc">Zuò yuèzi — Chinese postpartum confinement of rest, warmth, and nourishment. ORIMI understands.</div></div>
-          <div class="cult-card fu"><div class="cult-icon">🌿</div><div class="cult-title">Caribbean traditions</div><div class="cult-desc">Lying-in, herbal baths, and community-centered postpartum care. ORIMI recognizes what medicine often overlooks.</div></div>
-          <div class="cult-card fu"><div class="cult-icon">✨</div><div class="cult-title">Your tradition</div><div class="cult-desc">Some moms want science. Some want spirit. Some want both. ORIMI reads your energy and meets you exactly there.</div></div>
-        </div>
-      </div>
+    <div class="hero-cta">
+      <button class="btn-glow" onclick="openSV()">Join the waitlist →</button>
+      <button class="btn-ghost" onclick="document.getElementById('learn').scrollIntoView({behavior:'smooth'})">Learn more</button>
     </div>
-  </section>
-
-  <!-- ACTIONS -->
-  <section style="padding-top:0;">
-    <div class="s-wrap">
-      <div class="fu" style="margin-bottom:40px;">
-        <span class="lbl">How ORIMI shows up</span>
-        <h2 class="ttl">Not a reminder app.<br><em>A doula.</em></h2>
-        <p class="sub">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+    <div class="hero-proof">
+      <div class="proof-avs">
+        <div class="proof-av">A</div><div class="proof-av">M</div>
+        <div class="proof-av">J</div><div class="proof-av">T</div>
       </div>
-      <div class="act-grid fu">
-        <div class="act-card"><div class="act-n">01</div><span class="act-tag">Educate</span><div class="act-title">Teach her what's really happening</div><div class="act-desc">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now. Specific to her week, her body, her baby.</div></div>
-        <div class="act-card"><div class="act-n">02</div><span class="act-tag">Prepare</span><div class="act-title">Before every appointment</div><div class="act-desc">48 hours before the glucose test — what to expect, what to eat, and the exact questions to ask her provider.</div></div>
-        <div class="act-card"><div class="act-n">03</div><span class="act-tag">Support</span><div class="act-title">Hold space. Validate. Stay.</div><div class="act-desc">"That sounds really hard" before "here's what might help." The thing no app does well but every mama needs.</div></div>
-        <div class="act-card"><div class="act-n">04</div><span class="act-tag">Advocate</span><div class="act-title">Give her the words</div><div class="act-desc">The BRAIN framework. Teaching her she has the right to ask why — and that asking is not being difficult.</div></div>
-        <div class="act-card"><div class="act-n">05</div><span class="act-tag">Anticipate</span><div class="act-title">Before she has to ask</div><div class="act-desc">At 13 emotional flashpoints — anatomy scan, week 37 labor fear, day 3 postpartum crash — ORIMI reaches out first.</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW -->
-  <section style="padding-top:0;">
-    <div class="s-wrap">
-      <div class="fu" style="margin-bottom:40px;">
-        <span class="lbl">Getting started</span>
-        <h2 class="ttl">No app to download.<br><em>Just your phone.</em></h2>
-      </div>
-      <div class="how-grid fu">
-        <div class="how-step"><div class="how-bg-n">1</div><div class="how-icon">📱</div><div class="how-title">Text to join</div><div class="how-desc">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
-        <div class="how-step"><div class="how-bg-n">2</div><div class="how-icon">🤱🏾</div><div class="how-title">ORIMI learns you</div><div class="how-desc">She learns your stage, your provider, your preferences. Every message is personalized to exactly where you are.</div></div>
-        <div class="how-step"><div class="how-bg-n">3</div><div class="how-icon">✦</div><div class="how-title">She never stops</div><div class="how-desc">Every morning. Before every appointment. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARTNER -->
-  <section style="padding-top:0;">
-    <div class="s-wrap">
-      <div class="glass-panel fu">
-        <div style="text-align:center;max-width:620px;margin:0 auto 48px;">
-          <span class="lbl">For the partner too</span>
-          <h2 class="ttl">ORIMI doesn't just support mom.<br><em>She equips her partner.</em></h2>
-          <p class="sub" style="max-width:100%;">A partner who knows what to expect, how to advocate, and when to simply hold space isn't just emotionally helpful. They're physiologically helping her labor progress. Oxytocin — the hormone that drives labor — flows when she feels safe, supported, and unobserved.</p>
-        </div>
-        <div class="partner-stats fu">
-          <div class="ps-card"><div class="ps-num">↑ Oxytocin</div><div class="ps-text">Continuous support during labor promotes maternal relaxation, reduces stress hormones, and enhances oxytocin release — directly contributing to cervical dilation and effective contractions</div><div class="ps-source">Frontiers in Endocrinology, 2021</div></div>
-          <div class="ps-card"><div class="ps-num">↓ Cesarean</div><div class="ps-text">Women with continuous support are significantly less likely to need a cesarean, less likely to use pain medication, and more likely to give birth spontaneously with shorter labors</div><div class="ps-source">Cochrane Review</div></div>
-          <div class="ps-card"><div class="ps-num">16/18</div><div class="ps-text">Partner-inclusive education programs showed significant reductions in postpartum depression symptoms in 16 out of 18 studies reviewed</div><div class="ps-source">Frontiers in Psychiatry, 2024</div></div>
-          <div class="ps-card"><div class="ps-num">$91M</div><div class="ps-text">Doula-model care saved $91M, led to 219,530 fewer cesareans, 51 fewer maternal deaths across 1.8 million women studied</div><div class="ps-source">Oregon Health Authority</div></div>
-        </div>
-        <div class="partner-bottom fu">
-          <div class="partner-bottom-grid">
-            <div>
-              <span class="lbl">What partners receive</span>
-              <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,40px);font-weight:300;color:var(--brown);line-height:1.1;margin-bottom:14px;">Real, doula-level guidance.<br><em style="font-style:italic;color:var(--gold2);">Every week.</em></h3>
-              <p style="font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;">ORIMI sends partners weekly updates — what's happening with baby, what she's feeling, one specific thing they can do today, and how to be the support person she actually needs.</p>
-            </div>
-            <div>
-              <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">What's happening with baby this week</div><div class="pi-desc">Plain language that makes them feel connected to the pregnancy.</div></div></div>
-              <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">What she's feeling and why</div><div class="pi-desc">The back pain is real. The heartburn is biology. Understanding removes helplessness.</div></div></div>
-              <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">One specific thing to do today</div><div class="pi-desc">Warm rice sock on her lower back. Rub her feet for 10 minutes. Concrete, not vague.</div></div></div>
-              <div class="pi"><div class="pi-dot"></div><div><div class="pi-title">How to hold space in the birth room</div><div class="pi-desc">Dim the lights. Apply counter-pressure. Advocate with staff. An informed partner changes outcomes.</div></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SMS DEMO -->
-  <section style="padding-top:0;">
-    <div class="s-wrap">
-      <div class="glass-panel fu">
-        <div class="demo-grid">
-          <div>
-            <span class="lbl">What ORIMI sounds like</span>
-            <h2 class="ttl">A doula who<br>knows <em>you.</em></h2>
-            <p class="sub">This is the difference between a notification and a doula. ORIMI tells moms what it is, why it matters, how to prepare, and what comes next.</p>
-          </div>
-          <div class="phone-wrap">
-            <div class="phone-glow"></div>
-            <div class="phone">
-              <div class="phone-notch"></div>
-              <div class="phone-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
-              <div class="pm"><div class="pm-o">Good morning Remy. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
-              <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
-              <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler for heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
-              <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
-              <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WAITLIST CTA -->
-  <div class="waitlist-wrap" id="waitlist">
-    <div class="waitlist-glass fu">
-      <span class="wl-lbl">Join the waitlist</span>
-      <h2 class="wl-title">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
-      <p class="wl-sub">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
-      <button class="wl-cta-btn" onclick="openSurvey()">Join the waitlist →</button>
-      <p class="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
+      <span>200+ mamas already on the waitlist</span>
     </div>
   </div>
+  <div class="hero-tags">
+    <div class="htag">AI Doula Intelligence</div>
+    <div class="htag">Culturally Fluent</div>
+    <div class="htag">Partner Support</div>
+    <div class="htag">SMS-First</div>
+  </div>
+  <div class="scroll-hint"><div class="sh-line"></div><span>Scroll to explore</span></div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="ft-glass">
-      <div class="ft-top">
-        <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
-        <div class="ft-links"><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
-      </div>
-      <div class="ft-bottom">
-        <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
-        <div class="ft-mission">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
+<!-- PROBLEM -->
+<section id="learn">
+  <div class="sw">
+    <div class="gp fup">
+      <div class="prob-grid">
+        <div>
+          <div class="lbl sleft">The reality</div>
+          <h2 class="ttl fup">Every mother deserves <em>better than this.</em></h2>
+          <p class="sub fup">The maternal health crisis is real, documented, and preventable. ORIMI exists because every mother deserves a doula — not just the ones who can afford $2,000 for in-person support.</p>
+        </div>
+        <div>
+          <div class="sr spop"><div class="sn">3×</div><div class="st">Black mothers are 3 times more likely to die from pregnancy-related causes — and the healthcare system has historically underserved women across many backgrounds</div></div>
+          <div class="sr spop" style="transition-delay:.1s"><div class="sn">6%</div><div class="st">Only 6% of births in the US have a doula present — despite evidence that doulas dramatically transform outcomes</div></div>
+          <div class="sr spop" style="transition-delay:.2s"><div class="sn">39%</div><div class="st">A doula reduces C-section rates by 39% and significantly lowers the need for pain medication and interventions</div></div>
+        </div>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
+
+<!-- CULTURAL -->
+<section style="padding-top:0;">
+  <div class="sw">
+    <div class="gp fup">
+      <div style="max-width:620px;margin:0 auto 44px;text-align:center;">
+        <div class="lbl bdis" style="justify-content:center;">Culturally fluent. Not one-size-fits-all.</div>
+        <h2 class="ttl fup">ORIMI meets you <em>where you are.</em></h2>
+        <p class="sub fup" style="max-width:100%;">Every mom deserves a doula who speaks her language, honors her traditions, and prepares her to make decisions from knowledge instead of fear. She carries extra vigilance for the communities the healthcare system has historically underserved.</p>
+      </div>
+      <div class="cg">
+        <div class="cc fup"><div class="ci">🌺</div><div class="ct">Cuarentena</div><div class="cd">40 days of rest, warming foods, and family support for Latina moms. ORIMI knows this tradition and honors it.</div></div>
+        <div class="cc fup" style="transition-delay:.1s"><div class="ci">🌙</div><div class="ct">Sitting the month</div><div class="cd">Zuò yuèzi — Chinese postpartum confinement of rest, warmth, and nourishment. ORIMI understands.</div></div>
+        <div class="cc fup" style="transition-delay:.2s"><div class="ci">🌿</div><div class="ct">Caribbean traditions</div><div class="cd">Lying-in, herbal baths, and community-centered care. ORIMI recognizes what medicine often overlooks.</div></div>
+        <div class="cc fup" style="transition-delay:.3s"><div class="ci">✨</div><div class="ct">Your tradition</div><div class="cd">Some moms want science. Some want spirit. Some want both. ORIMI reads your energy and meets you exactly there.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIONS -->
+<section style="padding-top:0;">
+  <div class="sw">
+    <div class="fup" style="margin-bottom:44px;">
+      <div class="lbl sleft">How ORIMI shows up</div>
+      <h2 class="ttl fup">Not a reminder app. <em>A doula.</em></h2>
+      <p class="sub fup" style="max-width:520px;">Every message ORIMI sends serves one of five purposes. If it doesn't serve one of these, ORIMI doesn't send it.</p>
+    </div>
+    <div class="ag fup">
+      <div class="ac"><div class="an">01</div><span class="at">Educate</span><div class="atl">Teach her what's really happening</div><div class="ad">Not "baby is the size of a mango." Baby's lungs are producing surfactant right now. Specific to her week, her body, her baby.</div></div>
+      <div class="ac"><div class="an">02</div><span class="at">Prepare</span><div class="atl">Before every appointment</div><div class="ad">48 hours before the glucose test — what to expect, what to eat, what to wear, and the exact questions to ask her provider.</div></div>
+      <div class="ac"><div class="an">03</div><span class="at">Support</span><div class="atl">Hold space. Validate. Stay.</div><div class="ad">"That sounds really hard" before "here's what might help." The thing no app does well but every mama needs.</div></div>
+      <div class="ac"><div class="an">04</div><span class="at">Advocate</span><div class="atl">Give her the words</div><div class="ad">The BRAIN framework. Teaching her she has the right to ask why — and that asking is not being difficult.</div></div>
+      <div class="ac"><div class="an">05</div><span class="at">Anticipate</span><div class="atl">Before she has to ask</div><div class="ad">At 13 emotional flashpoints — anatomy scan, week 37 labor fear, day 3 postpartum crash — ORIMI reaches out first.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section style="padding-top:0;">
+  <div class="sw">
+    <div class="fup" style="margin-bottom:44px;">
+      <div class="lbl sleft">Getting started</div>
+      <h2 class="ttl fup">No app to download. <em>Just your phone.</em></h2>
+    </div>
+    <div class="hg fup">
+      <div class="hs"><div class="hs-n">1</div><div class="hs-ic">📱</div><div class="hs-t">Text to join</div><div class="hs-d">ORIMI works entirely over SMS. No app. No login. Works on any phone. Just your number and your due date.</div></div>
+      <div class="hs"><div class="hs-n">2</div><div class="hs-ic">🤱🏾</div><div class="hs-t">ORIMI learns you</div><div class="hs-d">She learns your stage, your provider, your preferences. Every message is personalized to exactly where you are.</div></div>
+      <div class="hs"><div class="hs-n">3</div><div class="hs-ic">✦</div><div class="hs-t">She never stops</div><div class="hs-d">Every morning. Before every appointment. Through birth and into the fourth trimester. ORIMI doesn't disappear after month 3.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section style="padding-top:0;">
+  <div class="sw">
+    <div class="gp fup">
+      <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
+        <div class="lbl bdis" style="justify-content:center;">For the partner too</div>
+        <h2 class="ttl fup">She equips her <em>partner too.</em></h2>
+        <p class="sub fup" style="max-width:100%;">A partner who knows what to expect, how to advocate, and when to simply hold space isn't just emotionally helpful. Oxytocin — the hormone that drives labor — flows when she feels safe, supported, and unobserved.</p>
+      </div>
+      <div class="ps-g fup">
+        <div class="ps"><div class="ps-n">↑ Oxytocin</div><div class="ps-t">Continuous support promotes maternal relaxation, reduces stress hormones, and enhances oxytocin release — directly contributing to cervical dilation and effective contractions</div><div class="ps-s">Frontiers in Endocrinology, 2021</div></div>
+        <div class="ps"><div class="ps-n">↓ Cesarean</div><div class="ps-t">Women with continuous support are significantly less likely to need a cesarean and more likely to give birth spontaneously with shorter labors</div><div class="ps-s">Cochrane Review</div></div>
+        <div class="ps"><div class="ps-n">16/18</div><div class="ps-t">Partner-inclusive education programs showed significant reductions in postpartum depression in 16 out of 18 studies reviewed</div><div class="ps-s">Frontiers in Psychiatry, 2024</div></div>
+        <div class="ps"><div class="ps-n">$91M</div><div class="ps-t">Doula-model care saved $91M, 219,530 fewer cesareans, and 51 fewer maternal deaths across 1.8 million women</div><div class="ps-s">Oregon Health Authority</div></div>
+      </div>
+      <div class="pb fup">
+        <div class="pb-g">
+          <div>
+            <div class="lbl sleft">What partners receive</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:300;color:var(--cream);line-height:1.1;margin-bottom:14px;">Real doula-level guidance. <em style="font-style:italic;color:var(--gold2);">Every week.</em></h3>
+            <p style="font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;">ORIMI sends partners weekly updates — what's happening with baby, what she's feeling, one specific thing they can do today, and how to be the support person she actually needs.</p>
+          </div>
+          <div>
+            <div class="pi"><div class="pi-d"></div><div><div class="pi-t">What's happening with baby this week</div><div class="pi-s">Plain language that makes them feel connected to the pregnancy.</div></div></div>
+            <div class="pi"><div class="pi-d"></div><div><div class="pi-t">What she's feeling and why</div><div class="pi-s">The back pain is real. The heartburn is biology. Understanding removes helplessness.</div></div></div>
+            <div class="pi"><div class="pi-d"></div><div><div class="pi-t">One specific thing to do today</div><div class="pi-s">Warm rice sock on her lower back. Rub her feet for 10 minutes. Concrete, not vague.</div></div></div>
+            <div class="pi"><div class="pi-d"></div><div><div class="pi-t">How to hold space in the birth room</div><div class="pi-s">Dim lights. Counter-pressure. Advocate with staff. An informed partner changes outcomes.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SMS DEMO -->
+<section style="padding-top:0;">
+  <div class="sw">
+    <div class="gp fup">
+      <div class="dg">
+        <div>
+          <div class="lbl sleft">What ORIMI sounds like</div>
+          <h2 class="ttl fup">A doula who knows <em>you.</em></h2>
+          <p class="sub fup">ORIMI doesn't just tell moms when something is happening. She tells them what it is, why it matters, how to prepare, and what comes next.</p>
+        </div>
+        <div class="pw fup">
+          <div class="ph-halo"></div>
+          <div class="ph">
+            <div class="ph-notch"></div>
+            <div class="ph-hdr"><p>Messages</p><h4>ORIMI 🤱🏾</h4></div>
+            <div class="pm"><div class="pm-o">Good morning Remy. Week 32. Baby's brain grew 30% last month. Two eggs covers DHA and choline. Keep protein at 80-100g today. How are you feeling?</div><div class="pm-t">Today 6:30am</div></div>
+            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Feeling nervous about Thursday honestly</div><div class="pm-t">7:14am</div></div>
+            <div class="pm"><div class="pm-o">That makes sense. Thursday: check baby's position, doppler heartbeat. Wear a two-piece. Ask: "Is baby head-down yet?"</div><div class="pm-t">7:16am</div></div>
+            <div class="pm" style="display:flex;flex-direction:column;align-items:flex-end;"><div class="pm-m">Thank you 🙏 that actually helps</div><div class="pm-t">7:18am</div></div>
+            <div class="pm"><div class="pm-o">You've got this. ORIMI will check in after the visit.</div><div class="pm-t">7:19am</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<div class="wl-wrap" id="waitlist">
+  <div class="wl-g fup">
+    <div class="wl-lbl">Join the waitlist</div>
+    <h2 class="wl-ttl">Be one of the first<br>mothers <em>ORIMI supports.</em></h2>
+    <p class="wl-sub">No app needed. Just your phone number and due date. ORIMI will be there before you need her.</p>
+    <button class="wl-btn" onclick="openSV()">Join the waitlist →</button>
+    <p class="wl-note">"ORIMI is built by a mama who trusts the birthing process. This is not a tech product. This is a doula." — Khylir Patton, Founder</p>
+  </div>
 </div>
 
-<!-- ========= SURVEY OVERLAY ========= -->
-<div id="survey-overlay">
-  <div class="survey-shell">
-    <div class="survey-progress"><div class="survey-progress-bar" id="prog-bar" style="width:0%"></div></div>
-    <div id="survey-container"></div>
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div><div class="ft-logo">ORIMI</div><div class="ft-tag">Your doula. In your pocket. Every day.</div></div>
+      <div class="ft-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">Instagram</a><a href="#">TikTok</a></div>
+    </div>
+    <div class="ft-bot">
+      <div class="ft-copy">© 2026 IYA Inc. All rights reserved.</div>
+      <div class="ft-mis">Built by a mama who trusts the birthing process. Because every mother deserves to feel supported, informed, and never alone.</div>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- SURVEY -->
+<div id="sv">
+  <div class="sv-w">
+    <button class="sv-x" onclick="closeSV()">✕</button>
+    <div class="sv-bar"><div class="sv-prog" id="sv-p" style="width:0%"></div></div>
+    <div id="sv-con"></div>
   </div>
 </div>
 
 <script>
-/* ===================== 3D BACKGROUND ===================== */
+/* ===== 3D CANVAS ===== */
 (function(){
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [], mouse = {x:0,y:0};
-  const COLORS = ['rgba(196,146,58,', 'rgba(155,110,42,', 'rgba(74,94,58,', 'rgba(139,111,62,'];
+  const cv=document.getElementById('bg-canvas');
+  const cx=cv.getContext('2d');
+  let W,H,mx=0,my=0,t=0;
+  const pts=[];
 
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
 
-  function Particle(){
-    this.reset = function(){
-      this.x = Math.random()*W;
-      this.y = Math.random()*H;
-      this.z = Math.random()*1200+200;
-      this.vz = -(Math.random()*0.8+0.2);
-      this.r = Math.random()*2+0.5;
-      this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
-      this.opacity = Math.random()*0.4+0.05;
-    };
-    this.reset();
-    this.update = function(){
-      this.z += this.vz;
-      if(this.z < 1) this.reset();
-      const px = (this.x-W/2)*(800/this.z)+W/2;
-      const py = (this.y-H/2)*(800/this.z)+H/2;
-      const scale = 800/this.z;
-      const r = this.r*scale;
-      ctx.beginPath();
-      ctx.arc(px, py, Math.max(0.1,r), 0, Math.PI*2);
-      ctx.fillStyle = this.color + this.opacity*(1-this.z/1400)+')';
-      ctx.fill();
-    };
-  }
-
-  // Grid lines perspective
-  function drawGrid(){
-    const vp = {x: W/2 + (mouse.x-W/2)*0.03, y: H/2 + (mouse.y-H/2)*0.03};
-    ctx.strokeStyle = 'rgba(155,110,42,0.04)';
-    ctx.lineWidth = 0.5;
-    const gridCount = 12;
-    for(let i=0;i<=gridCount;i++){
-      const t = i/gridCount;
-      // horizontal
-      const y1 = H*0.5 + (t-0.5)*H*2;
-      ctx.beginPath();
-      ctx.moveTo(0, y1);
-      const gy1 = vp.y + (y1-vp.y)*0.3;
-      ctx.quadraticCurveTo(W/2, gy1, W, y1);
-      ctx.stroke();
-      // vertical
-      const x1 = W*t;
-      ctx.beginPath();
-      ctx.moveTo(x1, 0);
-      const gx1 = vp.x + (x1-vp.x)*0.3;
-      ctx.quadraticCurveTo(gx1, H/2, x1, H);
-      ctx.stroke();
+  class Star{
+    constructor(){this.reset();}
+    reset(){
+      this.x=(Math.random()-0.5)*W*2;
+      this.y=(Math.random()-0.5)*H*2;
+      this.z=Math.random()*1400+100;
+      this.pz=this.z;
+      this.vz=Math.random()*.8+.3;
+      this.r=Math.random()*1.5+.3;
+      const cols=['196,146,58','255,255,255','139,111,62','232,184,109'];
+      this.col=cols[Math.floor(Math.random()*cols.length)];
+      this.a=Math.random()*.6+.1;
+    }
+    draw(){
+      const px=(this.x/this.z)*800+W/2+(mx-W/2)*.02;
+      const py=(this.y/this.z)*800+H/2+(my-H/2)*.02;
+      const ppx=(this.x/this.pz)*800+W/2;
+      const ppy=(this.y/this.pz)*800+H/2;
+      const r=Math.max(.1,(1-this.z/1500)*3*this.r);
+      const a=this.a*(1-this.z/1500);
+      // draw streak
+      cx.beginPath();
+      cx.moveTo(ppx,ppy);
+      cx.lineTo(px,py);
+      cx.strokeStyle=`rgba(${this.col},${a*.6})`;
+      cx.lineWidth=r*.5;
+      cx.stroke();
+      // draw dot
+      cx.beginPath();
+      cx.arc(px,py,r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${this.col},${a})`;
+      cx.fill();
+      this.pz=this.z;
+      this.z-=this.vz;
+      if(this.z<1||px<-50||px>W+50||py<-50||py>H+50){this.reset();this.pz=this.z;}
     }
   }
 
-  // Floating orbs
-  let orbTime = 0;
+  // Perspective grid
+  function drawGrid(){
+    t+=.002;
+    cx.strokeStyle='rgba(196,146,58,0.028)';
+    cx.lineWidth=.5;
+    const vx=W/2+(mx-W/2)*.04;
+    const vy=H*.65+(my-H/2)*.02;
+    const rows=10,cols=14;
+    // horizontal
+    for(let i=0;i<=rows;i++){
+      const p=i/rows;
+      const y=H*.4+p*H*.7;
+      const xl=vx*(1-p*1.8);
+      const xr=W-vx*(1-p*1.8)+W*(p*1.8-1)*0;
+      cx.beginPath();
+      cx.moveTo(Math.max(-W*.5,vx-W*(.5+p*.8)),y);
+      cx.lineTo(Math.min(W*1.5,vx+W*(.5+p*.8)),y);
+      cx.stroke();
+    }
+    // vertical
+    for(let i=0;i<=cols;i++){
+      const p=(i/cols)-.5;
+      cx.beginPath();
+      cx.moveTo(vx+p*W*.3,H*.35);
+      cx.lineTo(vx+p*W*2.5,H*1.2);
+      cx.stroke();
+    }
+  }
+
+  // Orbs
   function drawOrbs(){
-    orbTime += 0.003;
-    const orbs = [
-      {x:W*0.15, y:H*0.2, r:200, c:'rgba(196,146,58,', a:0.06},
-      {x:W*0.85, y:H*0.8, r:250, c:'rgba(74,94,58,', a:0.04},
-      {x:W*0.7, y:H*0.2, r:160, c:'rgba(155,110,42,', a:0.05},
-      {x:W*0.2, y:H*0.8, r:180, c:'rgba(196,146,58,', a:0.04},
+    const o=[
+      {x:.12,y:.18,r:280,c:'196,146,58',a:.06},
+      {x:.88,y:.82,r:220,c:'61,107,58',a:.045},
+      {x:.72,y:.12,r:200,c:'139,111,62',a:.05},
+      {x:.18,y:.78,r:180,c:'196,146,58',a:.04},
+      {x:.5,y:.5,r:350,c:'50,40,25',a:.04},
     ];
-    orbs.forEach((o,i)=>{
-      const ox = o.x + Math.sin(orbTime+i*1.3)*30;
-      const oy = o.y + Math.cos(orbTime+i*0.9)*20;
-      const grad = ctx.createRadialGradient(ox,oy,0,ox,oy,o.r);
-      grad.addColorStop(0, o.c+o.a+')');
-      grad.addColorStop(1, o.c+'0)');
-      ctx.beginPath();
-      ctx.arc(ox, oy, o.r, 0, Math.PI*2);
-      ctx.fillStyle = grad;
-      ctx.fill();
+    o.forEach((ob,i)=>{
+      const ox=ob.x*W+Math.sin(t+i*1.4)*35;
+      const oy=ob.y*H+Math.cos(t+i*1.0)*25;
+      const g=cx.createRadialGradient(ox,oy,0,ox,oy,ob.r);
+      g.addColorStop(0,`rgba(${ob.c},${ob.a})`);
+      g.addColorStop(1,`rgba(${ob.c},0)`);
+      cx.beginPath();cx.arc(ox,oy,ob.r,0,Math.PI*2);
+      cx.fillStyle=g;cx.fill();
     });
   }
 
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    // warm cream bg
-    ctx.fillStyle = '#F5F0E8';
-    ctx.fillRect(0,0,W,H);
+  function loop(){
+    cx.clearRect(0,0,W,H);
+    cx.fillStyle='#050403';cx.fillRect(0,0,W,H);
     drawOrbs();
     drawGrid();
-    particles.forEach(p=>p.update());
-    requestAnimationFrame(animate);
+    pts.forEach(p=>p.draw());
+    requestAnimationFrame(loop);
   }
 
   resize();
-  for(let i=0;i<120;i++){ const p = new Particle(); p.z = Math.random()*1200+200; particles.push(p); }
-  window.addEventListener('resize', resize);
-  document.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
-  animate();
+  for(let i=0;i<200;i++){const s=new Star();s.z=Math.random()*1400+100;s.pz=s.z;pts.push(s);}
+  addEventListener('resize',resize);
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  loop();
 })();
 
-/* ===================== NAV ===================== */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+/* ===== CURSOR ===== */
+const cur=document.getElementById('cur');
+const curR=document.getElementById('cur-ring');
+let cx2=0,cy2=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{cx2=e.clientX;cy2=e.clientY;cur.style.left=cx2+'px';cur.style.top=cy2+'px';});
+(function ac(){rx+=(cx2-rx)*.12;ry+=(cy2-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.querySelectorAll('button,a,.sv-opt,.ac,.cc,.hs,.sr').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';curR.style.width='50px';curR.style.height='50px';curR.style.borderColor='rgba(196,146,58,.6)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curR.style.width='34px';curR.style.height='34px';curR.style.borderColor='rgba(196,146,58,.35)';});
+});
 
-/* ===================== SCROLL REVEAL ===================== */
-const obs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
-},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+/* ===== NAV ===== */
+addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
 
-/* ===================== SURVEY STATE ===================== */
-const SUPABASE_URL = 'https://dnpegzznqkronofwljqi.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRucGVnenpucWtyb25vZndsanFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkwOTMsImV4cCI6MjA5MDQ4NTA5M30.rZy6AhfeSGREE6b43WjyokHwLNGB2LJPAgbwc445R_4';
+/* ===== HERO TITLE ANIMATION ===== */
+window.addEventListener('load',()=>{
+  const lines=document.querySelectorAll('#htitle .ht-li');
+  lines.forEach((el,i)=>{
+    setTimeout(()=>{
+      el.style.transition='transform .95s cubic-bezier(.16,1,.3,1),opacity .65s ease';
+      el.style.transform='translateY(0)';
+      el.style.opacity='1';
+    },480+i*160);
+  });
+});
 
-let state = {
-  screen: 0,
-  name: '', email: '', phone: '',
-  journey: '', needs: [], using: '', price: '', partner: '',
-  leadSaved: false
-};
+/* ===== WORD REVEAL (safe — no char splitting of HTML) ===== */
+function applyWordReveal(el){
+  if(el.dataset.wrinit)return;
+  el.dataset.wrinit='1';
+  // Store original html safely
+  const text=el.innerText;
+  const words=text.split(' ');
+  el.innerHTML=words.map((w,i)=>`<span class="wr" style="margin-right:.28em"><span class="wi" style="transition-delay:${i*.05}s">${w}</span></span>`).join('');
+}
 
-const TOTAL_SCREENS = 10;
+/* ===== SCROLL REVEAL ===== */
+const rev=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    el.classList.add('go');
+    rev.unobserve(el);
+  });
+},{threshold:.07,rootMargin:'0px 0px -28px 0px'});
 
-function progress(n){ return Math.round((n/TOTAL_SCREENS)*100); }
+document.querySelectorAll('.fup,.bdis,.sleft,.spop').forEach(el=>{
+  if(el.closest('#sv'))return;
+  rev.observe(el);
+});
 
-/* ===================== SURVEY SCREENS ===================== */
-const screens = [
-  // 0 — Name
-  ()=>`
-    <span class="survey-step">Step 1 of 3</span>
-    <h2 class="survey-q">What's your <em>name?</em></h2>
-    <p class="survey-hint">ORIMI will use this to personalize every message.</p>
-    <input class="survey-input" type="text" id="s-name" placeholder="First name..." value="${state.name}" autocomplete="given-name">
-    <button class="survey-btn" onclick="nextScreen(0)">Continue <span class="arrow">→</span></button>
-  `,
-  // 1 — Email
-  ()=>`
-    <span class="survey-step">Step 2 of 3</span>
-    <h2 class="survey-q">Best email to<br><em>reach you?</em></h2>
-    <p class="survey-hint">Early access details go here first.</p>
-    <input class="survey-input" type="email" id="s-email" placeholder="Your email..." value="${state.email}" autocomplete="email">
-    <button class="survey-btn" onclick="nextScreen(1)">Continue <span class="arrow">→</span></button>
-  `,
-  // 2 — Phone
-  ()=>`
-    <span class="survey-step">Step 3 of 3</span>
-    <h2 class="survey-q">Want to be first to<br><em>text with ORIMI?</em></h2>
-    <p class="survey-hint">Drop your number — optional but encouraged.</p>
-    <input class="survey-input" type="tel" id="s-phone" placeholder="Your number..." value="${state.phone}" autocomplete="tel">
-    <p class="survey-note">We'll only text you about early access. No spam. Unsubscribe anytime.</p>
-    <button class="survey-btn" onclick="nextScreen(2)">Continue <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="skipPhone()">Skip for now</span>
-  `,
-  // 3 — Transition
-  ()=>`
-    <div class="transition-screen">
-      <div class="ts-emoji">🤱🏾</div>
-      <h2 class="ts-title">
-        <span class="fly-line"><span class="fly-word" style="--d:0.18s">Thanks,</span> <em><span class="fly-word" style="--d:0.28s">${state.name || 'mama'}.</span></em></span>
-      </h2>
-      <p class="ts-sub">
-        <span class="fly-line"><span class="fly-word" style="--d:0.42s">While you wait</span> <span class="fly-word" style="--d:0.5s">for early access,</span></span>
-        <span class="fly-line"><span class="fly-word" style="--d:0.58s">help us build ORIMI</span> <span class="fly-word" style="--d:0.66s">around what you actually need.</span></span>
-        <span class="fly-line"><span class="fly-word" style="--d:0.74s">5 quick questions.</span></span>
-      </p>
-      <button class="survey-btn" onclick="nextScreen(3)" style="margin:0 auto;">Let's do it <span class="arrow">→</span></button>
-    </div>
-  `,
-  // 4 — Journey stage
-  ()=>`
-    <span class="survey-step">Question 1 of 5</span>
-    <h2 class="survey-q">Where are you<br><em>right now?</em></h2>
-    <div class="survey-options" id="opts-journey">
-      ${['Trying to conceive','Pregnant (1st trimester)','Pregnant (2nd trimester)','Pregnant (3rd trimester)','Postpartum (0-3 months)','Postpartum (4-12 months)','Planning a future pregnancy'].map(o=>`
-        <div class="s-opt" onclick="selectOne('journey','${o}',this)">
-          <div class="opt-check"></div>${o}
-        </div>`).join('')}
-    </div>
-    <button class="survey-btn" onclick="nextScreen(4)" style="margin-top:24px;">Next <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="nextScreen(4)">Skip</span>
-  `,
-  // 5 — What helps most (pick 2)
-  ()=>`
-    <span class="survey-step">Question 2 of 5</span>
-    <h2 class="survey-q">What would help you<br><em>most right now?</em></h2>
-    <p class="multi-select-note">Pick your top 2.</p>
-    <div class="survey-options" id="opts-needs">
-      ${['Someone to explain what\'s happening to my body week by week','Help preparing for doctor/midwife appointments','Breathing exercises and stress relief','Nutrition and wellness guidance for my stage','A birth plan that actually reflects what I want','Support for my partner so they know how to help','Someone to talk to between appointments','Postpartum recovery and mental health support','Help finding holistic providers (chiro, acupuncture, pelvic floor)'].map(o=>`
-        <div class="s-opt s-opt-multi" onclick="selectMulti('needs','${o}',this,2)">
-          <div class="opt-check"></div>${o}
-        </div>`).join('')}
-    </div>
-    <button class="survey-btn" onclick="nextScreen(5)" style="margin-top:24px;">Next <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="nextScreen(5)">Skip</span>
-  `,
-  // 6 — Currently using
-  ()=>`
-    <span class="survey-step">Question 3 of 5</span>
-    <h2 class="survey-q">What are you<br><em>currently using?</em></h2>
-    <div class="survey-options" id="opts-using">
-      ${['A pregnancy tracking app (What to Expect, The Bump, Ovia, etc.)','A doula (in person)','My OB/midwife office resources','Social media groups or mom communities','Nothing — figuring it out on my own','Other'].map(o=>`
-        <div class="s-opt" onclick="selectOne('using','${o}',this)">
-          <div class="opt-check"></div>${o}
-        </div>`).join('')}
-    </div>
-    <button class="survey-btn" onclick="nextScreen(6)" style="margin-top:24px;">Next <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="nextScreen(6)">Skip</span>
-  `,
-  // 7 — Willingness to pay
-  ()=>`
-    <span class="survey-step">Question 4 of 5</span>
-    <h2 class="survey-q">What would feel<br><em>fair to pay monthly?</em></h2>
-    <p class="survey-hint" style="margin-bottom:20px;">For personalized wellness check-ins, appointment prep, partner guidance, and support from pregnancy through postpartum.</p>
-    <div class="survey-options" id="opts-price">
-      ${['Under $10/month','$10–20/month','$20–35/month','$35–50/month','$50+/month if it replaced the need for other services','I\'d only use it if it was free'].map(o=>`
-        <div class="s-opt" onclick="selectOne('price','${o}',this)">
-          <div class="opt-check"></div>${o}
-        </div>`).join('')}
-    </div>
-    <button class="survey-btn" onclick="nextScreen(7)" style="margin-top:24px;">Next <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="nextScreen(7)">Skip</span>
-  `,
-  // 8 — Partner
-  ()=>`
-    <span class="survey-step">Question 5 of 5</span>
-    <h2 class="survey-q">Is there a partner<br><em>involved?</em></h2>
-    <div class="survey-options" id="opts-partner">
-      ${['Yes — they\'d love that','Yes — but they probably wouldn\'t sign up on their own','No partner or support person right now','I\'m not sure yet'].map(o=>`
-        <div class="s-opt" onclick="selectOne('partner','${o}',this)">
-          <div class="opt-check"></div>${o}
-        </div>`).join('')}
-    </div>
-    <button class="survey-btn" onclick="nextScreen(8)" style="margin-top:24px;">Submit <span class="arrow">→</span></button>
-    <span class="survey-skip" onclick="nextScreen(8)">Skip</span>
-  `,
-  // 9 — Final
-  ()=>`
-    <div class="final-screen">
-      <div class="final-ring">
-        <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(155,110,42,0.12)" stroke-width="1.5"/>
-          <circle cx="50" cy="50" r="44" fill="none" stroke="url(#gg2)" stroke-width="1.5"
-            stroke-dasharray="276" stroke-dashoffset="276" id="final-circle"
-            style="transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1) 0.3s;"/>
-          <defs><linearGradient id="gg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B6E2A"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs>
-        </svg>
-        <div class="final-emoji" id="final-emoji">🤱🏾</div>
-      </div>
-      <h2 class="final-title">
-        <span class="fly-line"><span class="fly-word" style="--d:0.16s">You're in,</span> <em id="final-name"><span class="fly-word" style="--d:0.26s">${state.name || 'mama'}.</span></em></span>
-      </h2>
-      <p class="final-msg">
-        <span class="fly-line"><span class="fly-word" style="--d:0.4s">We're building ORIMI</span> <span class="fly-word" style="--d:0.48s">around moms like you.</span></span>
-        <span class="fly-line"><span class="fly-word" style="--d:0.58s">You'll hear from us soon</span> <span class="fly-word" style="--d:0.66s">with early access details.</span></span>
-      </p>
-      <p class="final-msg">
-        <span class="fly-line"><span class="fly-word" style="--d:0.74s">In the meantime,</span> <span class="fly-word" style="--d:0.82s">know this:</span></span>
-        <span class="fly-line"><span class="fly-word" style="--d:0.9s">you're already doing</span> <span class="fly-word" style="--d:0.98s">the most important thing —</span></span>
-        <span class="fly-line"><span class="fly-word" style="--d:1.06s">showing up</span> <span class="fly-word" style="--d:1.14s">and asking for support.</span></span>
-      </p>
-      <p class="final-sig">Talk soon.<br>— ORIMI</p>
-      <button class="share-btn" onclick="shareORIMI()">Know someone who needs this? Share the waitlist →</button>
-    </div>
-  `
+/* ===== SURVEY STATE ===== */
+const SU='https://dnpegzznqkronofwljqi.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRucGVnenpucWtyb25vZndsanFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDkwOTMsImV4cCI6MjA5MDQ4NTA5M30.rZy6AhfeSGREE6b43WjyokHwLNGB2LJPAgbwc445R_4';
+let S={n:0,name:'',email:'',phone:'',journey:'',needs:[],using:'',price:'',partner:'',saved:false};
+const T=10;
+
+const screens=[
+  ()=>`<div class="sv-step">Step 1 of 3</div><h2 class="sv-q">What's your <em>name?</em></h2><p class="sv-hint">ORIMI will use this to personalize every message.</p><input class="sv-inp" id="si0" type="text" placeholder="First name…" value="${S.name}" autocomplete="given-name"><div class="sv-acts"><button class="sv-btn" onclick="nxt(0)">Continue <span class="sv-arr">→</span></button></div>`,
+  ()=>`<div class="sv-step">Step 2 of 3</div><h2 class="sv-q">Best email to <em>reach you?</em></h2><p class="sv-hint">Early access details go here first.</p><input class="sv-inp" id="si1" type="email" placeholder="Your email…" value="${S.email}" autocomplete="email"><div class="sv-acts"><button class="sv-btn" onclick="nxt(1)">Continue <span class="sv-arr">→</span></button></div>`,
+  ()=>`<div class="sv-step">Step 3 of 3</div><h2 class="sv-q">Want to be first to <em>text with ORIMI?</em></h2><p class="sv-hint">Drop your number — optional but encouraged.</p><input class="sv-inp" id="si2" type="tel" placeholder="Your number…" value="${S.phone}" autocomplete="tel"><p class="sv-note">We'll only text you about early access. No spam. Unsubscribe anytime.</p><div class="sv-acts"><button class="sv-btn" onclick="nxt(2)">Continue <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(2)">Skip for now</span></div>`,
+  ()=>`<div class="ts"><div class="ts-ic">🤱🏾</div><h2 class="ts-t">Thanks, <em>${S.name||'mama'}.</em></h2><p class="ts-s">While you wait for early access, help us build ORIMI around what YOU actually need. 5 quick questions.</p><div class="sv-acts" style="justify-content:center"><button class="sv-btn" onclick="nxt(3)">Let's do it <span class="sv-arr">→</span></button></div></div>`,
+  ()=>`<div class="sv-step">Question 1 of 5</div><h2 class="sv-q">Where are you <em>right now?</em></h2><div class="sv-opts">${['Trying to conceive','Pregnant (1st trimester)','Pregnant (2nd trimester)','Pregnant (3rd trimester)','Postpartum (0-3 months)','Postpartum (4-12 months)','Planning a future pregnancy'].map(o=>`<div class="sv-opt${S.journey===o?' sel':''}" onclick="p1('journey',this)"><div class="oc">${S.journey===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-acts" style="margin-top:16px"><button class="sv-btn" onclick="nxt(4)">Next <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(4)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 2 of 5</div><h2 class="sv-q">What would help you <em>most right now?</em></h2><p class="mn">Pick your top 2.</p><div class="sv-opts">${["Someone to explain what's happening to my body week by week","Help preparing for appointments","Breathing exercises and stress relief","Nutrition and wellness guidance","A birth plan that reflects what I want","Support for my partner so they know how to help","Someone to talk to between appointments","Postpartum recovery and mental health support","Help finding holistic providers"].map(o=>`<div class="sv-opt${S.needs.includes(o)?' sel':''}" onclick="pm(this,2)"><div class="oc">${S.needs.includes(o)?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-acts" style="margin-top:16px"><button class="sv-btn" onclick="nxt(5)">Next <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(5)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 3 of 5</div><h2 class="sv-q">What are you <em>currently using?</em></h2><div class="sv-opts">${['A pregnancy tracking app (What to Expect, The Bump, etc.)','A doula (in person)','My OB/midwife office resources','Social media groups or mom communities','Nothing — figuring it out on my own','Other'].map(o=>`<div class="sv-opt${S.using===o?' sel':''}" onclick="p1('using',this)"><div class="oc">${S.using===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-acts" style="margin-top:16px"><button class="sv-btn" onclick="nxt(6)">Next <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(6)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 4 of 5</div><h2 class="sv-q">What would feel <em>fair to pay monthly?</em></h2><p class="sv-hint" style="margin-bottom:18px">For personalized check-ins, appointment prep, partner guidance, and support from pregnancy through postpartum.</p><div class="sv-opts">${['Under $10/month','$10–20/month','$20–35/month','$35–50/month','$50+/month if it replaced other services',"I'd only use it if it was free"].map(o=>`<div class="sv-opt${S.price===o?' sel':''}" onclick="p1('price',this)"><div class="oc">${S.price===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-acts" style="margin-top:16px"><button class="sv-btn" onclick="nxt(7)">Next <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(7)">Skip</span></div>`,
+  ()=>`<div class="sv-step">Question 5 of 5</div><h2 class="sv-q">Is there a partner <em>involved?</em></h2><div class="sv-opts">${["Yes — they'd love that","Yes — but they probably wouldn't sign up on their own","No partner or support person right now","I'm not sure yet"].map(o=>`<div class="sv-opt${S.partner===o?' sel':''}" onclick="p1('partner',this)"><div class="oc">${S.partner===o?'✓':''}</div>${o}</div>`).join('')}</div><div class="sv-acts" style="margin-top:16px"><button class="sv-btn" onclick="nxt(8)">Submit <span class="sv-arr">→</span></button><span class="sv-skip" onclick="nxt(8)">Skip</span></div>`,
+  ()=>`<div class="fn"><div class="fn-r"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(196,146,58,.1)" stroke-width="1.5"/><circle cx="50" cy="50" r="44" fill="none" stroke="url(#fg)" stroke-width="1.5" stroke-dasharray="276" stroke-dashoffset="276" id="fn-c" style="transition:stroke-dashoffset 1.8s cubic-bezier(.16,1,.3,1) .3s"/><defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B6030"/><stop offset="100%" stop-color="#E8B86D"/></linearGradient></defs></svg><div class="fn-em" id="fnem">🤱🏾</div></div><h2 class="fn-t">You're in, <em id="fnn">${S.name||'mama'}.</em></h2><p class="fn-m">We're building ORIMI around moms like you. You'll hear from us soon with early access details.</p><p class="fn-m">In the meantime: you're already doing the most important thing — showing up and asking for support.</p><p class="fn-sig">Talk soon.<br>— ORIMI</p><div class="fn-steps"><div class="fn-step"><div class="fn-sn">1</div><div class="fn-sc"><p>Confirmation email on its way</p><p>Add hello@orimi.com to your contacts.</p></div></div><div class="fn-step"><div class="fn-sn">2</div><div class="fn-sc"><p>ORIMI will text you before your due date</p><p>She'll introduce herself. No spam. Ever.</p></div></div><div class="fn-step"><div class="fn-sn">3</div><div class="fn-sc"><p>Early access before public launch</p><p>Waitlist mamas get in first — at the founding rate.</p></div></div></div><button class="fn-sh" onclick="shr()">Share with a mama who needs this →</button></div>`
 ];
 
-function renderScreen(n){
-  const container = document.getElementById('survey-container');
-  // animate out
-  const existing = container.querySelector('.survey-screen');
-  if(existing){ existing.style.animation='screenOut 0.3s ease both'; setTimeout(()=>{ buildScreen(n); },280); }
-  else { buildScreen(n); }
-  // progress
-  document.getElementById('prog-bar').style.width = progress(n)+'%';
+function render(n){
+  const box=document.getElementById('sv-con');
+  const old=box.firstChild;
+  if(old){old.style.animation='scOut .3s ease forwards';setTimeout(()=>build(n),280);}else build(n);
+  document.getElementById('sv-p').style.width=Math.round(n/T*100)+'%';
 }
-
-function buildScreen(n){
-  const container = document.getElementById('survey-container');
-  container.innerHTML = `<div class="survey-screen active">${screens[n]()}</div>`;
-
-  if(n===3){
-    const transitionEl = container.querySelector('.transition-screen');
-    if(transitionEl){
-      requestAnimationFrame(()=>{
-        transitionEl.classList.add('animate-in');
-      });
-    }
-  }
-
-  // restore selections
-  if(n===4 && state.journey){ setTimeout(()=>{ document.querySelectorAll('#opts-journey .s-opt').forEach(el=>{ if(el.textContent.trim()===state.journey) el.classList.add('selected'); }); },50); }
-  if(n===5 && state.needs.length){ setTimeout(()=>{ document.querySelectorAll('#opts-needs .s-opt').forEach(el=>{ if(state.needs.includes(el.textContent.trim())) el.classList.add('selected'); }); },50); }
-  if(n===6 && state.using){ setTimeout(()=>{ document.querySelectorAll('#opts-using .s-opt').forEach(el=>{ if(el.textContent.trim()===state.using) el.classList.add('selected'); }); },50); }
-  if(n===7 && state.price){ setTimeout(()=>{ document.querySelectorAll('#opts-price .s-opt').forEach(el=>{ if(el.textContent.trim()===state.price) el.classList.add('selected'); }); },50); }
-  if(n===8 && state.partner){ setTimeout(()=>{ document.querySelectorAll('#opts-partner .s-opt').forEach(el=>{ if(el.textContent.trim()===state.partner) el.classList.add('selected'); }); },50); }
-
-  // final screen animations
-  if(n===9){
-    const finalEl = container.querySelector('.final-screen');
-    if(finalEl){
-      requestAnimationFrame(()=>{
-        finalEl.classList.add('animate-in');
-      });
-    }
-
-    setTimeout(()=>{
-      const circle = document.getElementById('final-circle');
-      if(circle) circle.style.strokeDashoffset='0';
-      setTimeout(()=>{
-        const em = document.getElementById('final-emoji');
-        if(em) em.style.animation='emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both';
-      },600);
-    },200);
-    saveToSupabase();
-  }
+function build(n){
+  document.getElementById('sv-con').innerHTML=`<div class="sv-scr">${screens[n]()}</div>`;
+  if(n===9){setTimeout(()=>{
+    const c=document.getElementById('fn-c');if(c)c.style.strokeDashoffset='0';
+    setTimeout(()=>{const e=document.getElementById('fnem');if(e)e.style.animation='ep .6s cubic-bezier(.34,1.56,.64,1) both';},600);
+    save();
+  },150);}
 }
-
-async function nextScreen(current){
-  // validate + save input
-  if(current===0){
-    const v = document.getElementById('s-name')?.value.trim();
-    if(!v){ shake('s-name'); return; }
-    state.name = v;
-  }
-  if(current===1){
-    const v = document.getElementById('s-email')?.value.trim();
-    if(!v||!v.includes('@')){ shake('s-email'); return; }
-    state.email = v;
-    // Save lead immediately after email captured
-    if(!state.leadSaved){ saveLead(); }
-  }
-  if(current===2){ state.phone = document.getElementById('s-phone')?.value.trim()||''; }
-  state.screen = current+1;
-  renderScreen(state.screen);
+function nxt(c){
+  if(c===0){const v=document.getElementById('si0')?.value.trim();if(!v){shk('si0');return;}S.name=v;}
+  if(c===1){const v=document.getElementById('si1')?.value.trim();if(!v||!v.includes('@')){shk('si1');return;}S.email=v;if(!S.saved)saveLead();}
+  if(c===2){S.phone=document.getElementById('si2')?.value.trim()||'';}
+  S.n=c+1;render(S.n);
 }
-
-function skipPhone(){ state.screen=3; renderScreen(3); }
-
-function selectOne(field, val, el){
-  el.closest('.survey-options').querySelectorAll('.s-opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  state[field] = val;
+function p1(field,el){el.closest('.sv-opts').querySelectorAll('.sv-opt').forEach(o=>{o.classList.remove('sel');o.querySelector('.oc').textContent='';});el.classList.add('sel');el.querySelector('.oc').textContent='✓';S[field]=el.innerText.replace('✓','').trim();}
+function pm(el,max){
+  const isSel=el.classList.contains('sel');
+  const sels=[...el.closest('.sv-opts').querySelectorAll('.sv-opt.sel')];
+  if(!isSel&&sels.length>=max){sels[0].classList.remove('sel');sels[0].querySelector('.oc').textContent='';const v=sels[0].innerText.replace('✓','').trim();const i=S.needs.indexOf(v);if(i>-1)S.needs.splice(i,1);}
+  el.classList.toggle('sel');
+  const chk=el.querySelector('.oc');
+  const v=el.innerText.replace('✓','').trim();
+  if(el.classList.contains('sel')){S.needs.push(v);chk.textContent='✓';}else{const i=S.needs.indexOf(v);if(i>-1)S.needs.splice(i,1);chk.textContent='';}
 }
-
-function selectMulti(field, val, el, max){
-  const isSelected = el.classList.contains('selected');
-  const selected = el.closest('.survey-options').querySelectorAll('.s-opt.selected');
-  if(!isSelected && selected.length >= max){
-    // deselect first
-    selected[0].classList.remove('selected');
-    const idx = state[field].indexOf(selected[0].textContent.trim());
-    if(idx>-1) state[field].splice(idx,1);
-  }
-  el.classList.toggle('selected');
-  if(el.classList.contains('selected')){ state[field].push(val); }
-  else { const idx=state[field].indexOf(val); if(idx>-1) state[field].splice(idx,1); }
-}
-
-function shake(id){
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.style.animation='shake 0.4s ease';
-  el.style.borderColor='rgba(180,60,60,0.5)';
-  setTimeout(()=>{ el.style.animation=''; el.style.borderColor=''; },400);
-}
-
-async function saveLead(){
-  state.leadSaved = true;
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/orimi_waitlist`, {
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body: JSON.stringify({ first_name:state.name, email:state.email, created_at:new Date().toISOString() })
-    });
-  } catch(e){ console.log('Lead save:', e); }
-}
-
-async function saveToSupabase(){
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/orimi_waitlist`, {
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body: JSON.stringify({
-        first_name: state.name,
-        email: state.email,
-        phone: state.phone,
-        journey_stage: state.journey,
-        needs: state.needs,
-        currently_using: state.using,
-        willingness_to_pay: state.price,
-        partner_involved: state.partner,
-        created_at: new Date().toISOString(),
-        source: document.referrer || 'direct'
-      })
-    });
-  } catch(e){ console.log('Survey save:', e); }
-}
-
-function openSurvey(){
-  const emailEl = document.getElementById('hero-email');
-  if(emailEl?.value) state.email = emailEl.value;
-  document.getElementById('survey-overlay').style.display='flex';
-  document.body.style.overflow='hidden';
-  state.screen=0;
-  renderScreen(0);
-}
-
-function heroStart(){
-  const v = document.getElementById('hero-email')?.value.trim();
-  if(v) state.email = v;
-  openSurvey();
-}
-
-function shareORIMI(){
-  if(navigator.share){
-    navigator.share({title:'ORIMI — Your Doula. In Your Pocket.',text:'I just joined the ORIMI waitlist — an AI doula for every mother.',url:location.href});
-  } else {
-    navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!'));
-  }
-}
-
-// Shake animation
-const style=document.createElement('style');
-style.textContent='@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}';
-document.head.appendChild(style);
-
-// Close survey on escape
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.getElementById('survey-overlay').style.display==='flex'){ document.getElementById('survey-overlay').style.display='none'; document.body.style.overflow=''; } });
+function shk(id){const e=document.getElementById(id);if(!e)return;e.style.animation='shake .4s ease';e.style.borderColor='rgba(200,80,80,.4)';setTimeout(()=>{e.style.animation='';e.style.borderColor='';},400);}
+async function saveLead(){S.saved=true;try{await fetch(`${SU}/rest/v1/orimi_waitlist`,{method:'POST',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({first_name:S.name,email:S.email,created_at:new Date().toISOString()})});}catch(e){}}
+async function save(){try{await fetch(`${SU}/rest/v1/orimi_waitlist`,{method:'POST',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({first_name:S.name,email:S.email,phone:S.phone,journey_stage:S.journey,needs:S.needs,currently_using:S.using,willingness_to_pay:S.price,partner_involved:S.partner,created_at:new Date().toISOString(),source:document.referrer||'direct'})});}catch(e){}}
+function openSV(){document.getElementById('sv').style.display='flex';document.body.style.overflow='hidden';S.n=0;render(0);}
+function closeSV(){document.getElementById('sv').style.display='none';document.body.style.overflow='';}
+function shr(){if(navigator.share)navigator.share({title:'ORIMI',text:'I just joined the ORIMI waitlist — an AI doula for every mother.',url:location.href});else navigator.clipboard.writeText(location.href).then(()=>alert('Link copied!'));}
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSV();});
+const ss=document.createElement('style');ss.textContent='@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}';document.head.appendChild(ss);
 </script>
 </body>
 </html>
